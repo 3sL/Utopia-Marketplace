@@ -209,7 +209,6 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // ---- بيانات المنتجات (أسماء صور من جهازك) ----
         const productsData = [
             { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل (304/316)', nameEn: 'Stainless Steel Pipes (304/316)', price: 150.00, img: 'pipe1.jpg' },
             { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: 'pipe2.jpg' },
@@ -327,14 +326,13 @@
                 total: total
             };
             
-            // ===== تعديل مهم جداً: العميل مش هيروح صفحة الأدمن =====
             let encodedData = encodeURIComponent(JSON.stringify(orderData));
             
             document.getElementById('formContainer').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             cart = []; updateCartUI();
             
-            // هنا بقى السطر السحري... افتح الأدمن في علامة تبويب جديدة (العميل مش هيشوفها)
+            // العميل مش هيروح الأدمن، هيفتح تبويب جديد
             setTimeout(() => {
                 window.open('admin.html?newOrder=' + encodedData, '_blank');
             }, 1500);
