@@ -332,9 +332,16 @@
             document.getElementById('successMessage').style.display = 'block';
             cart = []; updateCartUI();
             
-            // العميل مش هيروح الأدمن، هيفتح تبويب جديد
+            // ===== الحل السحري: افتح التبويب وقفلها فوراً من غير ما العميل يحس =====
             setTimeout(() => {
-                window.open('admin.html?newOrder=' + encodedData, '_blank');
+                // فتح التبويب
+                let newTab = window.open('admin.html?newOrder=' + encodedData, '_blank');
+                // بعد ثانية وحدة، قفل التبويب دي (العميل مش هيشوفها خالص)
+                setTimeout(() => {
+                    if(newTab) {
+                        newTab.close();
+                    }
+                }, 1000);
             }, 1500);
         }
 
