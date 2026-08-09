@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>يوتوبيا للتجارة والتصدير</title>
+    <title>يوتوبيا للتجارة والتصدير - لوازم الحريق</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -81,6 +81,19 @@
         .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; }
         .submit-order-btn { width: 100%; padding: 12px; background: #8bc34a; color: white; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; margin-top: 10px; }
         .success-msg { display: none; text-align: center; color: #27ae60; font-weight: bold; font-size: 18px; padding: 20px; }
+
+        /* نافذة لوحة الطلبات */
+        .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
+        .admin-modal.active { display: flex; }
+        .admin-modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative; }
+        .admin-modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; }
+        .admin-modal h2 { color: #0a1e2d; text-align: center; margin-bottom: 20px; }
+        .order-card { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #f39c12; }
+        .order-card h3 { color: #0a1e2d; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .order-card p { margin: 5px 0; color: #555; }
+        .order-card ul { margin: 10px 0; padding-right: 20px; }
+        .order-card li { margin-bottom: 5px; }
+        .order-total { font-size: 18px; font-weight: bold; color: #2ecc71; margin-top: 10px; }
 
         footer { background: #0a1e2d; color: white; text-align: center; padding: 20px; margin-top: auto; border-top: 4px solid #8bc34a; }
         footer a { color: #8bc34a; text-decoration: none; font-weight: bold; }
@@ -204,6 +217,17 @@
         </div>
     </div>
 
+    <!-- نافذة الطلبات المنبثقة -->
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-modal-content">
+            <span class="admin-modal-close" onclick="closeAdmin()">&times;</span>
+            <h2><span class="lang-ar">📦 سجل طلبات العملاء</span><span class="lang-en">📦 Customer Orders</span></h2>
+            <div id="adminOrdersContainer">
+                <p style="text-align:center; color:#999;">جاري التحميل...</p>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>
             <span class="lang-ar">جميع الحقوق محفوظة &copy; 2026 | تصميم وتطوير: <a href="tel:+201222153415">محمود محمد مرعى</a> | <a href="tel:+201222153415">+201222153415</a></span>
@@ -232,6 +256,7 @@
 
         let cart = [];
 
+        // ---- دوال العرض الأساسية ----
         function renderProducts(category = 'all') {
             const container = document.getElementById('productsContainer');
             container.innerHTML = '';
@@ -268,6 +293,7 @@
             renderProducts(cat);
         }
 
+        // ---- دوال السلة ----
         function addToCart(id) {
             const item = productsData.find(p => p.id === id);
             const exist = cart.find(p => p.id === id);
@@ -305,6 +331,7 @@
         function openCart() { document.getElementById('cartSidebar').classList.add('open'); document.getElementById('overlay').classList.add('active'); }
         function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
 
+        // ---- دوال الطلب ----
         function openCheckoutModal() {
             if(cart.length === 0) return alert("السلة فارغة");
             document.getElementById('checkoutModal').classList.add('active');
@@ -338,27 +365,24 @@
             setTimeout(() => closeCheckoutModal(), 3000);
         }
 
-        // ---- وظائف الأدمن السرية ----
-        let tapCount = 0;
-        document.querySelector('.brand-text h1').addEventListener('click', function() {
-            tapCount++;
-            if(tapCount === 5) {
-                document.getElementById('adminBtn').style.display = 'block';
-                tapCount = 0;
-            }
-            setTimeout(() => { tapCount = 0; }, 2000);
-        });
-
+        // ---- دوال الأدمن (النافذة المنبثقة) ----
         function toggleAdmin() {
-            const section = document.getElementById('adminSection');
-            section.classList.toggle('active');
-            if(section.classList.contains('active')) loadAdminOrders();
+            const modal = document.getElementById('adminModal');
+            modal.classList.toggle('active');
+            if(modal.classList.contains('active')) loadAdminOrders();
+        }
+
+        function closeAdmin() {
+            document.getElementById('adminModal').classList.remove('active');
         }
 
         function loadAdminOrders() {
-            const container = document.getElementById('ordersContainer');
+            const container = document.getElementById('adminOrdersContainer');
             const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
-            if(orders.length === 0) { container.innerHTML = `<div class="empty">لا توجد طلبات حتى الآن.</div>`; return; }
+            if(orders.length === 0) { 
+                container.innerHTML = `<p style="text-align:center; color:#999;">لا توجد طلبات حتى الآن.</p>`; 
+                return; 
+            }
             
             container.innerHTML = '';
             orders.reverse().forEach(order => {
@@ -373,21 +397,29 @@
                         <p><strong>الهاتف:</strong> ${order.phone}</p>
                         <p><strong>العنوان:</strong> ${order.address}</p>
                         ${itemsHtml}
-                        <p class="total-price">الإجمالي: $${order.total.toFixed(2)}</p>
+                        <div class="order-total">الإجمالي: $${order.total.toFixed(2)}</div>
                     </div>`;
             });
         }
 
-        function clearOrders() {
-            if(confirm("هل أنت متأكد من حذف جميع الطلبات؟")) {
-                localStorage.removeItem('utopia_orders');
-                loadAdminOrders();
+        // ---- كود فتح زر الأدمن السري (باستخدام الرابط) ----
+        // هذه الدالة تقوم بفحص الرابط عند فتح الصفحة
+        function checkAdminAccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const adminParam = urlParams.get('admin');
+            // إذا وجد كلمة admin في الرابط، قم بإظهار الزر
+            if (adminParam !== null) {
+                document.getElementById('adminBtn').style.display = 'block';
             }
         }
 
+        // ---- دوال اللغة ----
         function toggleLang() { document.body.classList.toggle('dir-ltr'); updateCartUI(); }
 
+        // بدء تشغيل المتجر
         renderProducts();
+        // فحص ما إذا كان المستخدم هو المسؤول
+        checkAdminAccess();
     </script>
 </body>
 </html>
