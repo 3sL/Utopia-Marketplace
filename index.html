@@ -32,7 +32,6 @@
         .lang-switch { background: #e74c3c; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
         .cart-btn { background: #8bc34a; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; position: relative; }
         .cart-count { background: #e74c3c; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; position: absolute; top: -8px; right: -8px; }
-        .admin-btn { background: #f39c12; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; display: none; }
 
         .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; flex: 1; }
         .section-title { text-align: center; font-size: 26px; color: #0a1e2d; margin: 40px 0 20px; border-bottom: 3px solid #8bc34a; padding-bottom: 10px; font-weight: bold; }
@@ -82,19 +81,6 @@
         .submit-order-btn { width: 100%; padding: 12px; background: #8bc34a; color: white; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; margin-top: 10px; }
         .success-msg { display: none; text-align: center; color: #27ae60; font-weight: bold; font-size: 18px; padding: 20px; }
 
-        .admin-section { display: none; margin-top: 50px; border-top: 4px solid #f39c12; padding-top: 30px; }
-        .admin-section.active { display: block; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
-        .admin-header h2 { color: #0a1e2d; }
-        .btn-clear { background: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; }
-        .order-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-right: 4px solid #f39c12; }
-        .order-card h3 { color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .order-card p { margin: 5px 0; color: #555; }
-        .order-card ul { margin: 10px 0; padding-right: 20px; }
-        .order-card li { margin-bottom: 5px; }
-        .total-price { font-size: 18px; font-weight: bold; color: #2ecc71; }
-        .empty { text-align: center; color: #999; margin-top: 50px; }
-
         footer { background: #0a1e2d; color: white; text-align: center; padding: 20px; margin-top: auto; border-top: 4px solid #8bc34a; }
         footer a { color: #8bc34a; text-decoration: none; font-weight: bold; }
 
@@ -136,10 +122,6 @@
                 <span class="lang-en">🛒 Cart</span>
                 <span class="cart-count" id="cartCount">0</span>
             </button>
-            <button class="admin-btn" id="adminBtn" onclick="toggleAdmin()">
-                <span class="lang-ar">📋 لوحة الطلبات</span>
-                <span class="lang-en">📋 Orders Panel</span>
-            </button>
         </div>
     </header>
 
@@ -166,17 +148,6 @@
             </button>
         </div>
         <div class="products-grid" id="productsContainer"></div>
-
-        <div class="admin-section" id="adminSection">
-            <div class="admin-header">
-                <h2><span class="lang-ar">📦 سجل طلبات العملاء</span><span class="lang-en">📦 Customer Orders</span></h2>
-                <button class="btn-clear" onclick="clearOrders()">
-                    <span class="lang-ar">🗑️ تفريغ الطلبات</span>
-                    <span class="lang-en">🗑️ Clear Orders</span>
-                </button>
-            </div>
-            <div id="ordersContainer"></div>
-        </div>
     </div>
 
     <div class="overlay" id="overlay" onclick="closeCart()"></div>
@@ -238,20 +209,20 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // ---- بيانات المنتجات (باستخدام روابط Placehold مضمونة 100%) ----
+        // ---- بيانات المنتجات (صور من الإنترنت، جاهزة للعمل) ----
         const productsData = [
-            { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل', nameEn: 'Stainless Steel Pipes', price: 150.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Stainless+Steel+Pipes' },
-            { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Duplex+Pipes' },
-            { id: 3, cat: 'pipes', nameAr: 'مواسير كربونية (Seamless)', nameEn: 'Carbon Steel Seamless Pipes', price: 85.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Carbon+Steel+Pipes' },
-            { id: 4, cat: 'flanges', nameAr: 'فلانشات استانلس ستيل', nameEn: 'Stainless Steel Flanges', price: 45.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Stainless+Flanges' },
-            { id: 5, cat: 'flanges', nameAr: 'فلانشات مجلفنة (BIS)', nameEn: 'Galvanized Flanges (BIS)', price: 35.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Galvanized+Flanges' },
-            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ (Threaded)', nameEn: 'Threaded Fittings', price: 12.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Threaded+Fittings' },
-            { id: 7, cat: 'fittings', nameAr: 'تجهيزات سيملس (Seamless)', nameEn: 'Seamless Fittings', price: 30.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Seamless+Fittings' },
-            { id: 8, cat: 'fittings', nameAr: 'قطع BIS مجلفنة', nameEn: 'BIS Galvanized Fittings', price: 18.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=BIS+Galvanized' },
-            { id: 9, cat: 'fire', nameAr: 'صمام بوابة حريق', nameEn: 'Fire Gate Valve', price: 220.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Fire+Gate+Valve' },
-            { id: 10, cat: 'fire', nameAr: 'أنابيب حريق (Sprinkler)', nameEn: 'Sprinkler Fire Pipes', price: 110.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Sprinkler+Pipes' },
-            { id: 11, cat: 'fire', nameAr: 'هوايات (Air Vents)', nameEn: 'Air Vents', price: 50.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Air+Vents' },
-            { id: 12, cat: 'fire', nameAr: 'موانع الدوامة (Vortex Breakers)', nameEn: 'Vortex Breakers', price: 75.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Vortex+Breakers' }
+            { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل', nameEn: 'Stainless Steel Pipes', price: 150.00, img: 'https://images.unsplash.com/photo-1555532538-dcdbd01d3738?auto=format&fit=crop&w=400&q=80' },
+            { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=400&q=80' },
+            { id: 3, cat: 'pipes', nameAr: 'مواسير كربونية (Seamless)', nameEn: 'Carbon Steel Seamless Pipes', price: 85.00, img: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=400&q=80' },
+            { id: 4, cat: 'flanges', nameAr: 'فلانشات استانلس ستيل', nameEn: 'Stainless Steel Flanges', price: 45.00, img: 'https://images.unsplash.com/photo-1574369563689-34d4ed4cb2cc?auto=format&fit=crop&w=400&q=80' },
+            { id: 5, cat: 'flanges', nameAr: 'فلانشات مجلفنة (BIS)', nameEn: 'Galvanized Flanges (BIS)', price: 35.00, img: 'https://images.unsplash.com/photo-1563906267088-b029e568fced?auto=format&fit=crop&w=400&q=80' },
+            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ (Threaded)', nameEn: 'Threaded Fittings', price: 12.00, img: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=400&q=80' },
+            { id: 7, cat: 'fittings', nameAr: 'تجهيزات سيملس (Seamless)', nameEn: 'Seamless Fittings', price: 30.00, img: 'https://images.unsplash.com/photo-1590944391910-04ba2d20d515?auto=format&fit=crop&w=400&q=80' },
+            { id: 8, cat: 'fittings', nameAr: 'قطع BIS مجلفنة', nameEn: 'BIS Galvanized Fittings', price: 18.00, img: 'https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=400&q=80' },
+            { id: 9, cat: 'fire', nameAr: 'صمام بوابة حريق', nameEn: 'Fire Gate Valve', price: 220.00, img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=400&q=80' },
+            { id: 10, cat: 'fire', nameAr: 'أنابيب حريق (Sprinkler)', nameEn: 'Sprinkler Fire Pipes', price: 110.00, img: 'https://images.unsplash.com/photo-1581093588401-fbb62a02f120?auto=format&fit=crop&w=400&q=80' },
+            { id: 11, cat: 'fire', nameAr: 'هوايات (Air Vents)', nameEn: 'Air Vents', price: 50.00, img: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=400&q=80' },
+            { id: 12, cat: 'fire', nameAr: 'موانع الدوامة (Vortex Breakers)', nameEn: 'Vortex Breakers', price: 75.00, img: 'https://images.unsplash.com/photo-1541971870-f29d80ed3f3d?auto=format&fit=crop&w=400&q=80' }
         ];
 
         let cart = [];
@@ -365,54 +336,6 @@
             cart = []; updateCartUI();
             setTimeout(() => closeCheckoutModal(), 3000);
         }
-
-        // ---- وظائف الأدمن ----
-        function toggleAdmin() {
-            const section = document.getElementById('adminSection');
-            section.classList.toggle('active');
-            if(section.classList.contains('active')) loadAdminOrders();
-        }
-
-        function loadAdminOrders() {
-            const container = document.getElementById('ordersContainer');
-            const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
-            if(orders.length === 0) { container.innerHTML = `<div class="empty">لا توجد طلبات حتى الآن.</div>`; return; }
-            
-            container.innerHTML = '';
-            orders.reverse().forEach(order => {
-                let itemsHtml = `<ul>`;
-                order.items.forEach(item => { itemsHtml += `<li>${item.nameAr} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}</li>`; });
-                itemsHtml += `</ul>`;
-                container.innerHTML += `
-                    <div class="order-card">
-                        <h3>طلب #${order.id}</h3>
-                        <p><strong>التاريخ:</strong> ${order.date}</p>
-                        <p><strong>العميل:</strong> ${order.name}</p>
-                        <p><strong>الهاتف:</strong> ${order.phone}</p>
-                        <p><strong>العنوان:</strong> ${order.address}</p>
-                        ${itemsHtml}
-                        <p class="total-price">الإجمالي: $${order.total.toFixed(2)}</p>
-                    </div>`;
-            });
-        }
-
-        function clearOrders() {
-            if(confirm("هل أنت متأكد من حذف جميع الطلبات؟")) {
-                localStorage.removeItem('utopia_orders');
-                loadAdminOrders();
-            }
-        }
-
-        // ---- نظام فتح الأدمن السري (اضغط 5 مرات على العنوان) ----
-        let tapCount = 0;
-        document.querySelector('.brand-text h1').addEventListener('click', function() {
-            tapCount++;
-            if(tapCount === 5) {
-                document.getElementById('adminBtn').style.display = 'block';
-                tapCount = 0;
-            }
-            setTimeout(() => { tapCount = 0; }, 2000);
-        });
 
         function toggleLang() { document.body.classList.toggle('dir-ltr'); updateCartUI(); }
 
