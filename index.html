@@ -44,7 +44,7 @@
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; margin-bottom: 40px; }
         .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.06); transition: 0.3s; display: flex; flex-direction: column; }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .product-card .img-box { width: 100%; height: 200px; background: #e9ecef; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #eee; }
+        .product-card .img-box { width: 100%; height: 200px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #eee; }
         .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .p-info { padding: 18px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
         .p-info h3 { font-size: 17px; margin-bottom: 8px; color: #0a1e2d; min-height: 45px; display: flex; align-items: center; justify-content: center; }
@@ -81,19 +81,6 @@
         .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; }
         .submit-order-btn { width: 100%; padding: 12px; background: #8bc34a; color: white; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; margin-top: 10px; }
         .success-msg { display: none; text-align: center; color: #27ae60; font-weight: bold; font-size: 18px; padding: 20px; }
-
-        .admin-section { display: none; margin-top: 50px; border-top: 4px solid #f39c12; padding-top: 30px; }
-        .admin-section.active { display: block; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
-        .admin-header h2 { color: #0a1e2d; }
-        .btn-clear { background: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; }
-        .order-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-right: 4px solid #f39c12; }
-        .order-card h3 { color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .order-card p { margin: 5px 0; color: #555; }
-        .order-card ul { margin: 10px 0; padding-right: 20px; }
-        .order-card li { margin-bottom: 5px; }
-        .total-price { font-size: 18px; font-weight: bold; color: #2ecc71; }
-        .empty { text-align: center; color: #999; margin-top: 50px; }
 
         footer { background: #0a1e2d; color: white; text-align: center; padding: 20px; margin-top: auto; border-top: 4px solid #8bc34a; }
         footer a { color: #8bc34a; text-decoration: none; font-weight: bold; }
@@ -166,18 +153,6 @@
             </button>
         </div>
         <div class="products-grid" id="productsContainer"></div>
-
-        <!-- لوحة الطلبات المخفية -->
-        <div class="admin-section" id="adminSection">
-            <div class="admin-header">
-                <h2><span class="lang-ar">📦 سجل طلبات العملاء</span><span class="lang-en">📦 Customer Orders</span></h2>
-                <button class="btn-clear" onclick="clearOrders()">
-                    <span class="lang-ar">🗑️ تفريغ الطلبات</span>
-                    <span class="lang-en">🗑️ Clear Orders</span>
-                </button>
-            </div>
-            <div id="ordersContainer"></div>
-        </div>
     </div>
 
     <div class="overlay" id="overlay" onclick="closeCart()"></div>
@@ -239,20 +214,20 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // بيانات المنتجات (بدون صور - جاهزة لاستقبال روابطك)
+        // بيانات المنتجات
         const productsData = [
-            { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل (304/316)', nameEn: 'Stainless Steel Pipes (304/316)', price: 150.00, img: '' },
-            { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: '' },
-            { id: 3, cat: 'pipes', nameAr: 'مواسير كربونية (سيملس Seamless)', nameEn: 'Seamless Carbon Steel Pipes', price: 85.00, img: '' },
-            { id: 4, cat: 'flanges', nameAr: 'فلانشات استانلس (بدل)', nameEn: 'Stainless Flanges', price: 45.00, img: '' },
-            { id: 5, cat: 'flanges', nameAr: 'فلانشات مجلفنة (BIS)', nameEn: 'Galvanized Flanges (BIS)', price: 35.00, img: '' },
-            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ (Threaded)', nameEn: 'Threaded Fittings', price: 12.00, img: '' },
-            { id: 7, cat: 'fittings', nameAr: 'قطع لحام سيملس (Seamless)', nameEn: 'Seamless Weld Fittings', price: 30.00, img: '' },
-            { id: 8, cat: 'fittings', nameAr: 'قطع مجلفنة (Galvanized)', nameEn: 'Galvanized Fittings', price: 18.00, img: '' },
-            { id: 9, cat: 'fire', nameAr: 'صمام بوابة حريق', nameEn: 'Fire Gate Valve', price: 220.00, img: '' },
-            { id: 10, cat: 'fire', nameAr: 'أنابيب حريق (Sprinkler)', nameEn: 'Sprinkler Fire Pipes', price: 110.00, img: '' },
-            { id: 11, cat: 'fire', nameAr: 'هوايات تهوية (Air Vents)', nameEn: 'Air Vents', price: 50.00, img: '' },
-            { id: 12, cat: 'fire', nameAr: 'موانع دوامة (Vortex Breakers)', nameEn: 'Vortex Breakers', price: 75.00, img: '' }
+            { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل (304/316)', nameEn: 'Stainless Steel Pipes (304/316)', price: 150.00, img: 'https://images.pexels.com/photos/1527671/pexels-photo-1527671.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: 'https://images.pexels.com/photos/162548/steel-industry-factory-metal-162548.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            { id: 3, cat: 'pipes', nameAr: 'مواسير كربونية (سيملس Seamless)', nameEn: 'Seamless Carbon Steel Pipes', price: 85.00, img: 'https://images.pexels.com/photos/5792096/pexels-photo-5792096.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            { id: 4, cat: 'flanges', nameAr: 'فلانشات استانلس (بدل)', nameEn: 'Stainless Flanges', price: 45.00, img: 'https://images.pexels.com/photos/39672/pexels-photo-39672.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            { id: 5, cat: 'flanges', nameAr: 'فلانشات مجلفنة (BIS)', nameEn: 'Galvanized Flanges (BIS)', price: 35.00, img: 'https://images.pexels.com/photos/211403/pexels-photo-211403.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ (Threaded)', nameEn: 'Threaded Fittings', price: 12.00, img: 'https://images.pexels.com/photos/3098678/pexels-photo-3098678.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            { id: 7, cat: 'fittings', nameAr: 'قطع لحام سيملس (Seamless)', nameEn: 'Seamless Weld Fittings', price: 30.00, img: 'https://images.pexels.com/photos/257558/pexels-photo-257558.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            { id: 8, cat: 'fittings', nameAr: 'قطع مجلفنة (Galvanized)', nameEn: 'Galvanized Fittings', price: 18.00, img: 'https://images.pexels.com/photos/95894/pexels-photo-95894.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            { id: 9, cat: 'fire', nameAr: 'صمام بوابة حريق', nameEn: 'Fire Gate Valve', price: 220.00, img: 'https://images.pexels.com/photos/5877107/pexels-photo-5877107.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            { id: 10, cat: 'fire', nameAr: 'أنابيب حريق (Sprinkler)', nameEn: 'Sprinkler Fire Pipes', price: 110.00, img: 'https://images.pexels.com/photos/2097786/pexels-photo-2097786.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            { id: 11, cat: 'fire', nameAr: 'هوايات تهوية (Air Vents)', nameEn: 'Air Vents', price: 50.00, img: 'https://images.pexels.com/photos/2528118/pexels-photo-2528118.jpeg?auto=compress&cs=tinysrgb&w=400' },
+            { id: 12, cat: 'fire', nameAr: 'موانع دوامة (Vortex Breakers)', nameEn: 'Vortex Breakers', price: 75.00, img: 'https://images.pexels.com/photos/531137/pexels-photo-531137.jpeg?auto=compress&cs=tinysrgb&w=400' }
         ];
 
         let cart = [];
@@ -267,7 +242,7 @@
                 card.className = 'product-card';
                 card.innerHTML = `
                     <div class="img-box">
-                        <img src="${p.img || 'https://placehold.co/400x300/e9ecef/1a252f?text=Product+Image'}" alt="${p.nameEn}" loading="lazy">
+                        <img src="${p.img}" alt="${p.nameEn}" loading="lazy">
                     </div>
                     <div class="p-info">
                         <h3><span class="lang-ar">${p.nameAr}</span><span class="lang-en">${p.nameEn}</span></h3>
