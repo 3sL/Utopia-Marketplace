@@ -44,7 +44,7 @@
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; margin-bottom: 40px; }
         .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.06); transition: 0.3s; display: flex; flex-direction: column; }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .product-card .img-box { width: 100%; height: 200px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #eee; }
+        .product-card .img-box { width: 100%; height: 200px; background: #e9ecef; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #eee; }
         .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .p-info { padding: 18px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
         .p-info h3 { font-size: 17px; margin-bottom: 8px; color: #0a1e2d; min-height: 45px; display: flex; align-items: center; justify-content: center; }
@@ -239,19 +239,20 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
 
+        // بيانات المنتجات (بدون صور - جاهزة لاستقبال روابطك)
         const productsData = [
-            { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل (304/316)', nameEn: 'Stainless Steel Pipes (304/316)', price: 150.00, img: 'https://images.pexels.com/photos/1527671/pexels-photo-1527671.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: 'https://images.pexels.com/photos/162548/steel-industry-factory-metal-162548.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 3, cat: 'pipes', nameAr: 'مواسير كربونية (سيملس Seamless)', nameEn: 'Seamless Carbon Steel Pipes', price: 85.00, img: 'https://images.pexels.com/photos/5792096/pexels-photo-5792096.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 4, cat: 'flanges', nameAr: 'فلانشات استانلس (بدل)', nameEn: 'Stainless Flanges', price: 45.00, img: 'https://images.pexels.com/photos/39672/pexels-photo-39672.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 5, cat: 'flanges', nameAr: 'فلانشات مجلفنة (BIS)', nameEn: 'Galvanized Flanges (BIS)', price: 35.00, img: 'https://images.pexels.com/photos/211403/pexels-photo-211403.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ (Threaded)', nameEn: 'Threaded Fittings', price: 12.00, img: 'https://images.pexels.com/photos/3098678/pexels-photo-3098678.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 7, cat: 'fittings', nameAr: 'قطع لحام سيملس (Seamless)', nameEn: 'Seamless Weld Fittings', price: 30.00, img: 'https://images.pexels.com/photos/257558/pexels-photo-257558.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 8, cat: 'fittings', nameAr: 'قطع مجلفنة (Galvanized)', nameEn: 'Galvanized Fittings', price: 18.00, img: 'https://images.pexels.com/photos/95894/pexels-photo-95894.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 9, cat: 'fire', nameAr: 'صمام بوابة حريق', nameEn: 'Fire Gate Valve', price: 220.00, img: 'https://images.pexels.com/photos/5877107/pexels-photo-5877107.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 10, cat: 'fire', nameAr: 'أنابيب حريق (Sprinkler)', nameEn: 'Sprinkler Fire Pipes', price: 110.00, img: 'https://images.pexels.com/photos/2097786/pexels-photo-2097786.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 11, cat: 'fire', nameAr: 'هوايات تهوية (Air Vents)', nameEn: 'Air Vents', price: 50.00, img: 'https://images.pexels.com/photos/2528118/pexels-photo-2528118.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 12, cat: 'fire', nameAr: 'موانع دوامة (Vortex Breakers)', nameEn: 'Vortex Breakers', price: 75.00, img: 'https://images.pexels.com/photos/531137/pexels-photo-531137.jpeg?auto=compress&cs=tinysrgb&w=400' }
+            { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل (304/316)', nameEn: 'Stainless Steel Pipes (304/316)', price: 150.00, img: '' },
+            { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: '' },
+            { id: 3, cat: 'pipes', nameAr: 'مواسير كربونية (سيملس Seamless)', nameEn: 'Seamless Carbon Steel Pipes', price: 85.00, img: '' },
+            { id: 4, cat: 'flanges', nameAr: 'فلانشات استانلس (بدل)', nameEn: 'Stainless Flanges', price: 45.00, img: '' },
+            { id: 5, cat: 'flanges', nameAr: 'فلانشات مجلفنة (BIS)', nameEn: 'Galvanized Flanges (BIS)', price: 35.00, img: '' },
+            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ (Threaded)', nameEn: 'Threaded Fittings', price: 12.00, img: '' },
+            { id: 7, cat: 'fittings', nameAr: 'قطع لحام سيملس (Seamless)', nameEn: 'Seamless Weld Fittings', price: 30.00, img: '' },
+            { id: 8, cat: 'fittings', nameAr: 'قطع مجلفنة (Galvanized)', nameEn: 'Galvanized Fittings', price: 18.00, img: '' },
+            { id: 9, cat: 'fire', nameAr: 'صمام بوابة حريق', nameEn: 'Fire Gate Valve', price: 220.00, img: '' },
+            { id: 10, cat: 'fire', nameAr: 'أنابيب حريق (Sprinkler)', nameEn: 'Sprinkler Fire Pipes', price: 110.00, img: '' },
+            { id: 11, cat: 'fire', nameAr: 'هوايات تهوية (Air Vents)', nameEn: 'Air Vents', price: 50.00, img: '' },
+            { id: 12, cat: 'fire', nameAr: 'موانع دوامة (Vortex Breakers)', nameEn: 'Vortex Breakers', price: 75.00, img: '' }
         ];
 
         let cart = [];
@@ -266,7 +267,7 @@
                 card.className = 'product-card';
                 card.innerHTML = `
                     <div class="img-box">
-                        <img src="${p.img}" alt="${p.nameEn}" loading="lazy">
+                        <img src="${p.img || 'https://placehold.co/400x300/e9ecef/1a252f?text=Product+Image'}" alt="${p.nameEn}" loading="lazy">
                     </div>
                     <div class="p-info">
                         <h3><span class="lang-ar">${p.nameAr}</span><span class="lang-en">${p.nameEn}</span></h3>
