@@ -238,20 +238,20 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // ---- بيانات المنتجات (تم استبدالها بروابط صور حقيقية) ----
+        // ---- بيانات المنتجات (باستخدام روابط Placehold مضمونة 100%) ----
         const productsData = [
-            { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل', nameEn: 'Stainless Steel Pipes', price: 150.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Stainless_steel_pipes.jpg/640px-Stainless_steel_pipes.jpg' },
-            { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Steel_pipes_stack.jpg/640px-Steel_pipes_stack.jpg' },
-            { id: 3, cat: 'pipes', nameAr: 'مواسير كربونية (Seamless)', nameEn: 'Carbon Steel Seamless Pipes', price: 85.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Carbon_steel_pipe.jpg/640px-Carbon_steel_pipe.jpg' },
-            { id: 4, cat: 'flanges', nameAr: 'فلانشات استانلس ستيل', nameEn: 'Stainless Steel Flanges', price: 45.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Stainless_steel_flanges.jpg/640px-Stainless_steel_flanges.jpg' },
-            { id: 5, cat: 'flanges', nameAr: 'فلانشات مجلفنة (BIS)', nameEn: 'Galvanized Flanges (BIS)', price: 35.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Galvanized_flanges.jpg/640px-Galvanized_flanges.jpg' },
-            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ (Threaded)', nameEn: 'Threaded Fittings', price: 12.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Threaded_pipe_fittings.jpg/640px-Threaded_pipe_fittings.jpg' },
-            { id: 7, cat: 'fittings', nameAr: 'تجهيزات سيملس (Seamless)', nameEn: 'Seamless Fittings', price: 30.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Seamless_pipe_fittings.jpg/640px-Seamless_pipe_fittings.jpg' },
-            { id: 8, cat: 'fittings', nameAr: 'قطع BIS مجلفنة', nameEn: 'BIS Galvanized Fittings', price: 18.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Galvanized_pipe_fittings.jpg/640px-Galvanized_pipe_fittings.jpg' },
-            { id: 9, cat: 'fire', nameAr: 'صمام بوابة حريق', nameEn: 'Fire Gate Valve', price: 220.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Gate_valve.jpg/640px-Gate_valve.jpg' },
-            { id: 10, cat: 'fire', nameAr: 'أنابيب حريق (Sprinkler)', nameEn: 'Sprinkler Fire Pipes', price: 110.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Fire_sprinkler_pipes.jpg/640px-Fire_sprinkler_pipes.jpg' },
-            { id: 11, cat: 'fire', nameAr: 'هوايات (Air Vents)', nameEn: 'Air Vents', price: 50.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Air_vent.jpg/640px-Air_vent.jpg' },
-            { id: 12, cat: 'fire', nameAr: 'موانع الدوامة (Vortex Breakers)', nameEn: 'Vortex Breakers', price: 75.00, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Vortex_breaker.jpg/640px-Vortex_breaker.jpg' }
+            { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل', nameEn: 'Stainless Steel Pipes', price: 150.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Stainless+Steel+Pipes' },
+            { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Duplex+Pipes' },
+            { id: 3, cat: 'pipes', nameAr: 'مواسير كربونية (Seamless)', nameEn: 'Carbon Steel Seamless Pipes', price: 85.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Carbon+Steel+Pipes' },
+            { id: 4, cat: 'flanges', nameAr: 'فلانشات استانلس ستيل', nameEn: 'Stainless Steel Flanges', price: 45.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Stainless+Flanges' },
+            { id: 5, cat: 'flanges', nameAr: 'فلانشات مجلفنة (BIS)', nameEn: 'Galvanized Flanges (BIS)', price: 35.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Galvanized+Flanges' },
+            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ (Threaded)', nameEn: 'Threaded Fittings', price: 12.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Threaded+Fittings' },
+            { id: 7, cat: 'fittings', nameAr: 'تجهيزات سيملس (Seamless)', nameEn: 'Seamless Fittings', price: 30.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Seamless+Fittings' },
+            { id: 8, cat: 'fittings', nameAr: 'قطع BIS مجلفنة', nameEn: 'BIS Galvanized Fittings', price: 18.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=BIS+Galvanized' },
+            { id: 9, cat: 'fire', nameAr: 'صمام بوابة حريق', nameEn: 'Fire Gate Valve', price: 220.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Fire+Gate+Valve' },
+            { id: 10, cat: 'fire', nameAr: 'أنابيب حريق (Sprinkler)', nameEn: 'Sprinkler Fire Pipes', price: 110.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Sprinkler+Pipes' },
+            { id: 11, cat: 'fire', nameAr: 'هوايات (Air Vents)', nameEn: 'Air Vents', price: 50.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Air+Vents' },
+            { id: 12, cat: 'fire', nameAr: 'موانع الدوامة (Vortex Breakers)', nameEn: 'Vortex Breakers', price: 75.00, img: 'https://placehold.co/400x300/2c3e50/ffffff?text=Vortex+Breakers' }
         ];
 
         let cart = [];
