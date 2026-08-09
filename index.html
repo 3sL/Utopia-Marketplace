@@ -238,20 +238,20 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // ---- بيانات المنتجات (بأسماء صور إنجليزية لتعمل على GitHub) ----
+        // ---- بيانات المنتجات (تم استبدالها بروابط صور من الإنترنت) ----
         const productsData = [
-            { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل', nameEn: 'Stainless Steel Pipes', price: 150.00, img: 'stainless.jpg' },
-            { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: 'duplex.jpg' },
-            { id: 3, cat: 'pipes', nameAr: 'مواسير كربونية (Seamless)', nameEn: 'Carbon Steel Seamless Pipes', price: 85.00, img: 'carbon.jpg' },
-            { id: 4, cat: 'flanges', nameAr: 'فلانشات استانلس ستيل', nameEn: 'Stainless Steel Flanges', price: 45.00, img: 'stainless_flange.jpg' },
-            { id: 5, cat: 'flanges', nameAr: 'فلانشات مجلفنة (BIS)', nameEn: 'Galvanized Flanges (BIS)', price: 35.00, img: 'galvanized_flange.jpg' },
-            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ (Threaded)', nameEn: 'Threaded Fittings', price: 12.00, img: 'threaded.jpg' },
-            { id: 7, cat: 'fittings', nameAr: 'تجهيزات سيملس (Seamless)', nameEn: 'Seamless Fittings', price: 30.00, img: 'seamless.jpg' },
-            { id: 8, cat: 'fittings', nameAr: 'قطع BIS مجلفنة', nameEn: 'BIS Galvanized Fittings', price: 18.00, img: 'bis.jpg' },
-            { id: 9, cat: 'fire', nameAr: 'صمام بوابة حريق', nameEn: 'Fire Gate Valve', price: 220.00, img: 'fire_valve.jpg' },
-            { id: 10, cat: 'fire', nameAr: 'أنابيب حريق (Sprinkler)', nameEn: 'Sprinkler Fire Pipes', price: 110.00, img: 'sprinkler.jpg' },
-            { id: 11, cat: 'fire', nameAr: 'هوايات (Air Vents)', nameEn: 'Air Vents', price: 50.00, img: 'air_vent.jpg' },
-            { id: 12, cat: 'fire', nameAr: 'موانع الدوامة (Vortex Breakers)', nameEn: 'Vortex Breakers', price: 75.00, img: 'vortex_breaker.jpg' }
+            { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل', nameEn: 'Stainless Steel Pipes', price: 150.00, img: 'https://placehold.co/300x300/333/fff?text=Stainless+Steel+Pipes' },
+            { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: 'https://placehold.co/300x300/333/fff?text=Duplex+Pipes' },
+            { id: 3, cat: 'pipes', nameAr: 'مواسير كربونية (Seamless)', nameEn: 'Carbon Steel Seamless Pipes', price: 85.00, img: 'https://placehold.co/300x300/333/fff?text=Carbon+Steel' },
+            { id: 4, cat: 'flanges', nameAr: 'فلانشات استانلس ستيل', nameEn: 'Stainless Steel Flanges', price: 45.00, img: 'https://placehold.co/300x300/333/fff?text=Stainless+Flanges' },
+            { id: 5, cat: 'flanges', nameAr: 'فلانشات مجلفنة (BIS)', nameEn: 'Galvanized Flanges (BIS)', price: 35.00, img: 'https://placehold.co/300x300/333/fff?text=Galvanized+Flanges' },
+            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ (Threaded)', nameEn: 'Threaded Fittings', price: 12.00, img: 'https://placehold.co/300x300/333/fff?text=Threaded+Fittings' },
+            { id: 7, cat: 'fittings', nameAr: 'تجهيزات سيملس (Seamless)', nameEn: 'Seamless Fittings', price: 30.00, img: 'https://placehold.co/300x300/333/fff?text=Seamless+Fittings' },
+            { id: 8, cat: 'fittings', nameAr: 'قطع BIS مجلفنة', nameEn: 'BIS Galvanized Fittings', price: 18.00, img: 'https://placehold.co/300x300/333/fff?text=BIS+Galvanized' },
+            { id: 9, cat: 'fire', nameAr: 'صمام بوابة حريق', nameEn: 'Fire Gate Valve', price: 220.00, img: 'https://placehold.co/300x300/333/fff?text=Fire+Gate+Valve' },
+            { id: 10, cat: 'fire', nameAr: 'أنابيب حريق (Sprinkler)', nameEn: 'Sprinkler Fire Pipes', price: 110.00, img: 'https://placehold.co/300x300/333/fff?text=Sprinkler+Pipes' },
+            { id: 11, cat: 'fire', nameAr: 'هوايات (Air Vents)', nameEn: 'Air Vents', price: 50.00, img: 'https://placehold.co/300x300/333/fff?text=Air+Vents' },
+            { id: 12, cat: 'fire', nameAr: 'موانع الدوامة (Vortex Breakers)', nameEn: 'Vortex Breakers', price: 75.00, img: 'https://placehold.co/300x300/333/fff?text=Vortex+Breakers' }
         ];
 
         let cart = [];
@@ -270,7 +270,7 @@
                 card.className = 'product-card';
                 card.innerHTML = `
                     <div class="img-box">
-                        <img src="${getProductImage(p.img)}" alt="${p.nameEn}" onerror="this.src='https://placehold.co/300x200/eee/333?text=Product'">
+                        <img src="${getProductImage(p.img)}" alt="${p.nameEn}">
                     </div>
                     <div class="p-info">
                         <h3><span class="lang-ar">${p.nameAr}</span><span class="lang-en">${p.nameEn}</span></h3>
