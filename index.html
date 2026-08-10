@@ -150,7 +150,7 @@
 
     <div class="container">
         <div class="search-bar-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث عن بادل فلنجات، مواسير سيملس، موانع دوامة، قطع قلاووظ..." oninput="handleSearch()">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث عن بادل فلانش، مواسير سيملس، موانع دوامة، قطع قلاووظ..." oninput="handleSearch()">
         </div>
 
         <h2 class="section-title">
@@ -166,7 +166,7 @@
                 <span class="lang-ar">مواسير سيملس ودوبلكس</span><span class="lang-en">Pipes</span>
             </button>
             <button class="cat-btn" onclick="filterCategory('flanges', event)">
-                <span class="lang-ar">بادل وفلانشات</span><span class="lang-en">Flanges</span>
+                <span class="lang-ar">بادل فلانش</span><span class="lang-en">Paddle Flange</span>
             </button>
             <button class="cat-btn" onclick="filterCategory('fittings', event)">
                 <span class="lang-ar">قطع قلاووظ</span><span class="lang-en">Threaded Fittings</span>
@@ -248,13 +248,13 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // تم ضبط وترتيب الصور بدقة تامة مع كل منتج مطابق تماماً
+        // الترتيب الصحيح 100% بناءً على روابط الصور الفعلية لكل منتج وتسمية "بادل فلانش" بشكل صحيح
         const productsData = [
             { 
                 id: 1, 
                 cat: 'flanges', 
-                nameAr: 'بادل فلنجات استانلس ستيل (Paddle Flanges Stainless Steel)', 
-                nameEn: 'Paddle Flanges Stainless Steel', 
+                nameAr: 'بادل فلانش استانلس ستيل (Paddle Flange Stainless Steel)', 
+                nameEn: 'Paddle Flange Stainless Steel', 
                 price: 120.00, 
                 img: 'https://i.ibb.co/d49d5zP1/d49d5zP1.jpg', 
                 descAr: 'مقاومة عالية للتآكل والصدأ، مطابقة للمواصفات القياسية لأنظمة الحريق والمصانع.',
@@ -263,35 +263,25 @@
             { 
                 id: 2, 
                 cat: 'flanges', 
-                nameAr: 'بادل فلنجات مجلفنة (Galvanized Paddle Flanges)', 
-                nameEn: 'Galvanized Paddle Flanges', 
+                nameAr: 'بادل فلانش مجلفن (Galvanized Paddle Flange)', 
+                nameEn: 'Galvanized Paddle Flange', 
                 price: 90.00, 
                 img: 'https://i.ibb.co/Sw8jYrfx/Sw8jYrfx.jpg', 
-                descAr: 'فلنجات حديد مغطاة بطبقة جلفنة ساخنة لتحمل الضغوط وظروف الطقس القاسية.',
-                descEn: 'Hot-dip galvanized steel flanges built for tough weather conditions.'
+                descAr: 'بادل فلانش حديد مغطاة بطبقة جلفنة ساخنة لتحمل الضغوط وظروف الطقس القاسية.',
+                descEn: 'Hot-dip galvanized steel paddle flange built for tough weather conditions.'
             },
             { 
                 id: 3, 
-                cat: 'pipes', 
-                nameAr: 'مواسير سيملس بجميع الأقطار والجداول (Seamless Pipes - All Sizes & Schedules)', 
-                nameEn: 'Seamless Pipes (All Diameters & Schedules)', 
-                price: 180.00, 
-                img: 'https://i.ibb.co/1Jspn86x/1Jspn86x.jpg', 
-                descAr: 'مواسير بدون لحام (Seamless) متوفرة بكل الجداول (Sch 40, Sch 80) والأقطار المختلفة.',
-                descEn: 'Seamless pipes available in all schedules (Sch 40, Sch 80) and diameters.'
+                cat: 'fire', 
+                nameAr: 'هويات وموانع دوامة (Vortex Breakers & Hoods)', 
+                nameEn: 'Vortex Breakers & Air Vents', 
+                price: 250.00, 
+                img: 'https://i.ibb.co/Tq8wCkRf/Tq8wCkRf.jpg', 
+                descAr: 'تستخدم لمنع تكون الدوامات الهوائية في خزانات ومضخات الحريق لضمان تدفق مستقر.',
+                descEn: 'Prevents air vortex formation in fire water tanks to ensure steady flow.'
             },
             { 
                 id: 4, 
-                cat: 'pipes', 
-                nameAr: 'وصلات مواسير استانلس دوبلكس (Duplex Stainless Steel Pipe Fittings)', 
-                nameEn: 'Duplex Stainless Steel Pipe Fittings', 
-                price: 320.00, 
-                img: 'https://i.ibb.co/j9bSSj8F/j9bSSj8F.jpg', 
-                descAr: 'مقاومة فائقة للتشقق الإجهادي والكلوريدات، مثالية لمحطات التحلية وأنظمة الحريق البحرية.',
-                descEn: 'Superior resistance to stress corrosion cracking for marine fire systems.'
-            },
-            { 
-                id: 5, 
                 cat: 'fittings', 
                 nameAr: 'قطع قلاووظ مجلفنة (Galvanized Threaded Fittings)', 
                 nameEn: 'Galvanized Threaded Fittings', 
@@ -301,7 +291,7 @@
                 descEn: 'High quality galvanized elbows, tees, and nipples for pipe networks.'
             },
             { 
-                id: 6, 
+                id: 5, 
                 cat: 'fittings', 
                 nameAr: 'قطع قلاووظ استانلس ستيل (Stainless Steel Threaded Fittings)', 
                 nameEn: 'Stainless Steel Threaded Fittings', 
@@ -311,14 +301,24 @@
                 descEn: 'Grade 304/316 stainless steel threaded fittings for chemical & fire use.'
             },
             { 
+                id: 6, 
+                cat: 'pipes', 
+                nameAr: 'وصلات مواسير استانلس دوبلكس (Duplex Stainless Steel Pipe Fittings)', 
+                nameEn: 'Duplex Stainless Steel Pipe Fittings', 
+                price: 320.00, 
+                img: 'https://i.ibb.co/j9bSSj8F/j9bSSj8F.jpg', 
+                descAr: 'مقاومة فائقة للتشقق الإجهادي والكلوريدات، مثالية لمحطات التحلية وأنظمة الحريق البحرية.',
+                descEn: 'Superior resistance to stress corrosion cracking for marine fire systems.'
+            },
+            { 
                 id: 7, 
-                cat: 'fire', 
-                nameAr: 'هويات وموانع دوامة (Vortex Breakers & Hoods)', 
-                nameEn: 'Vortex Breakers & Air Vents', 
-                price: 250.00, 
-                img: 'https://i.ibb.co/Tq8wCkRf/Tq8wCkRf.jpg', 
-                descAr: 'تستخدم لمنع تكون الدوامات الهوائية في خزانات ومضخات الحريق لضمان تدفق مستقر.',
-                descEn: 'Prevents air vortex formation in fire water tanks to ensure steady flow.'
+                cat: 'pipes', 
+                nameAr: 'مواسير سيملس بجميع الأقطار والجداول (Seamless Pipes - All Sizes & Schedules)', 
+                nameEn: 'Seamless Pipes (All Diameters & Schedules)', 
+                price: 180.00, 
+                img: 'https://i.ibb.co/1Jspn86x/1Jspn86x.jpg', 
+                descAr: 'مواسير بدون لحام (Seamless) متوفرة بكل الجداول (Sch 40, Sch 80) والأقطار المختلفة.',
+                descEn: 'Seamless pipes available in all schedules (Sch 40, Sch 80) and diameters.'
             }
         ];
 
@@ -350,7 +350,7 @@
                     <div class="p-info">
                         <h3><span class="lang-ar">${p.nameAr}</span><span class="lang-en">${p.nameEn}</span></h3>
                         <span class="tag">
-                            <span class="lang-ar">${p.cat === 'pipes' ? 'مواسير سيملس ودوبلكس' : p.cat === 'flanges' ? 'بادل وفلانشات' : p.cat === 'fittings' ? 'قطع قلاووظ' : 'هويات وموانع دوامة'}</span>
+                            <span class="lang-ar">${p.cat === 'pipes' ? 'مواسير سيملس ودوبلكس' : p.cat === 'flanges' ? 'بادل فلانش' : p.cat === 'fittings' ? 'قطع قلاووظ' : 'هويات وموانع دوامة'}</span>
                             <span class="lang-en">${p.cat}</span>
                         </span>
                         <p><span class="lang-ar">${p.descAr}</span><span class="lang-en">${p.descEn}</span></p>
