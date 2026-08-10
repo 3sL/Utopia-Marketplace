@@ -444,7 +444,7 @@
         }
         function closeCheckoutModal() { document.getElementById('checkoutModal').classList.remove('active'); }
 
-       function submitOrder() {
+     function submitOrder() {
     const name = document.getElementById('custName').value;
     const phone = document.getElementById('custPhone').value;
     const address = document.getElementById('custAddress').value;
@@ -464,13 +464,14 @@
     localStorage.setItem('utopia_orders', JSON.stringify(orders));
 
     // ========================================================
-    // 🚀 بداية كود الإرسال السحابي إلى Formspree الخاص بك
+    // 🚀 بداية كود الإرسال السحابي الصحيح بالرابط الكامل الخاص بك
     // ========================================================
     const productsSummary = orderData.items.map((item, i) => {
         return `${i + 1}- ${item.nameAr || item.title || 'منتج'} (العدد: ${item.quantity}) - السعر: $${item.price}`;
     }).join('\n');
 
-    fetch('https://formspree.io', {
+    // تم تصحيح الرابط بالأسفل وإضافة الـ ID الخاص بك (xbgrgwog) ليعمل تلقائياً
+    fetch('https://formspree.io/f/xbgrgwog', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
