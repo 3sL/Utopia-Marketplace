@@ -163,7 +163,7 @@
                 <span class="lang-ar">الكل</span><span class="lang-en">All</span>
             </button>
             <button class="cat-btn" onclick="filterCategory('pipes', event)">
-                <span class="lang-ar">مواسير سيملس ودوبلكس</span><span class="lang-en">Pipes</span>
+                <span class="lang-ar">مواسير سيملس </span><span class="lang-en">Pipes</span>
             </button>
             <button class="cat-btn" onclick="filterCategory('paddle-flanges', event)">
                 <span class="lang-ar">بادل فلانش</span><span class="lang-en">Paddle Flange</span>
@@ -278,7 +278,7 @@
                 nameAr: 'فلانشات لحام رقبة (Weld Neck Flanges)', 
                 nameEn: 'Weld Neck Flanges', 
                 price: 150.00, 
-                img: 'https://i.postimg.cc/D0qhL6PW/66606066.png', 
+                img: 'https://i.postimg.cc/3RPkBL57/66606066.png', 
                 descAr: 'فلانشات ذات رقبة ملحومة لتوزيع الضغط بكفاءة عالية في خطوط الأنابيب والضغط العالي.',
                 descEn: 'Weld neck flanges designed for high pressure piping systems.'
             },
@@ -315,7 +315,7 @@
             { 
                 id: 7, 
                 cat: 'pipes', 
-                nameAr: 'وصلات مواسير استانلس دوبلكس (Duplex Stainless Steel Pipe Fittings)', 
+                nameAr: ' مواسير استانلس دوبلكس (Duplex Stainless Steel Pipe Fittings)', 
                 nameEn: 'Duplex Stainless Steel Pipe Fittings', 
                 price: 320.00, 
                 img: 'https://i.postimg.cc/cHCGkZMx/465324651321.png', 
@@ -354,7 +354,7 @@
             
             filtered.forEach(p => {
                 let catTextAr = 'أخرى';
-                if(p.cat === 'pipes') catTextAr = 'مواسير سيملس ودوبلكس';
+                if(p.cat === 'pipes') catTextAr = 'مواسير سيملس ';
                 else if(p.cat === 'paddle-flanges') catTextAr = 'بادل فلانش';
                 else if(p.cat === 'flanges') catTextAr = 'فلانشات';
                 else if(p.cat === 'fittings') catTextAr = 'قطع قلاووظ';
