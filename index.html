@@ -248,7 +248,7 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // تم ربط الصور بشكل صحيح ومطابق تماماً لكل منتج حسب ما طلبت
+        // تم ضبط وترتيب الصور بدقة تامة مع كل منتج مطابق تماماً
         const productsData = [
             { 
                 id: 1, 
@@ -272,36 +272,16 @@
             },
             { 
                 id: 3, 
-                cat: 'fire', 
-                nameAr: 'هويات وموانع دوامة (Vortex Breakers & Hoods)', 
-                nameEn: 'Vortex Breakers & Air Vents', 
-                price: 250.00, 
-                img: 'https://i.ibb.co/Tq8wCkRf/Tq8wCkRf.jpg', 
-                descAr: 'تستخدم لمنع تكون الدوامات الهوائية في خزانات ومضخات الحريق لضمان تدفق مستقر.',
-                descEn: 'Prevents air vortex formation in fire water tanks to ensure steady flow.'
+                cat: 'pipes', 
+                nameAr: 'مواسير سيملس بجميع الأقطار والجداول (Seamless Pipes - All Sizes & Schedules)', 
+                nameEn: 'Seamless Pipes (All Diameters & Schedules)', 
+                price: 180.00, 
+                img: 'https://i.ibb.co/1Jspn86x/1Jspn86x.jpg', 
+                descAr: 'مواسير بدون لحام (Seamless) متوفرة بكل الجداول (Sch 40, Sch 80) والأقطار المختلفة.',
+                descEn: 'Seamless pipes available in all schedules (Sch 40, Sch 80) and diameters.'
             },
             { 
                 id: 4, 
-                cat: 'fittings', 
-                nameAr: 'قطع قلاووظ مجلفنة (Galvanized Threaded Fittings)', 
-                nameEn: 'Galvanized Threaded Fittings', 
-                price: 25.00, 
-                img: 'https://i.ibb.co/N6GXM4nm/N6GXM4nm.jpg', 
-                descAr: 'كوع، تايوان، جلب ونبل قلاووظ مجلفن عالي الجودة لشبكات الحريق والمياه.',
-                descEn: 'High quality galvanized elbows, tees, and nipples for pipe networks.'
-            },
-            { 
-                id: 5, 
-                cat: 'fittings', 
-                nameAr: 'قطع قلاووظ استانلس ستيل (Stainless Steel Threaded Fittings)', 
-                nameEn: 'Stainless Steel Threaded Fittings', 
-                price: 45.00, 
-                img: 'https://i.ibb.co/G3d7WTyy/G3d7WTyy.jpg', 
-                descAr: 'وصلات وقلاووظ مصنعة بالكامل من الاستانلس ستيل المقاوم للأحماض والصدأ (304/316).',
-                descEn: 'Grade 304/316 stainless steel threaded fittings for chemical & fire use.'
-            },
-            { 
-                id: 6, 
                 cat: 'pipes', 
                 nameAr: 'وصلات مواسير استانلس دوبلكس (Duplex Stainless Steel Pipe Fittings)', 
                 nameEn: 'Duplex Stainless Steel Pipe Fittings', 
@@ -311,14 +291,34 @@
                 descEn: 'Superior resistance to stress corrosion cracking for marine fire systems.'
             },
             { 
+                id: 5, 
+                cat: 'fittings', 
+                nameAr: 'قطع قلاووظ مجلفنة (Galvanized Threaded Fittings)', 
+                nameEn: 'Galvanized Threaded Fittings', 
+                price: 25.00, 
+                img: 'https://i.ibb.co/N6GXM4nm/N6GXM4nm.jpg', 
+                descAr: 'كوع، تايوان، جلب ونبل قلاووظ مجلفن عالي الجودة لشبكات الحريق والمياه.',
+                descEn: 'High quality galvanized elbows, tees, and nipples for pipe networks.'
+            },
+            { 
+                id: 6, 
+                cat: 'fittings', 
+                nameAr: 'قطع قلاووظ استانلس ستيل (Stainless Steel Threaded Fittings)', 
+                nameEn: 'Stainless Steel Threaded Fittings', 
+                price: 45.00, 
+                img: 'https://i.ibb.co/G3d7WTyy/G3d7WTyy.jpg', 
+                descAr: 'وصلات وقلاووظ مصنعة بالكامل من الاستانلس ستيل المقاوم للأحماض والصدأ (304/316).',
+                descEn: 'Grade 304/316 stainless steel threaded fittings for chemical & fire use.'
+            },
+            { 
                 id: 7, 
-                cat: 'pipes', 
-                nameAr: 'مواسير سيملس بجميع الأقطار والجداول (Seamless Pipes - All Sizes & Schedules)', 
-                nameEn: 'Seamless Pipes (All Diameters & Schedules)', 
-                price: 180.00, 
-                img: 'https://i.ibb.co/1Jspn86x/1Jspn86x.jpg', 
-                descAr: 'مواسير بدون لحام (Seamless) متوفرة بكل الجداول (Sch 40, Sch 80) والأقطار المختلفة.',
-                descEn: 'Seamless pipes available in all schedules (Sch 40, Sch 80) and diameters.'
+                cat: 'fire', 
+                nameAr: 'هويات وموانع دوامة (Vortex Breakers & Hoods)', 
+                nameEn: 'Vortex Breakers & Air Vents', 
+                price: 250.00, 
+                img: 'https://i.ibb.co/Tq8wCkRf/Tq8wCkRf.jpg', 
+                descAr: 'تستخدم لمنع تكون الدوامات الهوائية في خزانات ومضخات الحريق لضمان تدفق مستقر.',
+                descEn: 'Prevents air vortex formation in fire water tanks to ensure steady flow.'
             }
         ];
 
