@@ -444,30 +444,61 @@
         }
         function closeCheckoutModal() { document.getElementById('checkoutModal').classList.remove('active'); }
 
-        function submitOrder() {
-            const name = document.getElementById('custName').value;
-            const phone = document.getElementById('custPhone').value;
-            const address = document.getElementById('custAddress').value;
-            if(!name || !phone || !address) return alert("برجاء إكمال جميع الحقول المطلوبة");
+       function submitOrder() {
+    const name = document.getElementById('custName').value;
+    const phone = document.getElementById('custPhone').value;
+    const address = document.getElementById('custAddress').value;
+    if(!name || !phone || !address) return alert("برجاء إكمال جميع الحقول المطلوبة");
 
-            let total = cart.reduce((t, i) => t + (i.price * i.quantity), 0);
-            let orderData = {
-                id: Date.now(),
-                date: new Date().toLocaleString(),
-                name, phone, address,
-                items: cart,
-                total: total
-            };
-            
-            let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
-            orders.push(orderData);
-            localStorage.setItem('utopia_orders', JSON.stringify(orders));
+    let total = cart.reduce((t, i) => t + (i.price * i.quantity), 0);
+    let orderData = {
+        id: Date.now(),
+        date: new Date().toLocaleString(),
+        name, phone, address,
+        items: cart,
+        total: total
+    };
+    
+    let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+    orders.push(orderData);
+    localStorage.setItem('utopia_orders', JSON.stringify(orders));
 
-            document.getElementById('formContainer').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'block';
-            cart = []; updateCartUI();
-            setTimeout(() => closeCheckoutModal(), 3000);
+    // ========================================================
+    // 🚀 بداية كود الإرسال السحابي إلى Formspree الخاص بك
+    // ========================================================
+    const productsSummary = orderData.items.map((item, i) => {
+        return `${i + 1}- ${item.nameAr || item.title || 'منتج'} (العدد: ${item.quantity}) - السعر: $${item.price}`;
+    }).join('\n');
+
+    fetch('https://formspree.io', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "رقم الطلب": orderData.id,
+            "التاريخ": orderData.date,
+            "العميل / الشركة": orderData.name,
+            "الهاتف": orderData.phone,
+            "العنوان / التفاصيل": orderData.address,
+            "المنتجات المطلوبة": productsSummary,
+            "الإجمالي التقديري": `$${orderData.total.toFixed(2)}`
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("تم ترحيل الطلب بنجاح إلى لوحة التحكم السحابية!");
         }
+    })
+    .catch(error => console.error("خطأ أثناء ترحيل الطلب سحابياً:", error));
+    // ========================================================
+
+    document.getElementById('formContainer').style.display = 'none';
+    document.getElementById('successMessage').style.display = 'block';
+    cart = []; updateCartUI();
+    setTimeout(() => closeCheckoutModal(), 3000);
+}
 
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
