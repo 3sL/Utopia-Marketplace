@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>يوتوبيا للتجارة والتصدير - لوازم الحريق</title>
+    <title>يوتوبيا للتجارة والتصدير - لوازم الحريق والصناعة</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -34,23 +34,30 @@
         .cart-count { background: #e74c3c; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; position: absolute; top: -8px; right: -8px; }
         .admin-btn { background: #f39c12; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; display: none; }
 
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; flex: 1; }
-        .section-title { text-align: center; font-size: 26px; color: #0a1e2d; margin: 40px 0 20px; border-bottom: 3px solid #8bc34a; padding-bottom: 10px; font-weight: bold; }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
         
-        .categories { margin-bottom: 20px; display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; }
-        .cat-btn { background: #fff; border: 2px solid #0a1e2d; padding: 8px 25px; border-radius: 30px; cursor: pointer; font-weight: bold; color: #0a1e2d; transition: 0.3s; }
+        /* شريط البحث المطور */
+        .search-bar-container { margin-bottom: 25px; display: flex; justify-content: center; }
+        .search-input { width: 100%; max-width: 600px; padding: 12px 20px; border: 2px solid #ddd; border-radius: 30px; font-size: 16px; outline: none; transition: 0.3s; }
+        .search-input:focus { border-color: #8bc34a; box-shadow: 0 0 8px rgba(139, 195, 74, 0.3); }
+
+        .section-title { text-align: center; font-size: 26px; color: #0a1e2d; margin: 20px 0 20px; border-bottom: 3px solid #8bc34a; padding-bottom: 10px; font-weight: bold; }
+        
+        .categories { margin-bottom: 25px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+        .cat-btn { background: #fff; border: 2px solid #0a1e2d; padding: 8px 20px; border-radius: 30px; cursor: pointer; font-weight: bold; color: #0a1e2d; transition: 0.3s; }
         .cat-btn.active, .cat-btn:hover { background: #0a1e2d; color: white; }
 
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; margin-bottom: 40px; }
         .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.06); transition: 0.3s; display: flex; flex-direction: column; }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .product-card .img-box { width: 100%; height: 200px; background: #f9f9f9; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #eee; }
-        .product-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .product-card .img-box { width: 100%; height: 200px; background: #fff; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #eee; overflow: hidden; }
+        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .product-card:hover img { transform: scale(1.05); }
         .p-info { padding: 18px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
-        .p-info h3 { font-size: 17px; margin-bottom: 8px; color: #0a1e2d; min-height: 45px; display: flex; align-items: center; justify-content: center; }
+        .p-info h3 { font-size: 16px; margin-bottom: 8px; color: #0a1e2d; min-height: 45px; display: flex; align-items: center; justify-content: center; }
         .p-info .tag { background: #eef2f5; display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; color: #555; margin-bottom: 10px; align-self: center; }
         .p-info p { color: #777; font-size: 13px; margin-bottom: 12px; flex-grow: 1; }
-        .p-price { font-size: 22px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; display: block; }
+        .p-price { font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; display: block; }
         .add-cart-btn { width: 100%; padding: 12px; background: #8bc34a; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s; }
         .add-cart-btn:hover { background: #6a9c36; }
 
@@ -144,27 +151,34 @@
     </header>
 
     <div class="container">
+        <!-- شريط البحث المطور -->
+        <div class="search-bar-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث عن بادل فلنجات، مواسير سيملس، موانع دوامة، قطع قلاووظ..." oninput="handleSearch()">
+        </div>
+
         <h2 class="section-title">
-            <span class="lang-ar">منتجاتنا المتميزة</span>
-            <span class="lang-en">Our Premium Products</span>
+            <span class="lang-ar">منتجاتنا المتميزة لمجالات الحريق والصناعة</span>
+            <span class="lang-en">Our Premium Industrial & Fire Products</span>
         </h2>
+        
         <div class="categories" id="catContainer">
-            <button class="cat-btn active" onclick="filterCategory('all')">
+            <button class="cat-btn active" onclick="filterCategory('all', event)">
                 <span class="lang-ar">الكل</span><span class="lang-en">All</span>
             </button>
-            <button class="cat-btn" onclick="filterCategory('pipes')">
-                <span class="lang-ar">مواسير</span><span class="lang-en">Pipes</span>
+            <button class="cat-btn" onclick="filterCategory('pipes', event)">
+                <span class="lang-ar">مواسير سيملس ودوبلكس</span><span class="lang-en">Pipes</span>
             </button>
-            <button class="cat-btn" onclick="filterCategory('flanges')">
-                <span class="lang-ar">فلانشات</span><span class="lang-en">Flanges</span>
+            <button class="cat-btn" onclick="filterCategory('flanges', event)">
+                <span class="lang-ar">بادل وفلانشات</span><span class="lang-en">Flanges</span>
             </button>
-            <button class="cat-btn" onclick="filterCategory('fittings')">
-                <span class="lang-ar">قطع غيار</span><span class="lang-en">Fittings</span>
+            <button class="cat-btn" onclick="filterCategory('fittings', event)">
+                <span class="lang-ar">قطع قلاووظ</span><span class="lang-en">Threaded Fittings</span>
             </button>
-            <button class="cat-btn" onclick="filterCategory('fire')">
-                <span class="lang-ar">لوازم الحريق</span><span class="lang-en">Fire Suppression</span>
+            <button class="cat-btn" onclick="filterCategory('fire', event)">
+                <span class="lang-ar">هويات وموانع دوامة</span><span class="lang-en">Vortex & Vents</span>
             </button>
         </div>
+        
         <div class="products-grid" id="productsContainer"></div>
     </div>
 
@@ -183,8 +197,8 @@
             <span id="cartTotalPrice">$0.00</span>
         </div>
         <button class="checkout-btn" onclick="openCheckoutModal()">
-            <span class="lang-ar">إتمام الشراء</span>
-            <span class="lang-en">Checkout</span>
+            <span class="lang-ar">إتمام الطلب / عرض سعر</span>
+            <span class="lang-en">Request Quote / Checkout</span>
         </button>
     </div>
 
@@ -192,32 +206,32 @@
         <div class="checkout-modal">
             <span class="modal-close" onclick="closeCheckoutModal()">&times;</span>
             <div id="formContainer">
-                <h2><span class="lang-ar">بيانات الطلب</span><span class="lang-en">Order Details</span></h2>
+                <h2><span class="lang-ar">بيانات الطلب أو عرض السعر</span><span class="lang-en">Order / Quote Details</span></h2>
                 <div class="form-group">
-                    <label><span class="lang-ar">الاسم الكامل</span><span class="lang-en">Full Name</span></label>
-                    <input type="text" id="custName" placeholder="أدخل اسمك">
+                    <label><span class="lang-ar">الاسم الكامل / الشركة</span><span class="lang-en">Full Name / Company</span></label>
+                    <input type="text" id="custName" placeholder="أدخل اسمك أو اسم الشركة">
                 </div>
                 <div class="form-group">
                     <label><span class="lang-ar">رقم الهاتف</span><span class="lang-en">Phone Number</span></label>
                     <input type="tel" id="custPhone" placeholder="+20 100 000 0000">
                 </div>
                 <div class="form-group">
-                    <label><span class="lang-ar">العنوان</span><span class="lang-en">Address</span></label>
-                    <textarea id="custAddress" rows="3" placeholder="أدخل عنوان الشحن"></textarea>
+                    <label><span class="lang-ar">العنوان / الملاحظات والأقطار المطلوبة</span><span class="lang-en">Address / Notes & Required Sizes</span></label>
+                    <textarea id="custAddress" rows="3" placeholder="أدخل العنوان أو تفاصيل الجداول والأقطار المطلوبة..."></textarea>
                 </div>
                 <button class="submit-order-btn" onclick="submitOrder()">
-                    <span class="lang-ar">تأكيد الطلب</span>
-                    <span class="lang-en">Confirm Order</span>
+                    <span class="lang-ar">تأكيد وإرسال الطلب</span>
+                    <span class="lang-en">Submit Request</span>
                 </button>
             </div>
             <div class="success-msg" id="successMessage">
-                <span class="lang-ar">🎉 تم استلام طلبك!</span>
-                <span class="lang-en">🎉 Order placed!</span>
+                <span class="lang-ar">🎉 تم استلام طلبك بنجاح وسنتواصل معك قريباً!</span>
+                <span class="lang-en">🎉 Request received successfully!</span>
             </div>
         </div>
     </div>
 
-    <!-- نافذة الطلبات المنبثقة -->
+    <!-- نافذة الطلبات المنبثقة للأدمن -->
     <div class="admin-modal" id="adminModal">
         <div class="admin-modal-content">
             <span class="admin-modal-close" onclick="closeAdmin()">&times;</span>
@@ -238,31 +252,100 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // بيانات المنتجات
+        // بيانات المنتجات الدقيقة والواقعية للوازم الحريق والصناعة
         const productsData = [
-            { id: 1, cat: 'pipes', nameAr: 'مواسير استانلس ستيل (304/316)', nameEn: 'Stainless Steel Pipes (304/316)', price: 150.00, img: 'https://images.pexels.com/photos/1527671/pexels-photo-1527671.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 2, cat: 'pipes', nameAr: 'مواسير دوبليكس (Duplex)', nameEn: 'Duplex Steel Pipes', price: 220.00, img: 'https://images.pexels.com/photos/162548/steel-industry-factory-metal-162548.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 3, cat: 'pipes', nameAr: 'مواسير كربونية (سيملس Seamless)', nameEn: 'Seamless Carbon Steel Pipes', price: 85.00, img: 'https://images.pexels.com/photos/5792096/pexels-photo-5792096.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 4, cat: 'flanges', nameAr: 'فلانشات استانلس (بدل)', nameEn: 'Stainless Flanges', price: 45.00, img: 'https://images.pexels.com/photos/39672/pexels-photo-39672.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 5, cat: 'flanges', nameAr: 'فلانشات مجلفنة (BIS)', nameEn: 'Galvanized Flanges (BIS)', price: 35.00, img: 'https://images.pexels.com/photos/211403/pexels-photo-211403.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ (Threaded)', nameEn: 'Threaded Fittings', price: 12.00, img: 'https://images.pexels.com/photos/3098678/pexels-photo-3098678.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 7, cat: 'fittings', nameAr: 'قطع لحام سيملس (Seamless)', nameEn: 'Seamless Weld Fittings', price: 30.00, img: 'https://images.pexels.com/photos/257558/pexels-photo-257558.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 8, cat: 'fittings', nameAr: 'قطع مجلفنة (Galvanized)', nameEn: 'Galvanized Fittings', price: 18.00, img: 'https://images.pexels.com/photos/95894/pexels-photo-95894.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 9, cat: 'fire', nameAr: 'صمام بوابة حريق', nameEn: 'Fire Gate Valve', price: 220.00, img: 'https://images.pexels.com/photos/5877107/pexels-photo-5877107.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 10, cat: 'fire', nameAr: 'أنابيب حريق (Sprinkler)', nameEn: 'Sprinkler Fire Pipes', price: 110.00, img: 'https://images.pexels.com/photos/2097786/pexels-photo-2097786.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 11, cat: 'fire', nameAr: 'هوايات تهوية (Air Vents)', nameEn: 'Air Vents', price: 50.00, img: 'https://images.pexels.com/photos/2528118/pexels-photo-2528118.jpeg?auto=compress&cs=tinysrgb&w=400' },
-            { id: 12, cat: 'fire', nameAr: 'موانع دوامة (Vortex Breakers)', nameEn: 'Vortex Breakers', price: 75.00, img: 'https://images.pexels.com/photos/531137/pexels-photo-531137.jpeg?auto=compress&cs=tinysrgb&w=400' }
+            { 
+                id: 1, 
+                cat: 'flanges', 
+                nameAr: 'بادل فلنجات استانلس ستيل (Paddle Flanges Stainless Steel)', 
+                nameEn: 'Paddle Flanges Stainless Steel', 
+                price: 120.00, 
+                img: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=compress&cs=tinysrgb&w=600',
+                descAr: 'مقاومة عالية للتآكل والصدأ، مطابقة للمواصفات القياسية لأنظمة الحريق والمصانع.',
+                descEn: 'High corrosion resistance, compliant with fire suppression standards.'
+            },
+            { 
+                id: 2, 
+                cat: 'flanges', 
+                nameAr: 'بادل فلنجات مجلفنة (Galvanized Paddle Flanges)', 
+                nameEn: 'Galvanized Paddle Flanges', 
+                price: 90.00, 
+                img: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=compress&cs=tinysrgb&w=600',
+                descAr: 'فلنجات حديد مغطاة بطبقة جلفنة ساخنة لتحمل الضغوط وظروف الطقس القاسية.',
+                descEn: 'Hot-dip galvanized steel flanges built for tough weather conditions.'
+            },
+            { 
+                id: 3, 
+                cat: 'fire', 
+                nameAr: 'هويات وموانع دوامة (Vortex Breakers & Hoods)', 
+                nameEn: 'Vortex Breakers & Air Vents', 
+                price: 250.00, 
+                img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=compress&cs=tinysrgb&w=600',
+                descAr: 'تستخدم لمنع تكون الدوامات الهوائية في خزانات ومضخات الحريق لضمان تدفق مستقر.',
+                descEn: 'Prevents air vortex formation in fire water tanks to ensure steady flow.'
+            },
+            { 
+                id: 4, 
+                cat: 'fittings', 
+                nameAr: 'قطع قلاووظ مجلفنة (Galvanized Threaded Fittings)', 
+                nameEn: 'Galvanized Threaded Fittings', 
+                price: 25.00, 
+                img: 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?auto=compress&cs=tinysrgb&w=600',
+                descAr: 'كوع، تايوان، جلب ونبل قلاووظ مجلفن عالي الجودة لشبكات الحريق والمياه.',
+                descEn: 'High quality galvanized elbows, tees, and nipples for pipe networks.'
+            },
+            { 
+                id: 5, 
+                cat: 'fittings', 
+                nameAr: 'قطع قلاووظ استانلس ستيل (Stainless Steel Threaded Fittings)', 
+                nameEn: 'Stainless Steel Threaded Fittings', 
+                price: 45.00, 
+                img: 'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=compress&cs=tinysrgb&w=600',
+                descAr: 'وصلات وقلاووظ مصنعة بالكامل من الاستانلس ستيل المقاوم للأحماض والصدأ (304/316).',
+                descEn: 'Grade 304/316 stainless steel threaded fittings for chemical & fire use.'
+            },
+            { 
+                id: 6, 
+                cat: 'pipes', 
+                nameAr: 'وصلات مواسير استانلس دوبلكس (Duplex Stainless Steel Pipe Fittings)', 
+                nameEn: 'Duplex Stainless Steel Pipe Fittings', 
+                price: 320.00, 
+                img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=compress&cs=tinysrgb&w=600',
+                descAr: 'مقاومة فائقة للتشقق الإجهادي والكلوريدات، مثالية لمحطات التحلية وأنظمة الحريق البحرية.',
+                descEn: 'Superior resistance to stress corrosion cracking for marine fire systems.'
+            },
+            { 
+                id: 7, 
+                cat: 'pipes', 
+                nameAr: 'مواسير سيملس بجميع الأقطار والجداول (Seamless Pipes - All Sizes & Schedules)', 
+                nameEn: 'Seamless Pipes (All Diameters & Schedules)', 
+                price: 180.00, 
+                img: 'https://images.unsplash.com/photo-1541888946425-d0fbb18f724d?auto=compress&cs=tinysrgb&w=600',
+                descAr: 'مواسير بدون لحام (Seamless) متوفرة بكل الجداول (Sch 40, Sch 80) والأقطار المختلفة.',
+                descEn: 'Seamless pipes available in all schedules (Sch 40, Sch 80) and diameters.'
+            }
         ];
 
         let cart = [];
 
-        // ---- دوال العرض الأساسية ----
-        function renderProducts(category = 'all') {
+        // ---- دوال العرض والبحث ----
+        function renderProducts(category = 'all', searchQuery = '') {
             const container = document.getElementById('productsContainer');
             container.innerHTML = '';
-            const filteredProducts = category === 'all' ? productsData : productsData.filter(p => p.cat === category);
             
-            filteredProducts.forEach(p => {
+            let filtered = productsData.filter(p => {
+                const matchCat = (category === 'all' || p.cat === category);
+                const matchSearch = p.nameAr.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                    p.nameEn.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            if(filtered.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #777; padding: 30px;">عذراً، لم نجد منتجات تطابق بحثك.</p>`;
+                return;
+            }
+            
+            filtered.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
@@ -272,10 +355,10 @@
                     <div class="p-info">
                         <h3><span class="lang-ar">${p.nameAr}</span><span class="lang-en">${p.nameEn}</span></h3>
                         <span class="tag">
-                            <span class="lang-ar">${p.cat === 'pipes' ? 'مواسير' : p.cat === 'flanges' ? 'فلانشات' : p.cat === 'fittings' ? 'قطع غيار' : 'لوازم حريق'}</span>
+                            <span class="lang-ar">${p.cat === 'pipes' ? 'مواسير سيملس ودوبلكس' : p.cat === 'flanges' ? 'بادل وفلانشات' : p.cat === 'fittings' ? 'قطع قلاووظ' : 'هويات وموانع دوامة'}</span>
                             <span class="lang-en">${p.cat}</span>
                         </span>
-                        <p><span class="lang-ar">مناسب للصناعة ومقاوم للحريق</span><span class="lang-en">Industrial & Fire Rated</span></p>
+                        <p><span class="lang-ar">${p.descAr}</span><span class="lang-en">${p.descEn}</span></p>
                         <span class="p-price">$${p.price.toFixed(2)}</span>
                         <button class="add-cart-btn" onclick="addToCart(${p.id})">
                             <span class="lang-ar">أضف إلى السلة</span>
@@ -287,10 +370,20 @@
             });
         }
 
-        function filterCategory(cat) {
+        function filterCategory(cat, event) {
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            renderProducts(cat);
+            if(event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+            const query = document.getElementById('searchInput').value;
+            renderProducts(cat, query);
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value;
+            const activeCatBtn = document.querySelector('.cat-btn.active');
+            // استخراج التصنيف النشط حالياً بناءً على موقعه أو دالة افتراضية
+            renderProducts('all', query);
         }
 
         // ---- دوال السلة ----
@@ -299,6 +392,7 @@
             const exist = cart.find(p => p.id === id);
             if(exist) exist.quantity++; else cart.push({...item, quantity: 1});
             updateCartUI();
+            openCart();
         }
 
         function updateCartUI() {
@@ -321,7 +415,7 @@
                         </div>
                     </div>`;
             });
-            if(cart.length===0) container.innerHTML = `<p style="text-align:center; color:#999; margin-top:20px;">السلة فارغة</p>`;
+            if(cart.length===0) container.innerHTML = `<p style="text-align:center; color:#999; margin-top:20px;"><span class="lang-ar">السلة فارغة</span><span class="lang-en">Cart is empty</span></p>`;
             totalEl.innerText = `$${total.toFixed(2)}`;
             countEl.innerText = count;
         }
@@ -331,9 +425,9 @@
         function openCart() { document.getElementById('cartSidebar').classList.add('open'); document.getElementById('overlay').classList.add('active'); }
         function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
 
-        // ---- دوال الطلب ----
+        // ---- دوال الطلب وعرض الأسعار ----
         function openCheckoutModal() {
-            if(cart.length === 0) return alert("السلة فارغة");
+            if(cart.length === 0) return alert("السلة فارغة برجاء اختيار المنتجات أولاً");
             document.getElementById('checkoutModal').classList.add('active');
             document.getElementById('formContainer').style.display = 'block';
             document.getElementById('successMessage').style.display = 'none';
@@ -344,7 +438,7 @@
             const name = document.getElementById('custName').value;
             const phone = document.getElementById('custPhone').value;
             const address = document.getElementById('custAddress').value;
-            if(!name || !phone || !address) return alert("املأ كل الحقول");
+            if(!name || !phone || !address) return alert("برجاء إكمال جميع الحقول المطلوبة");
 
             let total = cart.reduce((t, i) => t + (i.price * i.quantity), 0);
             let orderData = {
@@ -365,7 +459,7 @@
             setTimeout(() => closeCheckoutModal(), 3000);
         }
 
-        // ---- دوال الأدمن (النافذة المنبثقة) ----
+        // ---- لوحة الطلبات (الأدمن) ----
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
             modal.classList.toggle('active');
@@ -391,34 +485,28 @@
                 itemsHtml += `</ul>`;
                 container.innerHTML += `
                     <div class="order-card">
-                        <h3>طلب #${order.id}</h3>
+                        <h3>طلب رقم #${order.id}</h3>
                         <p><strong>التاريخ:</strong> ${order.date}</p>
-                        <p><strong>العميل:</strong> ${order.name}</p>
+                        <p><strong>العميل / الشركة:</strong> ${order.name}</p>
                         <p><strong>الهاتف:</strong> ${order.phone}</p>
-                        <p><strong>العنوان:</strong> ${order.address}</p>
+                        <p><strong>العنوان / التفاصيل:</strong> ${order.address}</p>
                         ${itemsHtml}
-                        <div class="order-total">الإجمالي: $${order.total.toFixed(2)}</div>
+                        <div class="order-total">الإجمالي التقديري: $${order.total.toFixed(2)}</div>
                     </div>`;
             });
         }
 
-        // ---- كود فتح زر الأدمن السري (باستخدام الرابط) ----
-        // هذه الدالة تقوم بفحص الرابط عند فتح الصفحة
         function checkAdminAccess() {
             const urlParams = new URLSearchParams(window.location.search);
-            const adminParam = urlParams.get('admin');
-            // إذا وجد كلمة admin في الرابط، قم بإظهار الزر
-            if (adminParam !== null) {
+            if (urlParams.get('admin') !== null) {
                 document.getElementById('adminBtn').style.display = 'block';
             }
         }
 
-        // ---- دوال اللغة ----
         function toggleLang() { document.body.classList.toggle('dir-ltr'); updateCartUI(); }
 
         // بدء تشغيل المتجر
         renderProducts();
-        // فحص ما إذا كان المستخدم هو المسؤول
         checkAdminAccess();
     </script>
 </body>
