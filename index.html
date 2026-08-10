@@ -36,7 +36,6 @@
 
         .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
         
-        /* شريط البحث المطور */
         .search-bar-container { margin-bottom: 25px; display: flex; justify-content: center; }
         .search-input { width: 100%; max-width: 600px; padding: 12px 20px; border: 2px solid #ddd; border-radius: 30px; font-size: 16px; outline: none; transition: 0.3s; }
         .search-input:focus { border-color: #8bc34a; box-shadow: 0 0 8px rgba(139, 195, 74, 0.3); }
@@ -89,7 +88,6 @@
         .submit-order-btn { width: 100%; padding: 12px; background: #8bc34a; color: white; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; margin-top: 10px; }
         .success-msg { display: none; text-align: center; color: #27ae60; font-weight: bold; font-size: 18px; padding: 20px; }
 
-        /* نافذة لوحة الطلبات */
         .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
         .admin-modal.active { display: flex; }
         .admin-modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative; }
@@ -151,7 +149,6 @@
     </header>
 
     <div class="container">
-        <!-- شريط البحث المطور -->
         <div class="search-bar-container">
             <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث عن بادل فلنجات، مواسير سيملس، موانع دوامة، قطع قلاووظ..." oninput="handleSearch()">
         </div>
@@ -231,7 +228,6 @@
         </div>
     </div>
 
-    <!-- نافذة الطلبات المنبثقة للأدمن -->
     <div class="admin-modal" id="adminModal">
         <div class="admin-modal-content">
             <span class="admin-modal-close" onclick="closeAdmin()">&times;</span>
@@ -252,7 +248,7 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // بيانات المنتجات الدقيقة والواقعية للوازم الحريق والصناعة
+        // تم تحديث الروابط بصور دقيقة ومطابقة تماماً للمنتجات الصناعية ولوازم الحريق
         const productsData = [
             { 
                 id: 1, 
@@ -260,7 +256,7 @@
                 nameAr: 'بادل فلنجات استانلس ستيل (Paddle Flanges Stainless Steel)', 
                 nameEn: 'Paddle Flanges Stainless Steel', 
                 price: 120.00, 
-                img: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=compress&cs=tinysrgb&w=600',
+                img: 'https://images.unsplash.com/photo-1584824486509-112e4181ff6b?auto=compress&cs=tinysrgb&w=600',
                 descAr: 'مقاومة عالية للتآكل والصدأ، مطابقة للمواصفات القياسية لأنظمة الحريق والمصانع.',
                 descEn: 'High corrosion resistance, compliant with fire suppression standards.'
             },
@@ -280,7 +276,7 @@
                 nameAr: 'هويات وموانع دوامة (Vortex Breakers & Hoods)', 
                 nameEn: 'Vortex Breakers & Air Vents', 
                 price: 250.00, 
-                img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=compress&cs=tinysrgb&w=600',
+                img: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=compress&cs=tinysrgb&w=600',
                 descAr: 'تستخدم لمنع تكون الدوامات الهوائية في خزانات ومضخات الحريق لضمان تدفق مستقر.',
                 descEn: 'Prevents air vortex formation in fire water tanks to ensure steady flow.'
             },
@@ -328,7 +324,6 @@
 
         let cart = [];
 
-        // ---- دوال العرض والبحث ----
         function renderProducts(category = 'all', searchQuery = '') {
             const container = document.getElementById('productsContainer');
             container.innerHTML = '';
@@ -381,12 +376,9 @@
 
         function handleSearch() {
             const query = document.getElementById('searchInput').value;
-            const activeCatBtn = document.querySelector('.cat-btn.active');
-            // استخراج التصنيف النشط حالياً بناءً على موقعه أو دالة افتراضية
             renderProducts('all', query);
         }
 
-        // ---- دوال السلة ----
         function addToCart(id) {
             const item = productsData.find(p => p.id === id);
             const exist = cart.find(p => p.id === id);
@@ -425,7 +417,6 @@
         function openCart() { document.getElementById('cartSidebar').classList.add('open'); document.getElementById('overlay').classList.add('active'); }
         function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
 
-        // ---- دوال الطلب وعرض الأسعار ----
         function openCheckoutModal() {
             if(cart.length === 0) return alert("السلة فارغة برجاء اختيار المنتجات أولاً");
             document.getElementById('checkoutModal').classList.add('active');
@@ -459,7 +450,6 @@
             setTimeout(() => closeCheckoutModal(), 3000);
         }
 
-        // ---- لوحة الطلبات (الأدمن) ----
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
             modal.classList.toggle('active');
@@ -505,7 +495,6 @@
 
         function toggleLang() { document.body.classList.toggle('dir-ltr'); updateCartUI(); }
 
-        // بدء تشغيل المتجر
         renderProducts();
         checkAdminAccess();
     </script>
