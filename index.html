@@ -150,7 +150,7 @@
 
     <div class="container">
         <div class="search-bar-container">
-            <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث عن بادل فلانش، مواسير سيملس، موانع دوامة، قطع قلاووظ..." oninput="handleSearch()">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث عن بادل فلانش، فلانشات، مواسير سيملس، موانع دوامة..." oninput="handleSearch()">
         </div>
 
         <h2 class="section-title">
@@ -165,8 +165,11 @@
             <button class="cat-btn" onclick="filterCategory('pipes', event)">
                 <span class="lang-ar">مواسير سيملس ودوبلكس</span><span class="lang-en">Pipes</span>
             </button>
-            <button class="cat-btn" onclick="filterCategory('flanges', event)">
+            <button class="cat-btn" onclick="filterCategory('paddle-flanges', event)">
                 <span class="lang-ar">بادل فلانش</span><span class="lang-en">Paddle Flange</span>
+            </button>
+            <button class="cat-btn" onclick="filterCategory('flanges', event)">
+                <span class="lang-ar">فلانشات</span><span class="lang-en">Flanges</span>
             </button>
             <button class="cat-btn" onclick="filterCategory('fittings', event)">
                 <span class="lang-ar">قطع قلاووظ</span><span class="lang-en">Threaded Fittings</span>
@@ -248,11 +251,10 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // الترتيب الصحيح 100% بناءً على روابط الصور الفعلية لكل منتج وتسمية "بادل فلانش" بشكل صحيح
         const productsData = [
             { 
                 id: 1, 
-                cat: 'flanges', 
+                cat: 'paddle-flanges', 
                 nameAr: 'بادل فلانش استانلس ستيل (Paddle Flange Stainless Steel)', 
                 nameEn: 'Paddle Flange Stainless Steel', 
                 price: 120.00, 
@@ -262,7 +264,7 @@
             },
             { 
                 id: 2, 
-                cat: 'flanges', 
+                cat: 'paddle-flanges', 
                 nameAr: 'بادل فلانش مجلفن (Galvanized Paddle Flange)', 
                 nameEn: 'Galvanized Paddle Flange', 
                 price: 90.00, 
@@ -272,6 +274,16 @@
             },
             { 
                 id: 3, 
+                cat: 'flanges', 
+                nameAr: 'فلانشات لحام رقبة (Weld Neck Flanges)', 
+                nameEn: 'Weld Neck Flanges', 
+                price: 150.00, 
+                img: 'https://i.postimg.cc/wxFssk36/badl-flansh-astanls-styl.png', 
+                descAr: 'فلانشات ذات رقبة ملحومة لتوزيع الضغط بكفاءة عالية في خطوط الأنابيب والضغط العالي.',
+                descEn: 'Weld neck flanges designed for high pressure piping systems.'
+            },
+            { 
+                id: 4, 
                 cat: 'fire', 
                 nameAr: 'هويات وموانع دوامة (Vortex Breakers & Hoods)', 
                 nameEn: 'Vortex Breakers & Air Vents', 
@@ -281,7 +293,7 @@
                 descEn: 'Prevents air vortex formation in fire water tanks to ensure steady flow.'
             },
             { 
-                id: 4, 
+                id: 5, 
                 cat: 'fittings', 
                 nameAr: 'قطع قلاووظ مجلفنة (Galvanized Threaded Fittings)', 
                 nameEn: 'Galvanized Threaded Fittings', 
@@ -291,7 +303,7 @@
                 descEn: 'High quality galvanized elbows, tees, and nipples for pipe networks.'
             },
             { 
-                id: 5, 
+                id: 6, 
                 cat: 'fittings', 
                 nameAr: 'قطع قلاووظ استانلس ستيل (Stainless Steel Threaded Fittings)', 
                 nameEn: 'Stainless Steel Threaded Fittings', 
@@ -301,7 +313,7 @@
                 descEn: 'Grade 304/316 stainless steel threaded fittings for chemical & fire use.'
             },
             { 
-                id: 6, 
+                id: 7, 
                 cat: 'pipes', 
                 nameAr: 'وصلات مواسير استانلس دوبلكس (Duplex Stainless Steel Pipe Fittings)', 
                 nameEn: 'Duplex Stainless Steel Pipe Fittings', 
@@ -311,7 +323,7 @@
                 descEn: 'Superior resistance to stress corrosion cracking for marine fire systems.'
             },
             { 
-                id: 7, 
+                id: 8, 
                 cat: 'pipes', 
                 nameAr: 'مواسير سيملس بجميع الأقطار والجداول (Seamless Pipes - All Sizes & Schedules)', 
                 nameEn: 'Seamless Pipes (All Diameters & Schedules)', 
@@ -341,6 +353,13 @@
             }
             
             filtered.forEach(p => {
+                let catTextAr = 'أخرى';
+                if(p.cat === 'pipes') catTextAr = 'مواسير سيملس ودوبلكس';
+                else if(p.cat === 'paddle-flanges') catTextAr = 'بادل فلانش';
+                else if(p.cat === 'flanges') catTextAr = 'فلانشات';
+                else if(p.cat === 'fittings') catTextAr = 'قطع قلاووظ';
+                else if(p.cat === 'fire') catTextAr = 'هويات وموانع دوامة';
+
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
@@ -350,7 +369,7 @@
                     <div class="p-info">
                         <h3><span class="lang-ar">${p.nameAr}</span><span class="lang-en">${p.nameEn}</span></h3>
                         <span class="tag">
-                            <span class="lang-ar">${p.cat === 'pipes' ? 'مواسير سيملس ودوبلكس' : p.cat === 'flanges' ? 'بادل فلانش' : p.cat === 'fittings' ? 'قطع قلاووظ' : 'هويات وموانع دوامة'}</span>
+                            <span class="lang-ar">${catTextAr}</span>
                             <span class="lang-en">${p.cat}</span>
                         </span>
                         <p><span class="lang-ar">${p.descAr}</span><span class="lang-en">${p.descEn}</span></p>
