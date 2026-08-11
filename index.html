@@ -233,7 +233,7 @@
         <div class="products-grid" id="productsContainer"></div>
     </div>
 
-    <!-- 🔴 قائمة البحث عن الشحنات -->
+    <!-- قائمة البحث عن الشحنات -->
     <div class="container" style="margin-top: -20px; margin-bottom: 30px;">
         <div style="background: white; border-radius: 12px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.06); text-align: center;">
             <h3 style="color: #0a1e2d; margin-bottom: 15px;">📦 تتبع شحنة موجودة</h3>
@@ -281,6 +281,15 @@
                     <input type="tel" id="custPhone" placeholder="+20 100 000 0000">
                 </div>
 
+                <!-- 🔴 جديد: نوع الطلب -->
+                <div class="form-group">
+                    <label><span class="lang-ar">نوع الطلب</span><span class="lang-en">Order Type</span></label>
+                    <select id="orderType" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
+                        <option value="طلب شراء">🛒 طلب شراء</option>
+                        <option value="عرض سعر">📄 عرض سعر</option>
+                    </select>
+                </div>
+
                 <div class="form-group">
                     <label><span class="lang-ar">طريقة الاستلام</span><span class="lang-en">Pickup/Delivery Method</span></label>
                     <select id="deliveryMethod" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
@@ -289,13 +298,12 @@
                     </select>
                 </div>
 
-                <!-- 🔴 جديد: خيارات طرق الدفع -->
+                <!-- 🔴 جديد: خيارات طرق الدفع (تم حذف أجل) -->
                 <div class="form-group">
                     <label><span class="lang-ar">طريقة الدفع</span><span class="lang-en">Payment Method</span></label>
                     <select id="paymentMethod" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
                         <option value="الدفع عند الاستلام">💰 الدفع عند الاستلام</option>
                         <option value="50% مقدم و 50% عند الاستلام">💳 50% مقدم و 50% عند الاستلام</option>
-                        <option value="أجل">🏦 أجل</option>
                         <option value="شيك">📄 شيك</option>
                     </select>
                 </div>
@@ -536,29 +544,30 @@
         }
 
         // ================================================================
-        // 9. بناء بيانات الطلب (تم تحديثه ليشمل طريقة الدفع)
+        // 9. بناء بيانات الطلب (تم تحديثه ليشمل نوع الطلب وطريقة الدفع)
         // ================================================================
         function buildOrderData() {
             const name = document.getElementById('custName').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
             const address = document.getElementById('custAddress').value.trim();
             const location = document.getElementById('custLocation').value.trim() || "لم يتم التحديد";
+            const orderType = document.getElementById('orderType').value; // 🔴 جديد
             const method = document.getElementById('deliveryMethod').value;
-            const payment = document.getElementById('paymentMethod').value; // 🔴 جديد
+            const payment = document.getElementById('paymentMethod').value;
 
             if(!name || !phone || !address) { alert("برجاء إكمال جميع الحقول المطلوبة"); return null; }
             let total = cart.reduce((t, i) => t + (i.price * i.quantity), 0);
             return {
                 id: Date.now(),
                 date: new Date().toLocaleString('ar-EG'),
-                name, phone, address, location, method, payment, // 🔴 payment
+                name, phone, address, location, orderType, method, payment,
                 items: JSON.parse(JSON.stringify(cart)),
                 total: total
             };
         }
 
         // ================================================================
-        // 10. 📧 إرسال بالإيميل (تم تحديثه ليشمل طريقة الدفع)
+        // 10. 📧 إرسال بالإيميل (تم تحديثه)
         // ================================================================
         function submitOrderViaEmail() {
             const orderData = buildOrderData();
@@ -568,20 +577,28 @@
             let productsList = "";
             orderData.items.forEach((item, i) => { productsList += `${i + 1}. ${item.nameAr} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}%0A`; });
 
-            const subject = `طلب جديد #${orderData.id} - ${STORE_NAME}`;
+            const subject = `${orderData.orderType} #${orderData.id} - ${STORE_NAME}`;
             const body = 
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A📍 ${STORE_NAME} - طلب شراء جديد 📍%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A📍 ${STORE_NAME}%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                `📋 نوع الطلب : ${orderData.orderType}%0A` +
                 `📋 رقم الطلب : ${orderData.id}%0A🕐 التاريخ    : ${orderData.date}%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
-                `👤 بيانات العميل:%0A▸ الاسم   : ${orderData.name}%0A▸ الهاتف  : ${orderData.phone}%0A▸ العنوان : ${orderData.address}%0A▸ اللوكيشن: ${orderData.location}%0A▸ طريقة الاستلام: ${orderData.method}%0A▸ طريقة الدفع: ${orderData.payment}%0A%0A` + // 🔴 تم إضافة الدفع
-                `🛒 تفاصيل المنتجات:%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
-                `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}%0A%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0Aشكراً لتسوقكم ${STORE_NAME} 🔥%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+                `👤 بيانات العميل:%0A▸ الاسم   : ${orderData.name}%0A▸ الهاتف  : ${orderData.phone}%0A▸ العنوان : ${orderData.address}%0A▸ اللوكيشن: ${orderData.location}%0A▸ طريقة الاستلام: ${orderData.method}%0A▸ طريقة الدفع: ${orderData.payment}%0A%0A` +
+                `🛒 تفاصيل المنتجات:%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A`;
+            
+            // إضافة الإجمالي فقط إذا كان طلب شراء
+            let finalBody = body;
+            if(orderData.orderType === 'طلب شراء') {
+                finalBody += `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}%0A%0A`;
+            }
+            
+            finalBody += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0Aشكراً لتسوقكم ${STORE_NAME} 🔥%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
-            window.open(`mailto:${STORE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${body}`, '_blank');
+            window.open(`mailto:${STORE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${finalBody}`, '_blank');
             showSuccessWithTracking();
         }
 
         // ================================================================
-        // 11. 💬 إرسال بالواتساب (تم تحديثه ليشمل طريقة الدفع)
+        // 11. 💬 إرسال بالواتساب (تم تحديثه)
         // ================================================================
         function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
@@ -592,13 +609,21 @@
             orderData.items.forEach((item, i) => { productsList += `${i + 1}. ${item.nameAr} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`; });
 
             const message = 
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📍 ${STORE_NAME} - طلب شراء جديد 📍\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📍 ${STORE_NAME}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                `📋 نوع الطلب : ${orderData.orderType}\n` +
                 `📋 رقم الطلب : ${orderData.id}\n🕐 التاريخ    : ${orderData.date}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-                `👤 بيانات العميل:\n▸ الاسم   : ${orderData.name}\n▸ الهاتف  : ${orderData.phone}\n▸ العنوان : ${orderData.address}\n▸ اللوكيشن: ${orderData.location}\n▸ طريقة الاستلام: ${orderData.method}\n▸ طريقة الدفع: ${orderData.payment}\n\n` + // 🔴 تم إضافة الدفع
-                `🛒 تفاصيل المنتجات:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-                `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nشكراً لتسوقكم ${STORE_NAME} 🔥\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+                `👤 بيانات العميل:\n▸ الاسم   : ${orderData.name}\n▸ الهاتف  : ${orderData.phone}\n▸ العنوان : ${orderData.address}\n▸ اللوكيشن: ${orderData.location}\n▸ طريقة الاستلام: ${orderData.method}\n▸ طريقة الدفع: ${orderData.payment}\n\n` +
+                `🛒 تفاصيل المنتجات:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+            
+            // إضافة الإجمالي فقط إذا كان طلب شراء
+            let finalMessage = message;
+            if(orderData.orderType === 'طلب شراء') {
+                finalMessage += `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}\n\n`;
+            }
+            
+            finalMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nشكراً لتسوقكم ${STORE_NAME} 🔥\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
-            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(finalMessage)}`, '_blank');
             showSuccessWithTracking();
         }
 
@@ -621,7 +646,6 @@
             document.getElementById('trackingModal').classList.remove('active');
         }
 
-        // دالة عامة لعرض التتبع (تستخدم للزر الخاص ولقائمة البحث العامة)
         function loadTrackingDataById(orderId) {
             const container = document.getElementById('trackingContent');
             const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
@@ -632,7 +656,6 @@
                 return;
             }
 
-            // محاكاة رحلة الشحنة والوقت
             const orderDate = new Date(order.date);
             const currentDate = new Date();
             const diffDays = Math.ceil((currentDate - orderDate) / (1000 * 60 * 60 * 24));
@@ -706,7 +729,6 @@
                 return;
             }
 
-            // عرض النتيجة
             const orderDate = new Date(order.date);
             const currentDate = new Date();
             const diffDays = Math.ceil((currentDate - orderDate) / (1000 * 60 * 60 * 24));
@@ -753,7 +775,7 @@
         }
 
         // ================================================================
-        // 14. لوحة التحكم اجمالى الطلبات والمبيعات (للأدمين مع إمكانية تحديث الحالة وعرض طريقة الدفع)
+        // 14. لوحة التحكم (عرض نوع الطلب)
         // ================================================================
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
@@ -785,12 +807,13 @@
                     <div class="order-card">
                         <h3>طلب #${order.id}</h3>
                         <p><strong>التاريخ:</strong> ${order.date}</p>
+                        <p><strong>نوع الطلب:</strong> ${order.orderType || 'غير محدد'}</p>
                         <p><strong>العميل:</strong> ${order.name}</p>
                         <p><strong>الهاتف:</strong> ${order.phone}</p>
                         <p><strong>العنوان:</strong> ${order.address}</p>
                         <p><strong>اللوكيشن:</strong> ${order.location || 'لم يحدد'}</p>
                         <p><strong>طريقة الاستلام:</strong> ${order.method}</p>
-                        <p><strong>طريقة الدفع:</strong> ${order.payment || 'لم يحدد'}</p> <!-- 🔴 عرض طريقة الدفع -->
+                        <p><strong>طريقة الدفع:</strong> ${order.payment || 'لم يحدد'}</p>
                         ${itemsHtml}
                         <div class="order-total">الإجمالي: $${order.total.toFixed(2)}</div>
                         
