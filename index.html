@@ -281,30 +281,30 @@
                     <input type="tel" id="custPhone" placeholder="+20 100 000 0000">
                 </div>
 
-                <!-- 🔴 جديد: نوع الطلب -->
+                <!-- 🔴 جديد: نوع الطلب مع الترجمة -->
                 <div class="form-group">
                     <label><span class="lang-ar">نوع الطلب</span><span class="lang-en">Order Type</span></label>
                     <select id="orderType" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
-                        <option value="طلب شراء">🛒 طلب شراء</option>
-                        <option value="عرض سعر">📄 عرض سعر</option>
+                        <option value="طلب شراء">🛒 <span class="lang-ar">طلب شراء</span><span class="lang-en">Purchase Order</span></option>
+                        <option value="عرض سعر">📄 <span class="lang-ar">عرض سعر</span><span class="lang-en">Price Quote</span></option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label><span class="lang-ar">طريقة الاستلام</span><span class="lang-en">Pickup/Delivery Method</span></label>
                     <select id="deliveryMethod" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
-                        <option value="توصيل للمشروع">🚚 توصيل للمشروع</option>
-                        <option value="استلام من المخازن">🏢 استلام من المخازن</option>
+                        <option value="توصيل للمشروع">🚚 <span class="lang-ar">توصيل للمشروع</span><span class="lang-en">Delivery to Site</span></option>
+                        <option value="استلام من المخازن">🏢 <span class="lang-ar">استلام من المخازن</span><span class="lang-en">Pickup from Warehouse</span></option>
                     </select>
                 </div>
 
-                <!-- 🔴 جديد: خيارات طرق الدفع (تم حذف أجل) -->
+                <!-- 🔴 خيارات طرق الدفع مع الترجمة -->
                 <div class="form-group">
                     <label><span class="lang-ar">طريقة الدفع</span><span class="lang-en">Payment Method</span></label>
                     <select id="paymentMethod" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
-                        <option value="الدفع عند الاستلام">💰 الدفع عند الاستلام</option>
-                        <option value="50% مقدم و 50% عند الاستلام">💳 50% مقدم و 50% عند الاستلام</option>
-                        <option value="شيك">📄 شيك</option>
+                        <option value="الدفع عند الاستلام">💰 <span class="lang-ar">الدفع عند الاستلام</span><span class="lang-en">Cash on Delivery</span></option>
+                        <option value="50% مقدم و 50% عند الاستلام">💳 <span class="lang-ar">50% مقدم و 50% عند الاستلام</span><span class="lang-en">50% Deposit & 50% on Delivery</span></option>
+                        <option value="شيك">📄 <span class="lang-ar">شيك</span><span class="lang-en">Check</span></option>
                     </select>
                 </div>
 
@@ -327,10 +327,10 @@
 
                 <div class="contact-options">
                     <button class="whatsapp-btn" onclick="submitOrderViaWhatsApp()">
-                        💬 واتساب
+                        💬 <span class="lang-ar">واتساب</span><span class="lang-en">WhatsApp</span>
                     </button>
                     <button class="email-btn" onclick="submitOrderViaEmail()">
-                        📧 إيميل
+                        📧 <span class="lang-ar">إيميل</span><span class="lang-en">Email</span>
                     </button>
                 </div>
 
@@ -345,7 +345,7 @@
                 <span class="lang-en">🎉 Order received successfully!</span>
                 <br>
                 <button onclick="openTracking()" style="margin-top:15px; padding: 10px 20px; background: #0a1e2d; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px;">
-                    📦 تتبع شحنتك
+                    📦 <span class="lang-ar">تتبع شحنتك</span><span class="lang-en">Track your order</span>
                 </button>
             </div>
         </div>
@@ -354,7 +354,7 @@
     <div class="modal-overlay" id="trackingModal">
         <div class="checkout-modal" style="max-width: 500px;">
             <span class="modal-close" onclick="closeTracking()">&times;</span>
-            <h2>📦 تتبع الشحنة</h2>
+            <h2>📦 <span class="lang-ar">تتبع الشحنة</span><span class="lang-en">Track Order</span></h2>
             <div id="trackingContent">
                 <p style="text-align: center; color: #555;">جاري تحميل حالة الشحنة...</p>
             </div>
@@ -844,17 +844,69 @@
         }
 
         // ================================================================
-        // 15. وظائف عامة
+        // 15. وظائف عامة (تم تحديث نظام اللغة ليصبح متكاملاً)
         // ================================================================
         function checkAdminAccess() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('admin') !== null) { document.getElementById('adminBtn').style.display = 'block'; }
         }
-        function toggleLang() { document.body.classList.toggle('dir-ltr'); updateCartUI(); }
+
+        function toggleLang() { 
+            // تبديل اتجاه الصفحة
+            document.body.classList.toggle('dir-ltr');
+            
+            // حفظ اختيار اللغة في المتصفح عشان ما يضيعش عند التحديث
+            const isEnglish = document.body.classList.contains('dir-ltr');
+            localStorage.setItem('site_lang', isEnglish ? 'en' : 'ar');
+
+            // تحديث واجهة السلة
+            updateCartUI();
+            
+            // تحديث نصوص القوائم المنسدلة في الفورم
+            updateFormLanguage();
+        }
+
+        // دالة لتحديث نصوص القوائم المنسدلة حسب اللغة
+        function updateFormLanguage() {
+            const isEnglish = document.body.classList.contains('dir-ltr');
+            
+            const orderTypeSelect = document.getElementById('orderType');
+            orderTypeSelect.innerHTML = `
+                <option value="طلب شراء">🛒 ${isEnglish ? 'Purchase Order' : 'طلب شراء'}</option>
+                <option value="عرض سعر">📄 ${isEnglish ? 'Price Quote' : 'عرض سعر'}</option>
+            `;
+
+            const deliverySelect = document.getElementById('deliveryMethod');
+            deliverySelect.innerHTML = `
+                <option value="توصيل للمشروع">🚚 ${isEnglish ? 'Delivery to Site' : 'توصيل للمشروع'}</option>
+                <option value="استلام من المخازن">🏢 ${isEnglish ? 'Pickup from Warehouse' : 'استلام من المخازن'}</option>
+            `;
+
+            const paymentSelect = document.getElementById('paymentMethod');
+            paymentSelect.innerHTML = `
+                <option value="الدفع عند الاستلام">💰 ${isEnglish ? 'Cash on Delivery' : 'الدفع عند الاستلام'}</option>
+                <option value="50% مقدم و 50% عند الاستلام">💳 ${isEnglish ? '50% Deposit & 50% on Delivery' : '50% مقدم و 50% عند الاستلام'}</option>
+                <option value="شيك">📄 ${isEnglish ? 'Check' : 'شيك'}</option>
+            `;
+        }
+
+        // تهيئة اللغة عند فتح الصفحة
+        function initLanguage() {
+            const savedLang = localStorage.getItem('site_lang');
+            if (savedLang === 'en') {
+                document.body.classList.add('dir-ltr');
+                document.body.classList.remove('dir-rtl');
+            } else {
+                document.body.classList.add('dir-rtl');
+                document.body.classList.remove('dir-ltr');
+            }
+            updateFormLanguage();
+        }
 
         // ================================================================
         // 16. تهيئة المتجر
         // ================================================================
+        initLanguage(); // تشغيل اللغة أولاً
         renderProducts();
         checkAdminAccess();
         updateCartUI();
