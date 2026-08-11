@@ -214,6 +214,13 @@
             color: #0a1e2d;
         }
 
+        .order-body a.location-link {
+            color: #3498db;
+            text-decoration: underline;
+            font-weight: bold;
+            word-break: break-all;
+        }
+
         .order-items {
             margin: 10px 0;
             padding-right: 20px;
@@ -268,6 +275,28 @@
 
         .order-payment i {
             margin-left: 5px;
+        }
+
+        /* ===== قسم التتبع في الأدمن ===== */
+        .admin-tracking-box {
+            margin-top: 15px;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+        
+        .admin-status-select {
+            margin-top: 5px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            width: 100%;
+            max-width: 250px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .admin-status-select:focus {
+            outline: 2px solid #f39c12;
         }
 
         /* ===== Empty State ===== */
@@ -374,7 +403,7 @@
         <div class="logo-area">
             <img src="https://i.postimg.cc/kGBmh9C4/logo.png" alt="Utopia Logo">
             <h1>
-                📋 لوحة التحكم ( اجمالى الطلبات و المبيعات )
+                📋 لوحة التحكم
                 <span>Utopia Trading & Export</span>
             </h1>
         </div>
@@ -422,7 +451,7 @@
 
     <script>
         // ================================================================
-        // 1. تحميل وعرض الطلبات
+        // 1. تحميل وعرض الطلبات (مع تحديث البيانات الجديدة)
         // ================================================================
         function loadOrders() {
             const container = document.getElementById('ordersContainer');
@@ -445,7 +474,7 @@
             container.innerHTML = '';
             
             // عرض الطلبات من الأحدث للأقدم
-            orders.reverse().forEach(order => {
+            orders.reverse().forEach((order, index) => {
                 const div = document.createElement('div');
                 div.className = 'order-card';
 
@@ -465,9 +494,20 @@
                 }
                 itemsHtml += `</ul>`;
 
-                // طريقة الدفع
-                const paymentMethod = order.payment || 'غير محدد';
-                const paymentIcon = paymentMethod === 'كاش' ? '💵' : '💳';
+                // تحديد أيقونة الدفع
+                const paymentMethod = order.payment || 'لم يحدد';
+                let paymentIcon = '💳';
+                if(paymentMethod.includes('الاستلام')) paymentIcon = '💰';
+                else if(paymentMethod.includes('أجل')) paymentIcon = '🏦';
+                else if(paymentMethod.includes('شيك')) paymentIcon = '📄';
+
+                // رابط اللوكيشن
+                const locationLink = order.location && order.location !== 'لم يتم التحديد' 
+                    ? `<a href="${order.location}" target="_blank" class="location-link">📍 عرض الموقع على الخريطة</a>` 
+                    : 'لم يحدد';
+
+                // حساب المؤشر الحقيقي للطلب داخل المصفوفة الأصلية
+                const realIndex = orders.length - 1 - index;
 
                 div.innerHTML = `
                     <div class="order-header">
@@ -478,6 +518,8 @@
                         <p><strong>👤 العميل:</strong> ${order.name || 'غير محدد'}</p>
                         <p><strong>📱 الهاتف:</strong> ${order.phone || 'غير محدد'}</p>
                         <p><strong>📍 العنوان:</strong> ${order.address || 'غير محدد'}</p>
+                        <p><strong>🗺️ اللوكيشن:</strong> ${locationLink}</p>
+                        <p><strong>🚚 الاستلام:</strong> ${order.method || 'غير محدد'}</p>
                     </div>
                     ${itemsHtml}
                     <div class="order-footer">
@@ -485,6 +527,17 @@
                         <span class="order-payment">
                             <i>${paymentIcon}</i> ${paymentMethod}
                         </span>
+                    </div>
+
+                    <!-- 🔴 نظام تتبع الشحنة للأدمن -->
+                    <div class="admin-tracking-box">
+                        <label style="font-weight: bold; color: #333; display: block; margin-bottom: 5px;">تحديث حالة الشحنة:</label>
+                        <select class="admin-status-select" id="status_${realIndex}" onchange="updateOrderStatus(${realIndex}, this.value)">
+                            <option value="قيد التجهيز" ${order.tracking && order.tracking.status === 'قيد التجهيز' ? 'selected' : ''}>قيد التجهيز</option>
+                            <option value="تم الشحن" ${order.tracking && order.tracking.status === 'تم الشحن' ? 'selected' : ''}>تم الشحن</option>
+                            <option value="في الطريق" ${order.tracking && order.tracking.status === 'في الطريق' ? 'selected' : ''}>في الطريق</option>
+                            <option value="تم التسليم" ${order.tracking && order.tracking.status === 'تم التسليم' ? 'selected' : ''}>تم التسليم</option>
+                        </select>
                     </div>
                 `;
                 container.appendChild(div);
@@ -514,7 +567,25 @@
         }
 
         // ================================================================
-        // 3. تفريغ الطلبات
+        // 3. تحديث حالة الشحنة من الأدمن
+        // ================================================================
+        function updateOrderStatus(index, newStatus) {
+            let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            if(orders[index]) {
+                // التأكد من وجود كائن التتبع
+                if(!orders[index].tracking) {
+                    orders[index].tracking = {};
+                }
+                orders[index].tracking.status = newStatus;
+                orders[index].tracking.lastUpdate = new Date().toLocaleString('ar-EG');
+                localStorage.setItem('utopia_orders', JSON.stringify(orders));
+                showToast('✅ تم تحديث حالة الشحنة بنجاح!', 'success');
+                loadOrders(); // إعادة التحميل لتحديث الواجهة
+            }
+        }
+
+        // ================================================================
+        // 4. تفريغ الطلبات
         // ================================================================
         function clearOrders() {
             if(confirm("⚠️ هل أنت متأكد من حذف جميع الطلبات؟")) {
@@ -525,7 +596,7 @@
         }
 
         // ================================================================
-        // 4. إشعارات (Toast)
+        // 5. إشعارات (Toast)
         // ================================================================
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
@@ -555,31 +626,9 @@
         }
 
         // ================================================================
-        // 5. التحقق من الطلبات الجديدة (من الرابط)
-        // ================================================================
-        function handleNewOrder() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const newOrderParam = urlParams.get('newOrder');
-            
-            if (newOrderParam) {
-                try {
-                    let newOrder = JSON.parse(decodeURIComponent(newOrderParam));
-                    let existingOrders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
-                    existingOrders.push(newOrder);
-                    localStorage.setItem('utopia_orders', JSON.stringify(existingOrders));
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    showToast('✅ تم استلام طلب جديد!', 'success');
-                } catch(e) {
-                    console.error('خطأ في معالجة الطلب الجديد:', e);
-                }
-            }
-            loadOrders();
-        }
-
-        // ================================================================
         // 6. تشغيل عند التحميل
         // ================================================================
-        window.onload = handleNewOrder;
+        window.onload = loadOrders;
 
         // ================================================================
         // 7. تحديث تلقائي كل 30 ثانية
