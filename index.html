@@ -135,25 +135,19 @@
             background: #2563eb;
             transform: scale(1.02);
         }
-        .cloud-btn {
-            background: #8b5cf6;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-            flex: 1;
-            justify-content: center;
-            font-size: 16px;
+
+        /* ===== إشعار السحابي ===== */
+        .cloud-notice {
+            text-align: center;
+            font-size: 12px;
+            color: #8b5cf6;
+            margin-top: 5px;
+            padding: 5px;
+            background: #f3f0ff;
+            border-radius: 8px;
         }
-        .cloud-btn:hover {
-            background: #7c3aed;
-            transform: scale(1.02);
+        .cloud-notice i {
+            margin-left: 5px;
         }
 
         .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
@@ -177,7 +171,6 @@
         body.dir-rtl { direction: rtl; text-align: right; }
         body.dir-ltr { direction: ltr; text-align: left; }
 
-        /* ===== أنيميشن تحميل ===== */
         .loading-spinner {
             display: none;
             text-align: center;
@@ -207,7 +200,7 @@
             .products-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .cart-sidebar { width: 100%; right: -100%; }
             .contact-options { flex-direction: column; }
-            .whatsapp-btn, .email-btn, .cloud-btn { width: 100%; }
+            .whatsapp-btn, .email-btn { width: 100%; }
         }
     </style>
 </head>
@@ -320,6 +313,7 @@
                     <span>جاري الإرسال...</span>
                 </div>
 
+                <!-- ===== أزرار إيميل وواتساب فقط ===== -->
                 <div class="contact-options">
                     <button class="whatsapp-btn" onclick="submitOrderViaWhatsApp()">
                         💬 واتساب
@@ -327,10 +321,13 @@
                     <button class="email-btn" onclick="submitOrderViaEmail()">
                         📧 إيميل
                     </button>
-                    <button class="cloud-btn" onclick="submitOrderViaCloud()">
-                        ☁️ سحابي
-                    </button>
                 </div>
+
+                <!-- ===== إشعار السحابي الأوتوماتيكي ===== -->
+                <div class="cloud-notice">
+                    <i>☁️</i> الطلب هيتسجل تلقائياً في السحابة ويظهر على جميع الأجهزة
+                </div>
+
                 <p style="text-align:center; font-size:12px; color:#999; margin-top:8px;">
                     <span class="lang-ar">اختر طريقة التواصل المفضلة</span>
                     <span class="lang-en">Choose your preferred contact method</span>
@@ -352,8 +349,8 @@
             </div>
             <hr style="margin: 20px 0;">
             <p style="text-align:center; color:#666; font-size:14px;">
-                🔄 الطلبات بتتخزن محلياً على كل جهاز<br>
-                💡 عشان تشوف الطلبات من أي جهاز، استخدم <strong>☁️ سحابي</strong>
+                ☁️ الطلبات بتتسجل تلقائياً في السحابة<br>
+                📱 تقدر تشوفها من أي جهاز عبر <a href="https://formspree.io/" target="_blank">Formspree</a>
             </p>
         </div>
     </div>
@@ -372,10 +369,6 @@
         const STORE_EMAIL = 'utopia_trade26@yahoo.com';
         const WHATSAPP_NUMBER = '201061007100';
         const STORE_NAME = 'يوتوبيا للتجارة والتصدير';
-        
-        // ================================================================
-        // 🔥 رابط Formspree الخاص بك
-        // ================================================================
         const FORMSPREE_URL = 'https://formspree.io/f/xbgrgwog';
 
         // ================================================================
@@ -628,7 +621,46 @@
         }
 
         // ================================================================
-        // 11. عرض رسالة النجاح وتنظيف السلة
+        // 11. ☁️ إرسال السحابي (دالة مشتركة)
+        // ================================================================
+        async function sendToCloud(orderData) {
+            const productsText = orderData.items.map((item, i) => {
+                return `${i + 1}- ${item.nameAr} (العدد: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`;
+            }).join('\n');
+
+            try {
+                const response = await fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "رقم الطلب": orderData.id,
+                        "التاريخ": orderData.date,
+                        "العميل / الشركة": orderData.name,
+                        "الهاتف": orderData.phone,
+                        "العنوان / التفاصيل": orderData.address,
+                        "المنتجات المطلوبة": productsText,
+                        "الإجمالي التقديري": `$${orderData.total.toFixed(2)}`
+                    })
+                });
+
+                if (response.ok) {
+                    console.log("✅ تم إرسال الطلب سحابياً بنجاح!");
+                    return true;
+                } else {
+                    console.log("⚠️ خطأ في الإرسال السحابي");
+                    return false;
+                }
+            } catch (error) {
+                console.error("❌ خطأ في الإرسال السحابي:", error);
+                return false;
+            }
+        }
+
+        // ================================================================
+        // 12. عرض رسالة النجاح وتنظيف السلة
         // ================================================================
         function showSuccessAndCleanup() {
             document.getElementById('formContainer').style.display = 'none';
@@ -640,14 +672,22 @@
         }
 
         // ================================================================
-        // 12. 📧 إرسال الطلب بالإيميل
+        // 13. 📧 إرسال الطلب بالإيميل + سحابي تلقائي
         // ================================================================
-        function submitOrderViaEmail() {
+        async function submitOrderViaEmail() {
             const orderData = buildOrderData();
             if(!orderData) return;
             
+            // حفظ محلياً
             saveOrderToLocalStorage(orderData);
+            
+            // إظهار مؤشر التحميل
+            document.getElementById('loadingSpinner').classList.add('active');
 
+            // ☁️ إرسال سحابي تلقائي (في الخلفية)
+            await sendToCloud(orderData);
+
+            // بناء الإيميل
             const productsText = orderData.items.map((item, i) => {
                 return `${i + 1}- ${item.nameAr} (العدد: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`;
             }).join('%0A');
@@ -671,14 +711,22 @@
         }
 
         // ================================================================
-        // 13. 💬 إرسال الطلب عبر واتساب
+        // 14. 💬 إرسال الطلب عبر واتساب + سحابي تلقائي
         // ================================================================
-        function submitOrderViaWhatsApp() {
+        async function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
             if(!orderData) return;
             
+            // حفظ محلياً
             saveOrderToLocalStorage(orderData);
+            
+            // إظهار مؤشر التحميل
+            document.getElementById('loadingSpinner').classList.add('active');
 
+            // ☁️ إرسال سحابي تلقائي (في الخلفية)
+            await sendToCloud(orderData);
+
+            // بناء رسالة واتساب
             const productsText = orderData.items.map((item, i) => {
                 return `${i + 1}- ${item.nameAr} (العدد: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`;
             }).join('\n');
@@ -696,54 +744,6 @@
 
             const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
-
-            showSuccessAndCleanup();
-        }
-
-        // ================================================================
-        // 14. ☁️ إرسال الطلب سحابياً (Formspree)
-        // ================================================================
-        async function submitOrderViaCloud() {
-            const orderData = buildOrderData();
-            if(!orderData) return;
-            
-            saveOrderToLocalStorage(orderData);
-
-            // إظهار مؤشر التحميل
-            document.getElementById('loadingSpinner').classList.add('active');
-
-            // بناء نص المنتجات
-            const productsText = orderData.items.map((item, i) => {
-                return `${i + 1}- ${item.nameAr} (العدد: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`;
-            }).join('\n');
-
-            // إرسال لـ Formspree
-            try {
-                const response = await fetch(FORMSPREE_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "رقم الطلب": orderData.id,
-                        "التاريخ": orderData.date,
-                        "العميل / الشركة": orderData.name,
-                        "الهاتف": orderData.phone,
-                        "العنوان / التفاصيل": orderData.address,
-                        "المنتجات المطلوبة": productsText,
-                        "الإجمالي التقديري": `$${orderData.total.toFixed(2)}`
-                    })
-                });
-
-                if (response.ok) {
-                    console.log("✅ تم إرسال الطلب سحابياً بنجاح!");
-                } else {
-                    console.log("⚠️ حدث خطأ في الإرسال السحابي، لكن الطلب محفوظ محلياً");
-                }
-            } catch (error) {
-                console.error("❌ خطأ في الإرسال السحابي:", error);
-            }
 
             showSuccessAndCleanup();
         }
@@ -818,6 +818,7 @@
         console.log('💬 واتساب: +' + WHATSAPP_NUMBER);
         console.log('☁️ Formspree: ' + FORMSPREE_URL);
         console.log('📋 لوحة التحكم: أضف ?admin في نهاية الرابط');
+        console.log('✅ السحابي يشتغل تلقائياً مع أي اختيار (إيميل أو واتساب)');
     </script>
 </body>
 </html>
