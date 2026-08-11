@@ -571,7 +571,7 @@
         }
 
         // ================================================================
-        // 11. 📧 إرسال بالإيميل
+        // 11. 📧 إرسال بالإيميل (تم التحديث ليكون احترافياً)
         // ================================================================
         function submitOrderViaEmail() {
             const orderData = buildOrderData();
@@ -579,23 +579,42 @@
             
             saveOrderToLocalStorage(orderData);
 
-            const productsText = orderData.items.map((item, i) => {
-                return `${i + 1}- ${item.nameAr} (العدد: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`;
-            }).join('%0A');
+            // إنشاء جدول المنتجات بشكل مرتب في جسم الإيميل
+            let productsList = "";
+            orderData.items.forEach((item, i) => {
+                productsList += `${i + 1}. ${item.nameAr} (العدد: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}%0A`;
+            });
 
-            const subject = `طلب جديد #${orderData.id} من ${STORE_NAME}`;
+            const subject = `طلب جديد #${orderData.id} - ${STORE_NAME}`;
+            
+            // تنسيق الإيميل بترويسة وجدول ومنسق بشكل جميل (بدون الرموز المشوشة)
             const body = 
-                `📦 طلب جديد من ${STORE_NAME}%0A%0A` +
-                `📋 رقم الطلب: ${orderData.id}%0A` +
-                `🕐 التاريخ: ${orderData.date}%0A%0A` +
-                `👤 العميل: ${orderData.name}%0A` +
-                `📱 الهاتف: ${orderData.phone}%0A` +
-                `📍 العنوان: ${orderData.address}%0A%0A` +
-                `🛒 المنتجات المطلوبة:%0A${productsText}%0A%0A` +
-                `💰 الإجمالي: $${orderData.total.toFixed(2)}%0A%0A` +
-                `شكراً لتسوقكم من ${STORE_NAME} 🔥`;
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
+                `📍 ${STORE_NAME} - طلب شراء جديد 📍%0A` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                
+                `📋 رقم الطلب : ${orderData.id}%0A` +
+                `🕐 التاريخ    : ${orderData.date}%0A` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                
+                `👤 بيانات العميل:%0A` +
+                `▸ الاسم   : ${orderData.name}%0A` +
+                `▸ الهاتف  : ${orderData.phone}%0A` +
+                `▸ العنوان : ${orderData.address}%0A%0A` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                
+                `🛒 تفاصيل المنتجات المطلوبة:%0A` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
+                `${productsList}` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                
+                `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}%0A%0A` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
+                `شكراً لتسوقكم من ${STORE_NAME} 🔥%0A` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
-            const mailtoLink = `mailto:${STORE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            // فتح برنامج الإيميل
+            const mailtoLink = `mailto:${STORE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${body}`;
             window.open(mailtoLink, '_blank');
 
             document.getElementById('formContainer').style.display = 'none';
@@ -605,7 +624,7 @@
         }
 
         // ================================================================
-        // 12. 💬 إرسال بالواتساب
+        // 12. 💬 إرسال بالواتساب (تم التحديث ليكون احترافياً)
         // ================================================================
         function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
@@ -613,20 +632,37 @@
             
             saveOrderToLocalStorage(orderData);
 
-            const productsText = orderData.items.map((item, i) => {
-                return `${i + 1}- ${item.nameAr} (العدد: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`;
-            }).join('\n');
+            // إنشاء قائمة المنتجات للواتساب
+            let productsList = "";
+            orderData.items.forEach((item, i) => {
+                productsList += `${i + 1}. ${item.nameAr} (العدد: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`;
+            });
 
+            // تنسيق رسالة الواتساب
             const message = 
-                `📦 طلب جديد من ${STORE_NAME}\n\n` +
-                `📋 رقم الطلب: ${orderData.id}\n` +
-                `🕐 التاريخ: ${orderData.date}\n\n` +
-                `👤 العميل: ${orderData.name}\n` +
-                `📱 الهاتف: ${orderData.phone}\n` +
-                `📍 العنوان: ${orderData.address}\n\n` +
-                `🛒 المنتجات المطلوبة:\n${productsText}\n\n` +
-                `💰 الإجمالي: $${orderData.total.toFixed(2)}\n\n` +
-                `شكراً لتسوقكم من ${STORE_NAME} 🔥`;
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+                `📍 ${STORE_NAME} - طلب شراء جديد 📍\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                
+                `📋 رقم الطلب : ${orderData.id}\n` +
+                `🕐 التاريخ    : ${orderData.date}\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                
+                `👤 بيانات العميل:\n` +
+                `▸ الاسم   : ${orderData.name}\n` +
+                `▸ الهاتف  : ${orderData.phone}\n` +
+                `▸ العنوان : ${orderData.address}\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                
+                `🛒 تفاصيل المنتجات المطلوبة:\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+                `${productsList}` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                
+                `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+                `شكراً لتسوقكم من ${STORE_NAME} 🔥\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
             const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
