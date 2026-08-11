@@ -498,7 +498,6 @@
                 const paymentMethod = order.payment || 'لم يحدد';
                 let paymentIcon = '💳';
                 if(paymentMethod.includes('الاستلام')) paymentIcon = '💰';
-                else if(paymentMethod.includes('أجل')) paymentIcon = '🏦';
                 else if(paymentMethod.includes('شيك')) paymentIcon = '📄';
 
                 // رابط اللوكيشن
@@ -519,6 +518,7 @@
                         <p><strong>📱 الهاتف:</strong> ${order.phone || 'غير محدد'}</p>
                         <p><strong>📍 العنوان:</strong> ${order.address || 'غير محدد'}</p>
                         <p><strong>🗺️ اللوكيشن:</strong> ${locationLink}</p>
+                        <p><strong>📄 نوع الطلب:</strong> ${order.orderType || 'غير محدد'}</p> <!-- 🔴 جديد -->
                         <p><strong>🚚 الاستلام:</strong> ${order.method || 'غير محدد'}</p>
                     </div>
                     ${itemsHtml}
