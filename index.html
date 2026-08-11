@@ -84,8 +84,7 @@
         .checkout-modal h2 { margin-bottom: 15px; color: #0a1e2d; text-align: center; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
-        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; }
-        .submit-order-btn { width: 100%; padding: 12px; background: #8bc34a; color: white; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; margin-top: 10px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; }
         .success-msg { display: none; text-align: center; color: #27ae60; font-weight: bold; font-size: 18px; padding: 20px; }
 
         .contact-options {
@@ -147,6 +146,8 @@
         .order-card ul { margin: 10px 0; padding-right: 20px; }
         .order-card li { margin-bottom: 5px; }
         .order-total { font-size: 18px; font-weight: bold; color: #2ecc71; margin-top: 10px; }
+        
+        .admin-status-select { margin-top: 10px; padding: 5px; border-radius: 5px; border: 1px solid #ddd; width: 100%; }
 
         footer { background: #0a1e2d; color: white; text-align: center; padding: 20px; margin-top: auto; border-top: 4px solid #8bc34a; }
         footer a { color: #8bc34a; text-decoration: none; font-weight: bold; }
@@ -257,20 +258,42 @@
             <span class="modal-close" onclick="closeCheckoutModal()">&times;</span>
             <div id="formContainer">
                 <h2><span class="lang-ar">بيانات الطلب أو عرض السعر</span><span class="lang-en">Order / Quote Details</span></h2>
+                
                 <div class="form-group">
                     <label><span class="lang-ar">الاسم الكامل / الشركة</span><span class="lang-en">Full Name / Company</span></label>
                     <input type="text" id="custName" placeholder="أدخل اسمك أو اسم الشركة">
                 </div>
+                
                 <div class="form-group">
                     <label><span class="lang-ar">رقم الهاتف</span><span class="lang-en">Phone Number</span></label>
                     <input type="tel" id="custPhone" placeholder="+20 100 000 0000">
                 </div>
+
+                <div class="form-group">
+                    <label><span class="lang-ar">طريقة الاستلام</span><span class="lang-en">Pickup/Delivery Method</span></label>
+                    <select id="deliveryMethod" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
+                        <option value="توصيل للمنزل">🚚 توصيل للمنزل</option>
+                        <option value="استلام من المخازن">🏢 استلام من المخازن</option>
+                    </select>
+                </div>
+
                 <div class="form-group">
                     <label><span class="lang-ar">العنوان / الملاحظات والأقطار المطلوبة</span><span class="lang-en">Address / Notes & Required Sizes</span></label>
                     <textarea id="custAddress" rows="3" placeholder="أدخل العنوان أو تفاصيل الجداول والأقطار المطلوبة..."></textarea>
                 </div>
+                
+                <div class="form-group">
+                    <label><span class="lang-ar">📍 إضافة الموقع الجغرافي (اللوكيشن)</span><span class="lang-en">📍 Add Location</span></label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="custLocation" placeholder="اضغط على الزر للحصول على موقعك" readonly style="flex-grow: 1; background-color: #f9f9f9; cursor: not-allowed;">
+                        <button type="button" onclick="getUserLocation()" style="padding: 0 15px; background: #0a1e2d; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">📍 تحديد</button>
+                    </div>
+                    <small style="display: block; margin-top: 5px; color: #777;">
+                        <span class="lang-ar">اضغط "تحديد" للحصول على موقعك الحالي (يعمل فقط عبر HTTPS).</span>
+                        <span class="lang-en">Click "Locate" to get your current position (HTTPS only).</span>
+                    </small>
+                </div>
 
-                <!-- ===== أزرار إيميل وواتساب فقط ===== -->
                 <div class="contact-options">
                     <button class="whatsapp-btn" onclick="submitOrderViaWhatsApp()">
                         💬 واتساب
@@ -285,9 +308,24 @@
                     <span class="lang-en">Choose your preferred contact method</span>
                 </p>
             </div>
-            <div class="success-msg" id="successMessage">
-                <span class="lang-ar">🎉 تم استلام طلبك بنجاح وسنتواصل معك قريباً!</span>
-                <span class="lang-en">🎉 Request received successfully!</span>
+            
+            <div class="success-msg" id="successMessage" style="display:none;">
+                <span class="lang-ar">🎉 تم استلام طلبك بنجاح!</span>
+                <span class="lang-en">🎉 Order received successfully!</span>
+                <br>
+                <button onclick="openTracking()" style="margin-top:15px; padding: 10px 20px; background: #0a1e2d; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px;">
+                    📦 تتبع شحنتك
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="trackingModal">
+        <div class="checkout-modal" style="max-width: 500px;">
+            <span class="modal-close" onclick="closeTracking()">&times;</span>
+            <h2>📦 تتبع الشحنة</h2>
+            <div id="trackingContent">
+                <p style="text-align: center; color: #555;">جاري تحميل حالة الشحنة...</p>
             </div>
         </div>
     </div>
@@ -331,95 +369,21 @@
         // 3. بيانات المنتجات
         // ================================================================
         const productsData = [
-            { 
-                id: 1, 
-                cat: 'paddle-flanges', 
-                nameAr: 'بادل فلانش استانلس ستيل (Paddle Flange Stainless Steel)', 
-                nameEn: 'Paddle Flange Stainless Steel', 
-                price: 120.00, 
-                img: 'https://i.postimg.cc/wxFssk36/badl-flansh-astanls-styl.png', 
-                descAr: 'مقاومة عالية للتآكل والصدأ، مطابقة للمواصفات القياسية لأنظمة الحريق والمصانع.',
-                descEn: 'High corrosion resistance, compliant with fire suppression standards.'
-            },
-            { 
-                id: 2, 
-                cat: 'paddle-flanges', 
-                nameAr: 'بادل فلانش مجلفن (Galvanized Paddle Flange)', 
-                nameEn: 'Galvanized Paddle Flange', 
-                price: 90.00, 
-                img: 'https://i.postimg.cc/MGvYsKrT/badl-flansh-mjlfn.jpg', 
-                descAr: 'بادل فلانش حديد مغطاة بطبقة جلفنة ساخنة لتحمل الضغوط وظروف الطقس القاسية.',
-                descEn: 'Hot-dip galvanized steel paddle flange built for tough weather conditions.'
-            },
-            { 
-                id: 3, 
-                cat: 'flanges', 
-                nameAr: 'فلانشات لحام رقبة (Weld Neck Flanges)', 
-                nameEn: 'Weld Neck Flanges', 
-                price: 150.00, 
-                img: 'https://i.postimg.cc/3RPkBL57/66606066.png', 
-                descAr: 'فلانشات ذات رقبة ملحومة لتوزيع الضغط بكفاءة عالية في خطوط الأنابيب والضغط العالي.',
-                descEn: 'Weld neck flanges designed for high pressure piping systems.'
-            },
-            { 
-                id: 4, 
-                cat: 'fire', 
-                nameAr: 'هويات وموانع دوامة (Vortex Breakers & Hoods)', 
-                nameEn: 'Vortex Breakers & Air Vents', 
-                price: 250.00, 
-                img: 'https://i.postimg.cc/9fnwnX5K/Whats-App-Image-2026-04-26-at-15-45-40.jpg', 
-                descAr: 'تستخدم لمنع تكون الدوامات الهوائية في خزانات ومضخات الحريق لضمان تدفق مستقر.',
-                descEn: 'Prevents air vortex formation in fire water tanks to ensure steady flow.'
-            },
-            { 
-                id: 5, 
-                cat: 'fittings', 
-                nameAr: 'قطع قلاووظ مجلفنة (Galvanized Threaded Fittings)', 
-                nameEn: 'Galvanized Threaded Fittings', 
-                price: 25.00, 
-                img: 'https://i.postimg.cc/RhvspTzG/9999999999999.png', 
-                descAr: 'كوع، تايوان، جلب ونبل قلاووظ مجلفن عالي الجودة لشبكات الحريق والمياه.',
-                descEn: 'High quality galvanized elbows, tees, and nipples for pipe networks.'
-            },
-            { 
-                id: 6, 
-                cat: 'fittings', 
-                nameAr: 'قطع قلاووظ استانلس ستيل (Stainless Steel Threaded Fittings)', 
-                nameEn: 'Stainless Steel Threaded Fittings', 
-                price: 45.00, 
-                img: 'https://i.postimg.cc/J4kDdCPG/pro621-x660.jpg', 
-                descAr: 'وصلات وقلاووظ مصنعة بالكامل من الاستانلس ستيل المقاوم للأحماض والصدأ (304/316).',
-                descEn: 'Grade 304/316 stainless steel threaded fittings for chemical & fire use.'
-            },
-            { 
-                id: 7, 
-                cat: 'pipes', 
-                nameAr: ' مواسير استانلس دوبلكس (Duplex Stainless Steel Pipe Fittings)', 
-                nameEn: 'Duplex Stainless Steel Pipe Fittings', 
-                price: 320.00, 
-                img: 'https://i.postimg.cc/cHCGkZMx/465324651321.png', 
-                descAr: 'مقاومة فائقة للتشقق الإجهادي والكلوريدات، مثالية لمحطات التحلية وأنظمة الحريق البحرية.',
-                descEn: 'Superior resistance to stress corrosion cracking for marine fire systems.'
-            },
-            { 
-                id: 8, 
-                cat: 'pipes', 
-                nameAr: 'مواسير سيملس بجميع الأقطار والجداول (Seamless Pipes - All Sizes & Schedules)', 
-                nameEn: 'Seamless Pipes (All Diameters & Schedules)', 
-                price: 180.00, 
-                img: 'https://i.postimg.cc/SsnN2cPY/33333333.png', 
-                descAr: 'مواسير بدون لحام (Seamless) متوفرة بكل الجداول (Sch 40, Sch 80) والأقطار المختلفة.',
-                descEn: 'Seamless pipes available in all schedules (Sch 40, Sch 80) and diameters.'
-            }
+            { id: 1, cat: 'paddle-flanges', nameAr: 'بادل فلانش استانلس ستيل', nameEn: 'Paddle Flange SS', price: 120.00, img: 'https://i.postimg.cc/wxFssk36/badl-flansh-astanls-styl.png', descAr: 'مقاومة عالية للتآكل.', descEn: 'High corrosion resistance.' },
+            { id: 2, cat: 'paddle-flanges', nameAr: 'بادل فلانش مجلفن', nameEn: 'Galvanized Paddle Flange', price: 90.00, img: 'https://i.postimg.cc/MGvYsKrT/badl-flansh-mjlfn.jpg', descAr: 'طبقة جلفنة ساخنة.', descEn: 'Hot-dip galvanized.' },
+            { id: 3, cat: 'flanges', nameAr: 'فلانشات لحام رقبة', nameEn: 'Weld Neck Flanges', price: 150.00, img: 'https://i.postimg.cc/3RPkBL57/66606066.png', descAr: 'توزيع الضغط بكفاءة.', descEn: 'High pressure systems.' },
+            { id: 4, cat: 'fire', nameAr: 'هويات وموانع دوامة', nameEn: 'Vortex Breakers & Hoods', price: 250.00, img: 'https://i.postimg.cc/9fnwnX5K/Whats-App-Image-2026-04-26-at-15-45-40.jpg', descAr: 'منع الدوامات الهوائية.', descEn: 'Prevents vortex formation.' },
+            { id: 5, cat: 'fittings', nameAr: 'قطع قلاووظ مجلفنة', nameEn: 'Galvanized Threaded Fittings', price: 25.00, img: 'https://i.postimg.cc/RhvspTzG/9999999999999.png', descAr: 'كوع وتايوان عالي الجودة.', descEn: 'High quality elbows.' },
+            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ استانلس', nameEn: 'SS Threaded Fittings', price: 45.00, img: 'https://i.postimg.cc/J4kDdCPG/pro621-x660.jpg', descAr: 'مقاوم للأحماض (304/316).', descEn: 'Acid resistant (304/316).' },
+            { id: 7, cat: 'pipes', nameAr: 'مواسير استانلس دوبلكس', nameEn: 'Duplex SS Pipe Fittings', price: 320.00, img: 'https://i.postimg.cc/cHCGkZMx/465324651321.png', descAr: 'مقاومة للتشقق الإجهادي.', descEn: 'Stress corrosion resistant.' },
+            { id: 8, cat: 'pipes', nameAr: 'مواسير سيملس', nameEn: 'Seamless Pipes', price: 180.00, img: 'https://i.postimg.cc/SsnN2cPY/33333333.png', descAr: 'بدون لحام، جميع الجداول.', descEn: 'Seamless, all schedules.' }
         ];
 
-        // ================================================================
-        // 4. حالة السلة
-        // ================================================================
         let cart = [];
+        let lastOrderId = null; // لتخزين رقم آخر طلب للتتبع
 
         // ================================================================
-        // 5. عرض المنتجات
+        // 4. عرض المنتجات
         // ================================================================
         function renderProducts(category = 'all', searchQuery = '') {
             const container = document.getElementById('productsContainer');
@@ -427,8 +391,7 @@
             
             let filtered = productsData.filter(p => {
                 const matchCat = (category === 'all' || p.cat === category);
-                const matchSearch = p.nameAr.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                    p.nameEn.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchSearch = p.nameAr.toLowerCase().includes(searchQuery.toLowerCase()) || p.nameEn.toLowerCase().includes(searchQuery.toLowerCase());
                 return matchCat && matchSearch;
             });
 
@@ -448,55 +411,35 @@
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
-                    <div class="img-box">
-                        <img src="${p.img}" alt="${p.nameEn}" loading="lazy">
-                    </div>
+                    <div class="img-box"><img src="${p.img}" alt="${p.nameEn}" loading="lazy"></div>
                     <div class="p-info">
                         <h3><span class="lang-ar">${p.nameAr}</span><span class="lang-en">${p.nameEn}</span></h3>
-                        <span class="tag">
-                            <span class="lang-ar">${catTextAr}</span>
-                            <span class="lang-en">${p.cat}</span>
-                        </span>
+                        <span class="tag"><span class="lang-ar">${catTextAr}</span><span class="lang-en">${p.cat}</span></span>
                         <p><span class="lang-ar">${p.descAr}</span><span class="lang-en">${p.descEn}</span></p>
                         <span class="p-price">$${p.price.toFixed(2)}</span>
-                        <button class="add-cart-btn" onclick="addToCart(${p.id})">
-                            <span class="lang-ar">أضف إلى السلة</span>
-                            <span class="lang-en">Add to Cart</span>
-                        </button>
+                        <button class="add-cart-btn" onclick="addToCart(${p.id})"><span class="lang-ar">أضف إلى السلة</span><span class="lang-en">Add to Cart</span></button>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        // ================================================================
-        // 6. وظائف الفلتر والبحث
-        // ================================================================
         function filterCategory(cat, event) {
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-            if(event && event.currentTarget) {
-                event.currentTarget.classList.add('active');
-            }
-            const query = document.getElementById('searchInput').value;
-            renderProducts(cat, query);
+            if(event && event.currentTarget) event.currentTarget.classList.add('active');
+            renderProducts(cat, document.getElementById('searchInput').value);
         }
-
-        function handleSearch() {
-            const query = document.getElementById('searchInput').value;
-            renderProducts('all', query);
-        }
+        function handleSearch() { renderProducts('all', document.getElementById('searchInput').value); }
 
         // ================================================================
-        // 7. وظائف السلة
+        // 5. وظائف السلة
         // ================================================================
         function addToCart(id) {
             const item = productsData.find(p => p.id === id);
             const exist = cart.find(p => p.id === id);
             if(exist) exist.quantity++; else cart.push({...item, quantity: 1});
-            updateCartUI();
-            openCart();
+            updateCartUI(); openCart();
         }
-
         function updateCartUI() {
             const container = document.getElementById('cartItemsContainer');
             const totalEl = document.getElementById('cartTotalPrice');
@@ -504,8 +447,7 @@
             container.innerHTML = '';
             let total = 0, count = 0;
             cart.forEach((item, i) => {
-                total += item.price * item.quantity;
-                count += item.quantity;
+                total += item.price * item.quantity; count += item.quantity;
                 const name = document.body.classList.contains('dir-ltr') ? item.nameEn : item.nameAr;
                 container.innerHTML += `
                     <div class="cart-item">
@@ -521,14 +463,13 @@
             totalEl.innerText = `$${total.toFixed(2)}`;
             countEl.innerText = count;
         }
-
         function changeQty(i, c) { if(cart[i].quantity + c > 0) cart[i].quantity += c; else removeItem(i); updateCartUI(); }
         function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
         function openCart() { document.getElementById('cartSidebar').classList.add('open'); document.getElementById('overlay').classList.add('active'); }
         function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
 
         // ================================================================
-        // 8. فتح وإغلاق نموذج الطلب
+        // 6. فتح وإغلاق النماذج
         // ================================================================
         function openCheckoutModal() {
             if(cart.length === 0) return alert("السلة فارغة برجاء اختيار المنتجات أولاً");
@@ -539,142 +480,172 @@
         function closeCheckoutModal() { document.getElementById('checkoutModal').classList.remove('active'); }
 
         // ================================================================
-        // 9. حفظ الطلب في LocalStorage
+        // 7. الموقع الجغرافي
         // ================================================================
-        function saveOrderToLocalStorage(orderData) {
-            let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
-            orders.push(orderData);
-            localStorage.setItem('utopia_orders', JSON.stringify(orders));
+        function getUserLocation() {
+            const locationInput = document.getElementById('custLocation');
+            if (navigator.geolocation) {
+                locationInput.value = "جاري الحصول على الموقع...";
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude; const lng = position.coords.longitude;
+                        locationInput.value = `https://www.google.com/maps?q=${lat},${lng}`;
+                    },
+                    (error) => { locationInput.value = "تعذر الحصول على الموقع."; alert("يرجى السماح بالوصول للموقع أو كتابته يدوياً."); }
+                );
+            } else { locationInput.value = "المتصفح لا يدعم تحديد الموقع."; }
         }
 
         // ================================================================
-        // 10. بناء بيانات الطلب
+        // 8. حفظ الطلب في LocalStorage (مع نظام التتبع)
+        // ================================================================
+        function saveOrderToLocalStorage(orderData) {
+            let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            // إضافة حالات التتبع
+            orderData.tracking = {
+                status: 'قيد التجهيز', // الحالة الافتراضية
+                lastUpdate: new Date().toLocaleString('ar-EG'),
+                history: ['تم استلام الطلب بنجاح']
+            };
+            orders.push(orderData);
+            localStorage.setItem('utopia_orders', JSON.stringify(orders));
+            lastOrderId = orderData.id;
+        }
+
+        // ================================================================
+        // 9. بناء بيانات الطلب
         // ================================================================
         function buildOrderData() {
             const name = document.getElementById('custName').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
             const address = document.getElementById('custAddress').value.trim();
-            if(!name || !phone || !address) {
-                alert("برجاء إكمال جميع الحقول المطلوبة");
-                return null;
-            }
+            const location = document.getElementById('custLocation').value.trim() || "لم يتم التحديد";
+            const method = document.getElementById('deliveryMethod').value;
 
+            if(!name || !phone || !address) { alert("برجاء إكمال جميع الحقول المطلوبة"); return null; }
             let total = cart.reduce((t, i) => t + (i.price * i.quantity), 0);
-            let orderData = {
+            return {
                 id: Date.now(),
                 date: new Date().toLocaleString('ar-EG'),
-                name, phone, address,
+                name, phone, address, location, method,
                 items: JSON.parse(JSON.stringify(cart)),
                 total: total
             };
-            return orderData;
         }
 
         // ================================================================
-        // 11. 📧 إرسال بالإيميل (تم التحديث ليكون احترافياً)
+        // 10. 📧 إرسال بالإيميل
         // ================================================================
         function submitOrderViaEmail() {
             const orderData = buildOrderData();
             if(!orderData) return;
-            
             saveOrderToLocalStorage(orderData);
 
-            // إنشاء جدول المنتجات بشكل مرتب في جسم الإيميل
             let productsList = "";
-            orderData.items.forEach((item, i) => {
-                productsList += `${i + 1}. ${item.nameAr} (العدد: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}%0A`;
-            });
+            orderData.items.forEach((item, i) => { productsList += `${i + 1}. ${item.nameAr} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}%0A`; });
 
             const subject = `طلب جديد #${orderData.id} - ${STORE_NAME}`;
-            
-            // تنسيق الإيميل بترويسة وجدول ومنسق بشكل جميل (بدون الرموز المشوشة)
             const body = 
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
-                `📍 ${STORE_NAME} - طلب شراء جديد 📍%0A` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
-                
-                `📋 رقم الطلب : ${orderData.id}%0A` +
-                `🕐 التاريخ    : ${orderData.date}%0A` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
-                
-                `👤 بيانات العميل:%0A` +
-                `▸ الاسم   : ${orderData.name}%0A` +
-                `▸ الهاتف  : ${orderData.phone}%0A` +
-                `▸ العنوان : ${orderData.address}%0A%0A` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
-                
-                `🛒 تفاصيل المنتجات المطلوبة:%0A` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
-                `${productsList}` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
-                
-                `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}%0A%0A` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
-                `شكراً لتسوقكم من ${STORE_NAME} 🔥%0A` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A📍 ${STORE_NAME} - طلب شراء جديد 📍%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                `📋 رقم الطلب : ${orderData.id}%0A🕐 التاريخ    : ${orderData.date}%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                `👤 بيانات العميل:%0A▸ الاسم   : ${orderData.name}%0A▸ الهاتف  : ${orderData.phone}%0A▸ العنوان : ${orderData.address}%0A▸ اللوكيشن: ${orderData.location}%0A▸ طريقة الاستلام: ${orderData.method}%0A%0A` +
+                `🛒 تفاصيل المنتجات:%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}%0A%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0Aشكراً لتسوقكم ${STORE_NAME} 🔥%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
-            // فتح برنامج الإيميل
-            const mailtoLink = `mailto:${STORE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${body}`;
-            window.open(mailtoLink, '_blank');
-
-            document.getElementById('formContainer').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'block';
-            cart = []; updateCartUI();
-            setTimeout(() => closeCheckoutModal(), 4000);
+            window.open(`mailto:${STORE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${body}`, '_blank');
+            showSuccessWithTracking();
         }
 
         // ================================================================
-        // 12. 💬 إرسال بالواتساب (تم التحديث ليكون احترافياً)
+        // 11. 💬 إرسال بالواتساب
         // ================================================================
         function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
             if(!orderData) return;
-            
             saveOrderToLocalStorage(orderData);
 
-            // إنشاء قائمة المنتجات للواتساب
             let productsList = "";
-            orderData.items.forEach((item, i) => {
-                productsList += `${i + 1}. ${item.nameAr} (العدد: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`;
-            });
+            orderData.items.forEach((item, i) => { productsList += `${i + 1}. ${item.nameAr} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`; });
 
-            // تنسيق رسالة الواتساب
             const message = 
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-                `📍 ${STORE_NAME} - طلب شراء جديد 📍\n` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-                
-                `📋 رقم الطلب : ${orderData.id}\n` +
-                `🕐 التاريخ    : ${orderData.date}\n` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-                
-                `👤 بيانات العميل:\n` +
-                `▸ الاسم   : ${orderData.name}\n` +
-                `▸ الهاتف  : ${orderData.phone}\n` +
-                `▸ العنوان : ${orderData.address}\n\n` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-                
-                `🛒 تفاصيل المنتجات المطلوبة:\n` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-                `${productsList}` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-                
-                `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}\n\n` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-                `شكراً لتسوقكم من ${STORE_NAME} 🔥\n` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📍 ${STORE_NAME} - طلب شراء جديد 📍\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                `📋 رقم الطلب : ${orderData.id}\n🕐 التاريخ    : ${orderData.date}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                `👤 بيانات العميل:\n▸ الاسم   : ${orderData.name}\n▸ الهاتف  : ${orderData.phone}\n▸ العنوان : ${orderData.address}\n▸ اللوكيشن: ${orderData.location}\n▸ طريقة الاستلام: ${orderData.method}\n\n` +
+                `🛒 تفاصيل المنتجات:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nشكراً لتسوقكم ${STORE_NAME} 🔥\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
-            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-
-            document.getElementById('formContainer').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'block';
-            cart = []; updateCartUI();
-            setTimeout(() => closeCheckoutModal(), 4000);
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+            showSuccessWithTracking();
         }
 
         // ================================================================
-        // 13. لوحة التحكم
+        // 12. 🔴 نظام التتبع (للعميل)
+        // ================================================================
+        function showSuccessWithTracking() {
+            document.getElementById('formContainer').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            cart = []; updateCartUI();
+            // لا نغلق المودال تلقائياً حتى يضغط العميل على التتبع
+        }
+
+        function openTracking() {
+            closeCheckoutModal(); // إغلاق نموذج الطلب
+            document.getElementById('trackingModal').classList.add('active');
+            loadTrackingData();
+        }
+
+        function closeTracking() {
+            document.getElementById('trackingModal').classList.remove('active');
+        }
+
+        function loadTrackingData() {
+            const container = document.getElementById('trackingContent');
+            const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            // نبحث عن آخر طلب تم إنشاؤه
+            const order = orders.find(o => o.id === lastOrderId);
+            
+            if(!order) {
+                container.innerHTML = `<p style="text-align: center; color: #e74c3c;">عذراً، لم نتمكن من العثور على الطلب.</p>`;
+                return;
+            }
+
+            // حساب الوقت المتبقي (محاكاة)
+            const orderDate = new Date(order.date);
+            const currentDate = new Date();
+            const diffDays = Math.ceil((currentDate - orderDate) / (1000 * 60 * 60 * 24));
+            let remainingTime = "";
+            let progressColor = "#f39c12";
+
+            if (diffDays === 0) {
+                remainingTime = "جاري التجهيز (سيتم الشحن خلال 24 ساعة)";
+                progressColor = "#3498db";
+            } else if (diffDays <= 3) {
+                remainingTime = `الشحنة في الطريق، متبقي حوالي ${4 - diffDays} أيام للتسليم.`;
+                progressColor = "#f1c40f";
+            } else {
+                remainingTime = "تم التسليم بنجاح ✓";
+                progressColor = "#2ecc71";
+            }
+
+            container.innerHTML = `
+                <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-top: 10px;">
+                    <p style="font-size: 14px; color: #777; margin-bottom: 10px;"><strong>رقم التتبع:</strong> #${order.id}</p>
+                    <p style="font-size: 14px; color: #777; margin-bottom: 20px;"><strong>الحالة الحالية:</strong></p>
+                    
+                    <div style="background: white; border: 2px solid ${progressColor}; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 15px;">
+                        <h3 style="color: ${progressColor}; margin: 0;">${order.tracking.status}</h3>
+                    </div>
+                    
+                    <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
+                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">🕒 الوقت المتوقع للتسليم</h4>
+                        <p style="font-size: 16px; color: #333; font-weight: bold;">${remainingTime}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ================================================================
+        // 13. لوحة التحكم (للأدمين مع إمكانية تحديث الحالة)
         // ================================================================
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
@@ -682,9 +653,7 @@
             if(modal.classList.contains('active')) loadAdminOrders();
         }
 
-        function closeAdmin() {
-            document.getElementById('adminModal').classList.remove('active');
-        }
+        function closeAdmin() { document.getElementById('adminModal').classList.remove('active'); }
 
         function loadAdminOrders() {
             const container = document.getElementById('adminOrdersContainer');
@@ -695,7 +664,8 @@
             }
             
             container.innerHTML = '';
-            orders.reverse().forEach(order => {
+            orders.reverse().forEach((order, index) => {
+                // استخدام الرقم الحقيقي في المصفوفة للتعديل
                 let itemsHtml = `<ul>`;
                 if(order.items && order.items.length > 0) {
                     order.items.forEach(item => { 
@@ -703,6 +673,7 @@
                     });
                 }
                 itemsHtml += `</ul>`;
+
                 container.innerHTML += `
                     <div class="order-card">
                         <h3>طلب #${order.id}</h3>
@@ -710,11 +681,37 @@
                         <p><strong>العميل:</strong> ${order.name}</p>
                         <p><strong>الهاتف:</strong> ${order.phone}</p>
                         <p><strong>العنوان:</strong> ${order.address}</p>
+                        <p><strong>اللوكيشن:</strong> ${order.location || 'لم يحدد'}</p>
+                        <p><strong>طريقة الاستلام:</strong> ${order.method}</p>
                         ${itemsHtml}
                         <div class="order-total">الإجمالي: $${order.total.toFixed(2)}</div>
+                        
+                        <div style="margin-top: 15px; border-top: 1px solid #ddd; padding-top: 15px;">
+                            <label style="font-weight: bold; color: #333; display: block; margin-bottom: 5px;">تحديث حالة الشحنة:</label>
+                            <select class="admin-status-select" id="status_${index}" onchange="updateOrderStatus(${index}, this.value)">
+                                <option value="قيد التجهيز" ${order.tracking && order.tracking.status === 'قيد التجهيز' ? 'selected' : ''}>قيد التجهيز</option>
+                                <option value="تم الشحن" ${order.tracking && order.tracking.status === 'تم الشحن' ? 'selected' : ''}>تم الشحن</option>
+                                <option value="في الطريق" ${order.tracking && order.tracking.status === 'في الطريق' ? 'selected' : ''}>في الطريق</option>
+                                <option value="تم التسليم" ${order.tracking && order.tracking.status === 'تم التسليم' ? 'selected' : ''}>تم التسليم</option>
+                            </select>
+                        </div>
                     </div>
                 `;
             });
+        }
+
+        // دالة لتحديث حالة الطلب من الأدمن
+        function updateOrderStatus(index, newStatus) {
+            let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            // الترتيب العكسي في العرض (لذلك نستخدم الطول - 1 - index)
+            const realIndex = orders.length - 1 - index;
+            if(orders[realIndex]) {
+                orders[realIndex].tracking.status = newStatus;
+                orders[realIndex].tracking.lastUpdate = new Date().toLocaleString('ar-EG');
+                localStorage.setItem('utopia_orders', JSON.stringify(orders));
+                alert("✅ تم تحديث حالة الشحنة بنجاح!");
+                loadAdminOrders(); // إعادة التحميل لتحديث الواجهة
+            }
         }
 
         // ================================================================
@@ -722,15 +719,9 @@
         // ================================================================
         function checkAdminAccess() {
             const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('admin') !== null) {
-                document.getElementById('adminBtn').style.display = 'block';
-            }
+            if (urlParams.get('admin') !== null) { document.getElementById('adminBtn').style.display = 'block'; }
         }
-
-        function toggleLang() { 
-            document.body.classList.toggle('dir-ltr'); 
-            updateCartUI(); 
-        }
+        function toggleLang() { document.body.classList.toggle('dir-ltr'); updateCartUI(); }
 
         // ================================================================
         // 15. تهيئة المتجر
@@ -738,11 +729,6 @@
         renderProducts();
         checkAdminAccess();
         updateCartUI();
-
-        console.log('🔥 مرحباً بك في متجر يوتوبيا للتجارة والتصدير!');
-        console.log('📧 الإيميل: ' + STORE_EMAIL);
-        console.log('💬 واتساب: +' + WHATSAPP_NUMBER);
-        console.log('✅ العميل يختار إيميل أو واتساب والطلب يوصلك مباشرة');
     </script>
 </body>
 </html>
