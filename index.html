@@ -233,6 +233,18 @@
         <div class="products-grid" id="productsContainer"></div>
     </div>
 
+    <!-- 🔴 جديد: قائمة البحث عن الشحنات -->
+    <div class="container" style="margin-top: -20px; margin-bottom: 30px;">
+        <div style="background: white; border-radius: 12px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.06); text-align: center;">
+            <h3 style="color: #0a1e2d; margin-bottom: 15px;">📦 تتبع شحنة موجودة</h3>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <input type="text" id="publicTrackingInput" placeholder="أدخل رقم التتبع (مثال: 1712345678901)" style="padding: 12px 20px; border: 2px solid #ddd; border-radius: 30px; font-size: 16px; outline: none; width: 100%; max-width: 400px; transition: 0.3s;">
+                <button onclick="searchPublicTracking()" style="padding: 12px 30px; background: #0a1e2d; color: white; border: none; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s;">🔍 بحث</button>
+            </div>
+            <div id="publicTrackingResult" style="margin-top: 15px; text-align: right;"></div>
+        </div>
+    </div>
+
     <div class="overlay" id="overlay" onclick="closeCart()"></div>
     
     <div class="cart-sidebar" id="cartSidebar">
@@ -579,73 +591,158 @@
         }
 
         // ================================================================
-        // 12. 🔴 نظام التتبع (للعميل)
+        // 12. 🔴 نظام التتبع (للعميل الخاص / زر الطلب)
         // ================================================================
         function showSuccessWithTracking() {
             document.getElementById('formContainer').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             cart = []; updateCartUI();
-            // لا نغلق المودال تلقائياً حتى يضغط العميل على التتبع
         }
 
         function openTracking() {
-            closeCheckoutModal(); // إغلاق نموذج الطلب
+            closeCheckoutModal();
             document.getElementById('trackingModal').classList.add('active');
-            loadTrackingData();
+            loadTrackingDataById(lastOrderId);
         }
 
         function closeTracking() {
             document.getElementById('trackingModal').classList.remove('active');
         }
 
-        function loadTrackingData() {
+        // دالة عامة لعرض التتبع (تستخدم للزر الخاص ولقائمة البحث العامة)
+        function loadTrackingDataById(orderId) {
             const container = document.getElementById('trackingContent');
             const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
-            // نبحث عن آخر طلب تم إنشاؤه
-            const order = orders.find(o => o.id === lastOrderId);
+            const order = orders.find(o => o.id === orderId);
             
             if(!order) {
-                container.innerHTML = `<p style="text-align: center; color: #e74c3c;">عذراً، لم نتمكن من العثور على الطلب.</p>`;
+                container.innerHTML = `<p style="text-align: center; color: #e74c3c;">عذراً، لم نتمكن من العثور على هذا الطلب.</p>`;
                 return;
             }
 
-            // حساب الوقت المتبقي (محاكاة)
+            // محاكاة رحلة الشحنة والوقت
             const orderDate = new Date(order.date);
             const currentDate = new Date();
             const diffDays = Math.ceil((currentDate - orderDate) / (1000 * 60 * 60 * 24));
             let remainingTime = "";
             let progressColor = "#f39c12";
+            let journey = "";
 
             if (diffDays === 0) {
                 remainingTime = "جاري التجهيز (سيتم الشحن خلال 24 ساعة)";
                 progressColor = "#3498db";
-            } else if (diffDays <= 3) {
+                journey = `📍 <strong>المرحلة الحالية:</strong> الطلب قيد المراجعة في مخازن ${STORE_NAME}.`;
+            } else if (diffDays <= 2) {
                 remainingTime = `الشحنة في الطريق، متبقي حوالي ${4 - diffDays} أيام للتسليم.`;
                 progressColor = "#f1c40f";
+                journey = `🚚 <strong>المرحلة الحالية:</strong> تم الشحن من المستودع، الشحنة في طريقها لمحطة التوزيع.`;
+            } else if (diffDays <= 4) {
+                remainingTime = `الشحنة قاربت على الوصول، متبقي يوم واحد فقط!`;
+                progressColor = "#2ecc71";
+                journey = `📦 <strong>المرحلة الحالية:</strong> الشحنة وصلت لمحطة التوزيع الرئيسية، جاري التجهيز للتسليم النهائي.`;
             } else {
                 remainingTime = "تم التسليم بنجاح ✓";
-                progressColor = "#2ecc71";
+                progressColor = "#27ae60";
+                journey = `✅ <strong>المرحلة الحالية:</strong> تم تسليم الشحنة للعميل بنجاح.`;
             }
 
             container.innerHTML = `
                 <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-top: 10px;">
                     <p style="font-size: 14px; color: #777; margin-bottom: 10px;"><strong>رقم التتبع:</strong> #${order.id}</p>
-                    <p style="font-size: 14px; color: #777; margin-bottom: 20px;"><strong>الحالة الحالية:</strong></p>
+                    <p style="font-size: 14px; color: #777; margin-bottom: 20px;"><strong>اسم العميل:</strong> ${order.name}</p>
                     
                     <div style="background: white; border: 2px solid ${progressColor}; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 15px;">
                         <h3 style="color: ${progressColor}; margin: 0;">${order.tracking.status}</h3>
                     </div>
                     
-                    <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
+                    <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee; margin-bottom: 15px;">
                         <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">🕒 الوقت المتوقع للتسليم</h4>
                         <p style="font-size: 16px; color: #333; font-weight: bold;">${remainingTime}</p>
+                    </div>
+
+                    <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
+                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">🗺️ رحلة الشحنة (راحت فين ووصلت فين)</h4>
+                        <p style="font-size: 15px; color: #333;">${journey}</p>
                     </div>
                 </div>
             `;
         }
 
         // ================================================================
-        // 13. لوحة التحكم (للأدمين مع إمكانية تحديث الحالة)
+        // 13. 🔴 قائمة البحث العامة (جديد)
+        // ================================================================
+        function searchPublicTracking() {
+            const input = document.getElementById('publicTrackingInput').value.trim();
+            const resultContainer = document.getElementById('publicTrackingResult');
+            
+            if(!input) {
+                resultContainer.innerHTML = `<p style="color: #e74c3c; text-align: center;">يرجى إدخال رقم التتبع أولاً.</p>`;
+                return;
+            }
+
+            // تحويل الإدخال لرقم صحيح للبحث
+            const searchId = Number(input);
+            if(isNaN(searchId)) {
+                resultContainer.innerHTML = `<p style="color: #e74c3c; text-align: center;">رقم التتبع غير صحيح، يرجى إدخال أرقام فقط.</p>`;
+                return;
+            }
+
+            const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            const order = orders.find(o => o.id === searchId);
+
+            if(!order) {
+                resultContainer.innerHTML = `<p style="color: #e74c3c; text-align: center;">عذراً، لا يوجد شحنة بهذا الرقم.</p>`;
+                return;
+            }
+
+            // عرض النتيجة في نفس المكان باستخدام نفس منطق التتبع
+            const orderDate = new Date(order.date);
+            const currentDate = new Date();
+            const diffDays = Math.ceil((currentDate - orderDate) / (1000 * 60 * 60 * 24));
+            let remainingTime = "", progressColor = "#f39c12", journey = "";
+
+            if (diffDays === 0) {
+                remainingTime = "جاري التجهيز (سيتم الشحن خلال 24 ساعة)";
+                progressColor = "#3498db";
+                journey = `📍 <strong>المرحلة الحالية:</strong> الطلب قيد المراجعة في مخازن ${STORE_NAME}.`;
+            } else if (diffDays <= 2) {
+                remainingTime = `الشحنة في الطريق، متبقي حوالي ${4 - diffDays} أيام للتسليم.`;
+                progressColor = "#f1c40f";
+                journey = `🚚 <strong>المرحلة الحالية:</strong> تم الشحن من المستودع، الشحنة في طريقها لمحطة التوزيع.`;
+            } else if (diffDays <= 4) {
+                remainingTime = `الشحنة قاربت على الوصول، متبقي يوم واحد فقط!`;
+                progressColor = "#2ecc71";
+                journey = `📦 <strong>المرحلة الحالية:</strong> الشحنة وصلت لمحطة التوزيع الرئيسية، جاري التجهيز للتسليم النهائي.`;
+            } else {
+                remainingTime = "تم التسليم بنجاح ✓";
+                progressColor = "#27ae60";
+                journey = `✅ <strong>المرحلة الحالية:</strong> تم تسليم الشحنة للعميل بنجاح.`;
+            }
+
+            resultContainer.innerHTML = `
+                <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-top: 15px; border: 1px solid #ddd;">
+                    <p style="font-size: 14px; color: #777; margin-bottom: 5px;"><strong>رقم التتبع:</strong> #${order.id}</p>
+                    <p style="font-size: 14px; color: #777; margin-bottom: 15px;"><strong>اسم العميل:</strong> ${order.name}</p>
+                    
+                    <div style="background: white; border: 2px solid ${progressColor}; border-radius: 8px; padding: 15px; text-align: center; margin-bottom: 15px;">
+                        <h3 style="color: ${progressColor}; margin: 0;">${order.tracking.status}</h3>
+                    </div>
+                    
+                    <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee; margin-bottom: 15px;">
+                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">🕒 الوقت المتوقع للتسليم</h4>
+                        <p style="font-size: 16px; color: #333; font-weight: bold;">${remainingTime}</p>
+                    </div>
+
+                    <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
+                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">🗺️ رحلة الشحنة (راحت فين ووصلت فين)</h4>
+                        <p style="font-size: 15px; color: #333;">${journey}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ================================================================
+        // 14. لوحة التحكم (للأدمين مع إمكانية تحديث الحالة)
         // ================================================================
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
@@ -665,7 +762,6 @@
             
             container.innerHTML = '';
             orders.reverse().forEach((order, index) => {
-                // استخدام الرقم الحقيقي في المصفوفة للتعديل
                 let itemsHtml = `<ul>`;
                 if(order.items && order.items.length > 0) {
                     order.items.forEach(item => { 
@@ -700,22 +796,20 @@
             });
         }
 
-        // دالة لتحديث حالة الطلب من الأدمن
         function updateOrderStatus(index, newStatus) {
             let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
-            // الترتيب العكسي في العرض (لذلك نستخدم الطول - 1 - index)
             const realIndex = orders.length - 1 - index;
             if(orders[realIndex]) {
                 orders[realIndex].tracking.status = newStatus;
                 orders[realIndex].tracking.lastUpdate = new Date().toLocaleString('ar-EG');
                 localStorage.setItem('utopia_orders', JSON.stringify(orders));
                 alert("✅ تم تحديث حالة الشحنة بنجاح!");
-                loadAdminOrders(); // إعادة التحميل لتحديث الواجهة
+                loadAdminOrders();
             }
         }
 
         // ================================================================
-        // 14. وظائف عامة
+        // 15. وظائف عامة
         // ================================================================
         function checkAdminAccess() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -724,7 +818,7 @@
         function toggleLang() { document.body.classList.toggle('dir-ltr'); updateCartUI(); }
 
         // ================================================================
-        // 15. تهيئة المتجر
+        // 16. تهيئة المتجر
         // ================================================================
         renderProducts();
         checkAdminAccess();
