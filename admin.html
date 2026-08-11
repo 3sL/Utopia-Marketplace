@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>يوتوبيا للتجارة والتصدير - الطلبات واجمالى المبيعات</title>
+    <title>يوتوبيا للتجارة والتصدير - لوحة التحكم</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -403,19 +403,19 @@
         <div class="logo-area">
             <img src="https://i.postimg.cc/kGBmh9C4/logo.png" alt="Utopia Logo">
             <h1>
-                📋 لوحة التحكم
+                📋 <span class="lang-ar">لوحة التحكم</span><span class="lang-en">Dashboard</span>
                 <span>Utopia Trading & Export</span>
             </h1>
         </div>
         <div class="actions">
             <a class="btn-back" href="https://3sl.github.io/Utopia-Marketplace/">
-                <i>🏠</i> العودة للمتجر
+                <i>🏠</i> <span class="lang-ar">العودة للمتجر</span><span class="lang-en">Back to Store</span>
             </a>
             <button class="btn-refresh" onclick="loadOrders()">
-                <i>🔄</i> تحديث
+                <i>🔄</i> <span class="lang-ar">تحديث</span><span class="lang-en">Refresh</span>
             </button>
             <button class="btn-clear" onclick="clearOrders()">
-                <i>🗑️</i> تفريغ الكل
+                <i>🗑️</i> <span class="lang-ar">تفريغ الكل</span><span class="lang-en">Clear All</span>
             </button>
         </div>
     </header>
@@ -424,15 +424,15 @@
     <div class="stats" id="statsContainer">
         <div class="stat-card">
             <div class="number" id="totalOrders">0</div>
-            <div class="label">📦 إجمالي الطلبات</div>
+            <div class="label">📦 <span class="lang-ar">إجمالي الطلبات</span><span class="lang-en">Total Orders</span></div>
         </div>
         <div class="stat-card">
             <div class="number" id="totalRevenue">$0.00</div>
-            <div class="label">💰 إجمالي المبيعات</div>
+            <div class="label">💰 <span class="lang-ar">إجمالي المبيعات</span><span class="lang-en">Total Revenue</span></div>
         </div>
         <div class="stat-card">
             <div class="number" id="totalItems">0</div>
-            <div class="label">🛒 عدد المنتجات</div>
+            <div class="label">🛒 <span class="lang-ar">عدد المنتجات</span><span class="lang-en">Total Items</span></div>
         </div>
     </div>
 
@@ -442,16 +442,32 @@
     <!-- ===== الفوتر ===== -->
     <footer>
         <p>
-            جميع الحقوق محفوظة - Utopia For Trading And Export &copy; 2026
+            <span class="lang-ar">جميع الحقوق محفوظة - Utopia For Trading And Export &copy; 2026</span>
+            <span class="lang-en">All Rights Reserved &copy; 2026</span>
             <br>
-            تصميم وتطوير: <a href="tel:+201222153415">Eng : Mahmoud Mohamed Marie</a> | 
-            <a href="tel:+201222153415">+201222153415</a>
+            <span class="lang-ar">تصميم وتطوير: <a href="tel:+201222153415">Eng : Mahmoud Mohamed Marie</a> | <a href="tel:+201222153415">+201222153415</a></span>
+            <span class="lang-en">Designed by: <a href="tel:+201222153415">Mahmoud Mohamed Marae</a> | <a href="tel:+201222153415">+201222153415</a></span>
         </p>
     </footer>
 
     <script>
         // ================================================================
-        // 1. تحميل وعرض الطلبات (مع تحديث البيانات الجديدة)
+        // 0. التحقق من اتجاه اللغة (مهم جداً لترجمة الواجهة)
+        // ================================================================
+        function checkLang() {
+            const urlParams = new URLSearchParams(window.location.search);
+            // نعتمد على الرابط إذا كان العميل اختار اللغة الإنجليزية
+            if (urlParams.get('lang') === 'en') {
+                document.body.classList.add('dir-ltr');
+                document.body.classList.remove('dir-rtl');
+            } else {
+                document.body.classList.add('dir-rtl');
+                document.body.classList.remove('dir-ltr');
+            }
+        }
+
+        // ================================================================
+        // 1. تحميل وعرض الطلبات (مع تحديث البيانات الجديدة واللغة)
         // ================================================================
         function loadOrders() {
             const container = document.getElementById('ordersContainer');
@@ -464,8 +480,8 @@
                 container.innerHTML = `
                     <div class="empty-state">
                         <div class="icon">📭</div>
-                        <h2>لا توجد طلبات حتى الآن</h2>
-                        <p>الطلبات الجديدة ستظهر هنا تلقائياً</p>
+                        <h2><span class="lang-ar">لا توجد طلبات حتى الآن</span><span class="lang-en">No orders yet</span></h2>
+                        <p><span class="lang-ar">الطلبات الجديدة ستظهر هنا تلقائياً</span><span class="lang-en">New orders will appear here automatically</span></p>
                     </div>
                 `;
                 return;
@@ -482,7 +498,7 @@
                 let itemsHtml = `<ul class="order-items">`;
                 if(order.items && order.items.length > 0) {
                     order.items.forEach(item => {
-                        const name = item.nameAr || item.nameEn || 'منتج';
+                        const name = document.body.classList.contains('dir-ltr') ? (item.nameEn || item.nameAr) : (item.nameAr || item.nameEn);
                         itemsHtml += `
                             <li>
                                 ${name}
@@ -502,28 +518,28 @@
 
                 // رابط اللوكيشن
                 const locationLink = order.location && order.location !== 'لم يتم التحديد' 
-                    ? `<a href="${order.location}" target="_blank" class="location-link">📍 عرض الموقع على الخريطة</a>` 
-                    : 'لم يحدد';
+                    ? `<a href="${order.location}" target="_blank" class="location-link">📍 <span class="lang-ar">عرض الموقع على الخريطة</span><span class="lang-en">View on map</span></a>` 
+                    : '<span class="lang-ar">لم يحدد</span><span class="lang-en">N/A</span>';
 
                 // حساب المؤشر الحقيقي للطلب داخل المصفوفة الأصلية
                 const realIndex = orders.length - 1 - index;
 
                 div.innerHTML = `
                     <div class="order-header">
-                        <h3>طلب #${order.id}</h3>
+                        <h3><span class="lang-ar">طلب</span><span class="lang-en">Order</span> #${order.id}</h3>
                         <span class="order-date">🕐 ${order.date}</span>
                     </div>
                     <div class="order-body">
-                        <p><strong>👤 العميل:</strong> ${order.name || 'غير محدد'}</p>
-                        <p><strong>📱 الهاتف:</strong> ${order.phone || 'غير محدد'}</p>
-                        <p><strong>📍 العنوان:</strong> ${order.address || 'غير محدد'}</p>
-                        <p><strong>🗺️ اللوكيشن:</strong> ${locationLink}</p>
-                        <p><strong>📄 نوع الطلب:</strong> ${order.orderType || 'غير محدد'}</p> <!-- 🔴 جديد -->
-                        <p><strong>🚚 الاستلام:</strong> ${order.method || 'غير محدد'}</p>
+                        <p><strong>👤 <span class="lang-ar">العميل</span><span class="lang-en">Customer</span>:</strong> ${order.name || 'N/A'}</p>
+                        <p><strong>📱 <span class="lang-ar">الهاتف</span><span class="lang-en">Phone</span>:</strong> ${order.phone || 'N/A'}</p>
+                        <p><strong>📍 <span class="lang-ar">العنوان</span><span class="lang-en">Address</span>:</strong> ${order.address || 'N/A'}</p>
+                        <p><strong>🗺️ <span class="lang-ar">اللوكيشن</span><span class="lang-en">Location</span>:</strong> ${locationLink}</p>
+                        <p><strong>📄 <span class="lang-ar">نوع الطلب</span><span class="lang-en">Order Type</span>:</strong> ${order.orderType || 'N/A'}</p>
+                        <p><strong>🚚 <span class="lang-ar">الاستلام</span><span class="lang-en">Method</span>:</strong> ${order.method || 'N/A'}</p>
                     </div>
                     ${itemsHtml}
                     <div class="order-footer">
-                        <span class="order-total">💰 $${(order.total || 0).toFixed(2)}</span>
+                        <span class="order-total">💰 <span class="lang-ar">الإجمالي</span><span class="lang-en">Total</span>: $${(order.total || 0).toFixed(2)}</span>
                         <span class="order-payment">
                             <i>${paymentIcon}</i> ${paymentMethod}
                         </span>
@@ -531,12 +547,15 @@
 
                     <!-- 🔴 نظام تتبع الشحنة للأدمن -->
                     <div class="admin-tracking-box">
-                        <label style="font-weight: bold; color: #333; display: block; margin-bottom: 5px;">تحديث حالة الشحنة:</label>
+                        <label style="font-weight: bold; color: #333; display: block; margin-bottom: 5px;">
+                            <span class="lang-ar">تحديث حالة الشحنة</span>
+                            <span class="lang-en">Update Shipment Status</span>
+                        </label>
                         <select class="admin-status-select" id="status_${realIndex}" onchange="updateOrderStatus(${realIndex}, this.value)">
-                            <option value="قيد التجهيز" ${order.tracking && order.tracking.status === 'قيد التجهيز' ? 'selected' : ''}>قيد التجهيز</option>
-                            <option value="تم الشحن" ${order.tracking && order.tracking.status === 'تم الشحن' ? 'selected' : ''}>تم الشحن</option>
-                            <option value="في الطريق" ${order.tracking && order.tracking.status === 'في الطريق' ? 'selected' : ''}>في الطريق</option>
-                            <option value="تم التسليم" ${order.tracking && order.tracking.status === 'تم التسليم' ? 'selected' : ''}>تم التسليم</option>
+                            <option value="قيد التجهيز" ${order.tracking && order.tracking.status === 'قيد التجهيز' ? 'selected' : ''}><span class="lang-ar">قيد التجهيز</span><span class="lang-en">Processing</span></option>
+                            <option value="تم الشحن" ${order.tracking && order.tracking.status === 'تم الشحن' ? 'selected' : ''}><span class="lang-ar">تم الشحن</span><span class="lang-en">Shipped</span></option>
+                            <option value="في الطريق" ${order.tracking && order.tracking.status === 'في الطريق' ? 'selected' : ''}><span class="lang-ar">في الطريق</span><span class="lang-en">In Transit</span></option>
+                            <option value="تم التسليم" ${order.tracking && order.tracking.status === 'تم التسليم' ? 'selected' : ''}><span class="lang-ar">تم التسليم</span><span class="lang-en">Delivered</span></option>
                         </select>
                     </div>
                 `;
@@ -579,7 +598,7 @@
                 orders[index].tracking.status = newStatus;
                 orders[index].tracking.lastUpdate = new Date().toLocaleString('ar-EG');
                 localStorage.setItem('utopia_orders', JSON.stringify(orders));
-                showToast('✅ تم تحديث حالة الشحنة بنجاح!', 'success');
+                showToast('✅ <span class="lang-ar">تم تحديث حالة الشحنة بنجاح!</span><span class="lang-en">Shipment status updated!</span>', 'success');
                 loadOrders(); // إعادة التحميل لتحديث الواجهة
             }
         }
@@ -588,10 +607,10 @@
         // 4. تفريغ الطلبات
         // ================================================================
         function clearOrders() {
-            if(confirm("⚠️ هل أنت متأكد من حذف جميع الطلبات؟")) {
+            if(confirm("<span class="lang-ar">⚠️ هل أنت متأكد من حذف جميع الطلبات؟</span><span class="lang-en">⚠️ Are you sure you want to delete all orders?</span>")) {
                 localStorage.removeItem('utopia_orders');
                 loadOrders();
-                showToast('🗑️ تم حذف جميع الطلبات', 'error');
+                showToast('🗑️ <span class="lang-ar">تم حذف جميع الطلبات</span><span class="lang-en">All orders cleared</span>', 'error');
             }
         }
 
@@ -615,7 +634,7 @@
                 animation: slideUp 0.4s ease;
                 font-size: 15px;
             `;
-            toast.textContent = message;
+            toast.innerHTML = message;
             document.body.appendChild(toast);
 
             setTimeout(() => {
@@ -628,7 +647,10 @@
         // ================================================================
         // 6. تشغيل عند التحميل
         // ================================================================
-        window.onload = loadOrders;
+        window.onload = function() {
+            checkLang(); // تحديد اللغة أولاً
+            loadOrders(); // ثم تحميل الطلبات
+        };
 
         // ================================================================
         // 7. تحديث تلقائي كل 30 ثانية
@@ -637,6 +659,9 @@
             loadOrders();
         }, 30000);
 
+        // ================================================================
+        // 8. طباعة الحالة في الكونسول للمتابعة
+        // ================================================================
         console.log('📋 لوحة تحكم يوتوبيا للتجارة والتصدير');
         console.log('📦 عدد الطلبات: ' + (JSON.parse(localStorage.getItem('utopia_orders') || '[]').length));
     </script>
