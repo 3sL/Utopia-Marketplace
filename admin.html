@@ -3,89 +3,594 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> يوتوبيا للتجارة والتصدير - قسم الطلبات</title>
+    <title>يوتوبيا للتجارة والتصدير - لوحة التحكم</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f6f9; padding: 20px; }
-        h1 { color: #1a252f; text-align: center; }
-        .order-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-right: 4px solid #f39c12; }
-        .order-card h3 { color: #1a252f; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .order-card p { margin: 5px 0; color: #555; }
-        .order-card ul { margin: 10px 0; padding-right: 20px; }
-        .order-card li { margin-bottom: 5px; }
-        .total-price { font-size: 18px; font-weight: bold; color: #2ecc71; }
-        .empty { text-align: center; color: #999; margin-top: 50px; }
-        .back-btn { display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; font-weight: bold; }
-        .btn-clear { float: left; background: #e74c3c; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; }
-        footer { margin-top: 40px; text-align: center; padding: 15px; background: #1a252f; color: white; border-radius: 8px; }
-        footer a { color: #f39c12; text-decoration: none; font-weight: bold; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* ===== الهيدر ===== */
+        .admin-header {
+            background: linear-gradient(135deg, #0a1e2d, #1a3a4a);
+            padding: 20px 30px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .admin-header .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-header .logo-area img {
+            height: 50px;
+            background: white;
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .admin-header .logo-area h1 {
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .admin-header .logo-area h1 span {
+            color: #fbbf24;
+            font-size: 14px;
+            font-weight: 300;
+            display: block;
+        }
+
+        .admin-header .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-back {
+            background: rgba(255,255,255,0.12);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .btn-back:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateX(-3px);
+        }
+
+        .btn-clear {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-clear:hover {
+            background: #c0392b;
+            transform: scale(1.02);
+        }
+
+        .btn-refresh {
+            background: #3498db;
+            color: white;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-refresh:hover {
+            background: #2980b9;
+            transform: scale(1.02);
+        }
+
+        /* ===== إحصائيات ===== */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 18px 22px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            border-right: 4px solid #f39c12;
+        }
+
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a1e2d;
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: #777;
+            margin-top: 4px;
+        }
+
+        /* ===== قائمة الطلبات ===== */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border-right: 5px solid #f39c12;
+            transition: 0.3s;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .order-card:hover {
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .order-header h3 {
+            color: #0a1e2d;
+            font-size: 18px;
+        }
+
+        .order-header .order-date {
+            color: #888;
+            font-size: 13px;
+            background: #f1f5f9;
+            padding: 4px 14px;
+            border-radius: 50px;
+        }
+
+        .order-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 20px;
+            margin-bottom: 12px;
+        }
+
+        .order-body p {
+            margin: 4px 0;
+            color: #444;
+            font-size: 14px;
+        }
+
+        .order-body p strong {
+            color: #0a1e2d;
+        }
+
+        .order-items {
+            margin: 10px 0;
+            padding-right: 20px;
+            border-right: 3px solid #e8edf3;
+            padding-right: 15px;
+        }
+
+        .order-items li {
+            list-style: none;
+            padding: 4px 0;
+            color: #555;
+            font-size: 14px;
+            border-bottom: 1px dashed #f0f0f0;
+        }
+
+        .order-items li:last-child {
+            border-bottom: none;
+        }
+
+        .order-items li .item-qty {
+            background: #eef2f5;
+            padding: 1px 10px;
+            border-radius: 50px;
+            font-size: 12px;
+            margin: 0 5px;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 12px;
+            margin-top: 8px;
+        }
+
+        .order-total {
+            font-size: 20px;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .order-payment {
+            background: #f1f5f9;
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .order-payment i {
+            margin-left: 5px;
+        }
+
+        /* ===== Empty State ===== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .empty-state .icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h2 {
+            color: #0a1e2d;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            color: #888;
+        }
+
+        /* ===== الفوتر ===== */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 18px;
+            background: #0a1e2d;
+            color: white;
+            border-radius: 12px;
+            border-top: 4px solid #fbbf24;
+        }
+
+        footer a {
+            color: #fbbf24;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== استجابة ===== */
+        @media (max-width: 600px) {
+            .admin-header {
+                padding: 15px 18px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .admin-header .logo-area h1 {
+                font-size: 18px;
+            }
+
+            .admin-header .actions {
+                justify-content: center;
+            }
+
+            .btn-back, .btn-clear, .btn-refresh {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+
+            .order-body {
+                grid-template-columns: 1fr;
+            }
+
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-header .actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn-back, .btn-clear, .btn-refresh {
+                width: 100%;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
-    <a class="back-btn" href="https://3sl.github.io/Utopia-Marketplace/">← العودة للمتجر</a>
-    <button class="btn-clear" onclick="clearOrders()">🗑️ تفريغ الطلبات</button>
-    <h1>📦 سجل طلبات العملاء</h1>
+
+    <!-- ===== الهيدر ===== -->
+    <header class="admin-header">
+        <div class="logo-area">
+            <img src="https://i.postimg.cc/kGBmh9C4/logo.png" alt="Utopia Logo">
+            <h1>
+                📋 لوحة التحكم
+                <span>Utopia Trading & Export</span>
+            </h1>
+        </div>
+        <div class="actions">
+            <a class="btn-back" href="https://3sl.github.io/Utopia-Marketplace/">
+                <i>🏠</i> العودة للمتجر
+            </a>
+            <button class="btn-refresh" onclick="loadOrders()">
+                <i>🔄</i> تحديث
+            </button>
+            <button class="btn-clear" onclick="clearOrders()">
+                <i>🗑️</i> تفريغ الكل
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== الإحصائيات ===== -->
+    <div class="stats" id="statsContainer">
+        <div class="stat-card">
+            <div class="number" id="totalOrders">0</div>
+            <div class="label">📦 إجمالي الطلبات</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="totalRevenue">$0.00</div>
+            <div class="label">💰 إجمالي المبيعات</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="totalItems">0</div>
+            <div class="label">🛒 عدد المنتجات</div>
+        </div>
+    </div>
+
+    <!-- ===== قائمة الطلبات ===== -->
     <div id="ordersContainer"></div>
 
+    <!-- ===== الفوتر ===== -->
     <footer>
         <p>
-            <span>جميع الحقوق محفوظةجميع الحقوق محفوظة - Utopia For Trading And Export © 2026 | تصميم وتطوير: Eng : Mahmoud Mohamed Marie | +201222153415</a></span>
+            جميع الحقوق محفوظة - Utopia For Trading And Export &copy; 2026
+            <br>
+            تصميم وتطوير: <a href="tel:+201222153415">Eng : Mahmoud Mohamed Marie</a> | 
+            <a href="tel:+201222153415">+201222153415</a>
         </p>
     </footer>
 
     <script>
+        // ================================================================
+        // 1. تحميل وعرض الطلبات
+        // ================================================================
         function loadOrders() {
             const container = document.getElementById('ordersContainer');
             const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
             
+            // تحديث الإحصائيات
+            updateStats(orders);
+
             if(orders.length === 0) {
-                container.innerHTML = `<div class="empty">لا توجد طلبات حتى الآن.</div>`;
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <h2>لا توجد طلبات حتى الآن</h2>
+                        <p>الطلبات الجديدة ستظهر هنا تلقائياً</p>
+                    </div>
+                `;
                 return;
             }
 
+            container.innerHTML = '';
+            
+            // عرض الطلبات من الأحدث للأقدم
             orders.reverse().forEach(order => {
                 const div = document.createElement('div');
                 div.className = 'order-card';
-                let itemsHtml = `<ul>`;
-                order.items.forEach(item => {
-                    itemsHtml += `<li>${item.nameAr} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}</li>`;
-                });
+
+                // بناء قائمة المنتجات
+                let itemsHtml = `<ul class="order-items">`;
+                if(order.items && order.items.length > 0) {
+                    order.items.forEach(item => {
+                        const name = item.nameAr || item.nameEn || 'منتج';
+                        itemsHtml += `
+                            <li>
+                                ${name}
+                                <span class="item-qty">×${item.quantity}</span>
+                                - $${(item.price * item.quantity).toFixed(2)}
+                            </li>
+                        `;
+                    });
+                }
                 itemsHtml += `</ul>`;
 
+                // طريقة الدفع
+                const paymentMethod = order.payment || 'غير محدد';
+                const paymentIcon = paymentMethod === 'كاش' ? '💵' : '💳';
+
                 div.innerHTML = `
-                    <h3>طلب #${order.id}</h3>
-                    <p><strong>التاريخ:</strong> ${order.date}</p>
-                    <p><strong>العميل:</strong> ${order.name}</p>
-                    <p><strong>الهاتف:</strong> ${order.phone}</p>
-                    <p><strong>العنوان:</strong> ${order.address}</p>
+                    <div class="order-header">
+                        <h3>طلب #${order.id}</h3>
+                        <span class="order-date">🕐 ${order.date}</span>
+                    </div>
+                    <div class="order-body">
+                        <p><strong>👤 العميل:</strong> ${order.name || 'غير محدد'}</p>
+                        <p><strong>📱 الهاتف:</strong> ${order.phone || 'غير محدد'}</p>
+                        <p><strong>📍 العنوان:</strong> ${order.address || 'غير محدد'}</p>
+                    </div>
                     ${itemsHtml}
-                    <p class="total-price">الإجمالي: $${order.total.toFixed(2)}</p>
+                    <div class="order-footer">
+                        <span class="order-total">💰 $${(order.total || 0).toFixed(2)}</span>
+                        <span class="order-payment">
+                            <i>${paymentIcon}</i> ${paymentMethod}
+                        </span>
+                    </div>
                 `;
                 container.appendChild(div);
             });
         }
 
+        // ================================================================
+        // 2. تحديث الإحصائيات
+        // ================================================================
+        function updateStats(orders) {
+            const totalOrders = orders.length;
+            let totalRevenue = 0;
+            let totalItems = 0;
+
+            orders.forEach(order => {
+                totalRevenue += order.total || 0;
+                if(order.items) {
+                    order.items.forEach(item => {
+                        totalItems += item.quantity || 0;
+                    });
+                }
+            });
+
+            document.getElementById('totalOrders').textContent = totalOrders;
+            document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+            document.getElementById('totalItems').textContent = totalItems;
+        }
+
+        // ================================================================
+        // 3. تفريغ الطلبات
+        // ================================================================
+        function clearOrders() {
+            if(confirm("⚠️ هل أنت متأكد من حذف جميع الطلبات؟")) {
+                localStorage.removeItem('utopia_orders');
+                loadOrders();
+                showToast('🗑️ تم حذف جميع الطلبات', 'error');
+            }
+        }
+
+        // ================================================================
+        // 4. إشعارات (Toast)
+        // ================================================================
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'error' ? '#ef4444' : '#22c55e'};
+                color: white;
+                padding: 14px 28px;
+                border-radius: 60px;
+                font-weight: 600;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                z-index: 9999;
+                animation: slideUp 0.4s ease;
+                font-size: 15px;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        // ================================================================
+        // 5. التحقق من الطلبات الجديدة (من الرابط)
+        // ================================================================
         function handleNewOrder() {
             const urlParams = new URLSearchParams(window.location.search);
             const newOrderParam = urlParams.get('newOrder');
             
             if (newOrderParam) {
-                let newOrder = JSON.parse(decodeURIComponent(newOrderParam));
-                let existingOrders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
-                existingOrders.push(newOrder);
-                localStorage.setItem('utopia_orders', JSON.stringify(existingOrders));
-                window.history.replaceState({}, document.title, window.location.pathname);
+                try {
+                    let newOrder = JSON.parse(decodeURIComponent(newOrderParam));
+                    let existingOrders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+                    existingOrders.push(newOrder);
+                    localStorage.setItem('utopia_orders', JSON.stringify(existingOrders));
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    showToast('✅ تم استلام طلب جديد!', 'success');
+                } catch(e) {
+                    console.error('خطأ في معالجة الطلب الجديد:', e);
+                }
             }
             loadOrders();
         }
 
-        function clearOrders() {
-            if(confirm("هل أنت متأكد من حذف جميع الطلبات؟")) {
-                localStorage.removeItem('utopia_orders');
-                loadOrders();
-            }
-        }
-
+        // ================================================================
+        // 6. تشغيل عند التحميل
+        // ================================================================
         window.onload = handleNewOrder;
+
+        // ================================================================
+        // 7. تحديث تلقائي كل 30 ثانية
+        // ================================================================
+        setInterval(() => {
+            loadOrders();
+        }, 30000);
+
+        console.log('📋 لوحة تحكم يوتوبيا للتجارة والتصدير');
+        console.log('📦 عدد الطلبات: ' + (JSON.parse(localStorage.getItem('utopia_orders') || '[]').length));
     </script>
+
 </body>
 </html>
