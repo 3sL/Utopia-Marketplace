@@ -1,1 +1,379 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>يوتوبيا للتجارة والتصدير - لوازم الحريق والصناعة</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
 
+        header {
+            background: #0a1e2d;
+            color: white;
+            padding: 10px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            flex-wrap: wrap; gap: 10px;
+        }
+        .brand { display: flex; align-items: center; gap: 15px; }
+        .brand-logo { max-height: 70px; max-width: 200px; object-fit: contain; background: white; padding: 5px; border-radius: 5px; }
+        .brand-text h1 { font-size: 20px; font-weight: bold; }
+        .brand-text span { font-size: 13px; color: #8bc34a; display: block; }
+
+        .controls { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .lang-switch { background: #e74c3c; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .cart-btn { background: #8bc34a; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; position: relative; }
+        .cart-count { background: #e74c3c; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; position: absolute; top: -8px; right: -8px; }
+        .admin-btn { background: #f39c12; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; display: none; }
+
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%; }
+        
+        .search-bar-container { margin-bottom: 25px; display: flex; justify-content: center; }
+        .search-input { width: 100%; max-width: 600px; padding: 12px 20px; border: 2px solid #ddd; border-radius: 30px; font-size: 16px; outline: none; transition: 0.3s; }
+        .search-input:focus { border-color: #8bc34a; box-shadow: 0 0 8px rgba(139, 195, 74, 0.3); }
+
+        .section-title { text-align: center; font-size: 26px; color: #0a1e2d; margin: 20px 0 20px; border-bottom: 3px solid #8bc34a; padding-bottom: 10px; font-weight: bold; }
+        
+        .categories { margin-bottom: 25px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+        .cat-btn { background: #fff; border: 2px solid #0a1e2d; padding: 8px 20px; border-radius: 30px; cursor: pointer; font-weight: bold; color: #0a1e2d; transition: 0.3s; }
+        .cat-btn.active, .cat-btn:hover { background: #0a1e2d; color: white; }
+
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.06); transition: 0.3s; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .product-card .img-box { width: 100%; height: 200px; background: #fff; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #eee; overflow: hidden; }
+        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .product-card:hover img { transform: scale(1.05); }
+        .p-info { padding: 18px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; }
+        .p-info h3 { font-size: 16px; margin-bottom: 8px; color: #0a1e2d; min-height: 45px; display: flex; align-items: center; justify-content: center; }
+        .p-info .tag { background: #eef2f5; display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; color: #555; margin-bottom: 10px; align-self: center; }
+        .p-info p { color: #777; font-size: 13px; margin-bottom: 12px; flex-grow: 1; }
+        .p-price { font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; display: block; }
+        .add-cart-btn { width: 100%; padding: 12px; background: #8bc34a; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s; }
+        .add-cart-btn:hover { background: #6a9c36; }
+
+        .cart-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: white; box-shadow: -5px 0 20px rgba(0,0,0,0.2); z-index: 2000; transition: right 0.3s ease; display: flex; flex-direction: column; padding: 20px; }
+        .cart-sidebar.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 15px; }
+        .cart-close { background: none; border: none; font-size: 28px; cursor: pointer; color: #e74c3c; }
+        .cart-items { flex-grow: 1; overflow-y: auto; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+        .cart-item-info { flex-grow: 1; margin: 0 10px; }
+        .cart-item-info h4 { font-size: 14px; margin-bottom: 3px; }
+        .cart-item-controls { display: flex; align-items: center; gap: 10px; }
+        .qty-btn { background: #eee; border: none; width: 28px; height: 28px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .remove-item { color: #e74c3c; cursor: pointer; font-weight: bold; margin-left: 10px; }
+        .cart-total { border-top: 2px solid #0a1e2d; padding-top: 15px; margin-top: 10px; display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; }
+        .checkout-btn { width: 100%; padding: 12px; background: #8bc34a; color: white; border: none; border-radius: 8px; margin-top: 15px; font-size: 18px; cursor: pointer; }
+
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1999; }
+        .overlay.active { display: block; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .checkout-modal { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 450px; position: relative; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; }
+        .checkout-modal h2 { margin-bottom: 15px; color: #0a1e2d; text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; }
+        .success-msg { display: none; text-align: center; color: #27ae60; font-weight: bold; font-size: 18px; padding: 20px; }
+
+        .contact-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .whatsapp-btn {
+            background: #25d366;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            flex: 1;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .whatsapp-btn:hover {
+            background: #128C7E;
+            transform: scale(1.02);
+        }
+        .email-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            flex: 1;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .email-btn:hover {
+            background: #2563eb;
+            transform: scale(1.02);
+        }
+
+        .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
+        .admin-modal.active { display: flex; }
+        .admin-modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative; }
+        .admin-modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; }
+        .admin-modal h2 { color: #0a1e2d; text-align: center; margin-bottom: 20px; }
+        .order-card { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #f39c12; }
+        .order-card h3 { color: #0a1e2d; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .order-card p { margin: 5px 0; color: #555; }
+        .order-card ul { margin: 10px 0; padding-right: 20px; }
+        .order-card li { margin-bottom: 5px; }
+        .order-total { font-size: 18px; font-weight: bold; color: #2ecc71; margin-top: 10px; }
+        
+        .admin-status-select { margin-top: 10px; padding: 5px; border-radius: 5px; border: 1px solid #ddd; width: 100%; }
+
+        footer { background: #0a1e2d; color: white; text-align: center; padding: 20px; margin-top: auto; border-top: 4px solid #8bc34a; }
+        footer a { color: #8bc34a; text-decoration: none; font-weight: bold; }
+
+        .lang-ar, .lang-en { display: none; }
+        body.dir-rtl .lang-ar { display: block; }
+        body.dir-ltr .lang-en { display: block; }
+        body.dir-rtl { direction: rtl; text-align: right; }
+        body.dir-ltr { direction: ltr; text-align: left; }
+
+        @media (max-width: 600px) {
+            .brand-logo { max-height: 50px; max-width: 140px; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .cart-sidebar { width: 100%; right: -100%; }
+            .contact-options { flex-direction: column; }
+            .whatsapp-btn, .email-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body class="dir-rtl">
+    <header>
+        <div class="brand">
+            <img class="brand-logo" src="https://i.postimg.cc/kGBmh9C4/logo.png" alt="Utopia Logo">
+            <div class="brand-text">
+                <h1>
+                    <span class="lang-ar">يوتوبيا للتجارة والتصدير</span>
+                    <span class="lang-en">Utopia Trading & Export</span>
+                </h1>
+                <span>
+                    <span class="lang-ar">لوازم الحريق والصناعة</span>
+                    <span class="lang-en">Fire & Industrial Supplies</span>
+                </span>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="lang-switch" onclick="toggleLang()">
+                <span class="lang-ar">English</span>
+                <span class="lang-en">العربية</span>
+            </button>
+            <button class="cart-btn" onclick="openCart()">
+                <span class="lang-ar">🛒 السلة</span>
+                <span class="lang-en">🛒 Cart</span>
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+            <button class="admin-btn" id="adminBtn" onclick="toggleAdmin()">
+                <span class="lang-ar">📋 لوحة الطلبات</span>
+                <span class="lang-en">📋 Orders Panel</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-bar-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث عن بادل فلانش، فلانشات، مواسير سيملس، موانع دوامة..." oninput="handleSearch()">
+        </div>
+
+        <h2 class="section-title">
+            <span class="lang-ar">منتجاتنا المتميزة لمجالات الحريق والصناعة</span>
+            <span class="lang-en">Our Premium Industrial & Fire Products</span>
+        </h2>
+        
+        <div class="categories" id="catContainer">
+            <button class="cat-btn active" onclick="filterCategory('all', event)">
+                <span class="lang-ar">الكل</span><span class="lang-en">All</span>
+            </button>
+            <button class="cat-btn" onclick="filterCategory('pipes', event)">
+                <span class="lang-ar">مواسير سيملس </span><span class="lang-en">Pipes</span>
+            </button>
+            <button class="cat-btn" onclick="filterCategory('paddle-flanges', event)">
+                <span class="lang-ar">بادل فلانش</span><span class="lang-en">Paddle Flange</span>
+            </button>
+            <button class="cat-btn" onclick="filterCategory('flanges', event)">
+                <span class="lang-ar">فلانشات</span><span class="lang-en">Flanges</span>
+            </button>
+            <button class="cat-btn" onclick="filterCategory('fittings', event)">
+                <span class="lang-ar">قطع قلاووظ</span><span class="lang-en">Threaded Fittings</span>
+            </button>
+            <button class="cat-btn" onclick="filterCategory('fire', event)">
+                <span class="lang-ar">هويات وموانع دوامة</span><span class="lang-en">Vortex & Vents</span>
+            </button>
+        </div>
+        
+        <div class="products-grid" id="productsContainer"></div>
+    </div>
+
+    <!-- 🔴 قائمة البحث عن الشحنات -->
+    <div class="container" style="margin-top: -20px; margin-bottom: 30px;">
+        <div style="background: white; border-radius: 12px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.06); text-align: center;">
+            <h3 style="color: #0a1e2d; margin-bottom: 15px;">📦 تتبع شحنة موجودة</h3>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <input type="text" id="publicTrackingInput" placeholder="أدخل رقم التتبع (مثال: 1712345678901)" style="padding: 12px 20px; border: 2px solid #ddd; border-radius: 30px; font-size: 16px; outline: none; width: 100%; max-width: 400px; transition: 0.3s;">
+                <button onclick="searchPublicTracking()" style="padding: 12px 30px; background: #0a1e2d; color: white; border: none; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s;">🔍 بحث</button>
+            </div>
+            <div id="publicTrackingResult" style="margin-top: 15px; text-align: right;"></div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeCart()"></div>
+    
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><span class="lang-ar">سلة المشتريات</span><span class="lang-en">Shopping Cart</span></h3>
+            <button class="cart-close" onclick="closeCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer">
+            <p style="text-align:center; color:#999; margin-top:20px;"><span class="lang-ar">السلة فارغة</span><span class="lang-en">Cart is empty</span></p>
+        </div>
+        <div class="cart-total">
+            <span><span class="lang-ar">الإجمالي:</span><span class="lang-en">Total:</span></span>
+            <span id="cartTotalPrice">$0.00</span>
+        </div>
+        <button class="checkout-btn" onclick="openCheckoutModal()">
+            <span class="lang-ar">إتمام الطلب / عرض سعر</span>
+            <span class="lang-en">Request Quote / Checkout</span>
+        </button>
+    </div>
+
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="checkout-modal">
+            <span class="modal-close" onclick="closeCheckoutModal()">&times;</span>
+            <div id="formContainer">
+                <h2><span class="lang-ar">بيانات الطلب أو عرض السعر</span><span class="lang-en">Order / Quote Details</span></h2>
+                
+                <div class="form-group">
+                    <label><span class="lang-ar">الاسم الكامل / الشركة</span><span class="lang-en">Full Name / Company</span></label>
+                    <input type="text" id="custName" placeholder="أدخل اسمك أو اسم الشركة">
+                </div>
+                
+                <div class="form-group">
+                    <label><span class="lang-ar">رقم الهاتف</span><span class="lang-en">Phone Number</span></label>
+                    <input type="tel" id="custPhone" placeholder="+20 100 000 0000">
+                </div>
+
+                <div class="form-group">
+                    <label><span class="lang-ar">طريقة الاستلام</span><span class="lang-en">Pickup/Delivery Method</span></label>
+                    <select id="deliveryMethod" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
+                        <option value="توصيل للمشروع">🚚 توصيل للمشروع</option>
+                        <option value="استلام من المخازن">🏢 استلام من المخازن</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="lang-ar">طريقة الدفع</span><span class="lang-en">Payment Method</span></label>
+                    <select id="paymentMethod" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
+                        <option value="الدفع عند الاستلام">💰 الدفع عند الاستلام</option>
+                        <option value="50% مقدم و 50% عند الاستلام">💳 50% مقدم و 50% عند الاستلام</option>
+                        <option value="أجل">🏦 أجل</option>
+                        <option value="شيك">📄 شيك</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label><span class="lang-ar">العنوان / الملاحظات والأقطار المطلوبة</span><span class="lang-en">Address / Notes & Required Sizes</span></label>
+                    <textarea id="custAddress" rows="3" placeholder="أدخل العنوان أو تفاصيل الجداول والأقطار المطلوبة..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label><span class="lang-ar">📍 إضافة الموقع الجغرافي (اللوكيشن)</span><span class="lang-en">📍 Add Location</span></label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="custLocation" placeholder="اضغط على الزر للحصول على موقعك" readonly style="flex-grow: 1; background-color: #f9f9f9; cursor: not-allowed;">
+                        <button type="button" onclick="getUserLocation()" style="padding: 0 15px; background: #0a1e2d; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">📍 تحديد</button>
+                    </div>
+                    <small style="display: block; margin-top: 5px; color: #777;">
+                        <span class="lang-ar">اضغط "تحديد" للحصول على موقعك الحالي (يعمل فقط عبر HTTPS).</span>
+                        <span class="lang-en">Click "Locate" to get your current position (HTTPS only).</span>
+                    </small>
+                </div>
+
+                <div class="contact-options">
+                    <button class="whatsapp-btn" onclick="submitOrderViaWhatsApp()">
+                        💬 واتساب
+                    </button>
+                    <button class="email-btn" onclick="submitOrderViaEmail()">
+                        📧 إيميل
+                    </button>
+                </div>
+
+                <p style="text-align:center; font-size:12px; color:#999; margin-top:8px;">
+                    <span class="lang-ar">اختر طريقة التواصل المفضلة</span>
+                    <span class="lang-en">Choose your preferred contact method</span>
+                </p>
+            </div>
+            
+            <div class="success-msg" id="successMessage" style="display:none;">
+                <span class="lang-ar">🎉 تم استلام طلبك بنجاح!</span>
+                <span class="lang-en">🎉 Order received successfully!</span>
+                <br>
+                <button onclick="openTracking()" style="margin-top:15px; padding: 10px 20px; background: #0a1e2d; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px;">
+                    📦 تتبع شحنتك
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="trackingModal">
+        <div class="checkout-modal" style="max-width: 500px;">
+            <span class="modal-close" onclick="closeTracking()">&times;</span>
+            <h2>📦 تتبع الشحنة</h2>
+            <div id="trackingContent">
+                <p style="text-align: center; color: #555;">جاري تحميل حالة الشحنة...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-modal-content">
+            <span class="admin-modal-close" onclick="closeAdmin()">&times;</span>
+            <h2><span class="lang-ar">📦 سجل طلبات العملاء</span><span class="lang-en">📦 Customer Orders</span></h2>
+            <div id="adminOrdersContainer">
+                <p style="text-align:center; color:#999;">جاري التحميل...</p>
+            </div>
+            <hr style="margin: 20px 0;">
+            <p style="text-align:center; color:#666; font-size:14px;">
+                📧 الطلبات بتوصل على الإيميل: <strong>utopia_trade26@yahoo.com</strong><br>
+                💬 والواتساب: <strong>01061007100</strong>
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <p>
+            <span class="lang-ar">جميع الحقوق محفوظة - Utopia For Trading And Export &copy; 2026 | تصميم وتطوير: <a href="tel:+201222153415">Eng : Mahmoud Mohamed Marie</a> | <a href="tel:+201222153415">+201222153415</a></span>
+            <span class="lang-en">All Rights Reserved &copy; 2026 | Designed by: <a href="tel:+201222153415">Mahmoud Mohamed Marae</a> | <a href="tel:+201222153415">+201222153415</a></span>
+        </p>
+    </footer>
+
+    <script>var _0x3d2a=["\x63\x6F\x6E\x74\x65\x78\x74\x6D\x65\x6E\x75","\x70\x72\x65\x76\x65\x6E\x74\x44\x65\x66\x61\x75\x6C\x74","\x70\x61\x64\x64\x6C\x65\x2D\x66\x6C\x61\x6E\x67\x65\x73","\x66\x6C\x61\x6E\x67\x65\x73","\x66\x69\x72\x65","\x66\x69\x74\x74\x69\x6E\x67\x73","\x70\x69\x70\x65\x73","\x73\x65\x61\x72\x63\x68\x49\x6E\x70\x75\x74","\x63\x61\x72\x74","\x70\x75\x73\x68","\x71\x75\x61\x6E\x74\x69\x74\x79","\x63\x61\x72\x74\x49\x74\x65\x6D\x73\x43\x6F\x6E\x74\x61\x69\x6E\x65\x72","\x63\x61\x72\x74\x54\x6F\x74\x61\x6C\x50\x72\x69\x63\x65","\x63\x61\x72\x74\x43\x6F\x75\x6E\x74","\x64\x69\x72\x2D\x6C\x74\x72","\x63\x61\x72\x74\x53\x69\x64\x65\x62\x61\x72","\x6F\x70\x65\x6E","\x6F\x76\x65\x72\x6C\x61\x79","\x61\x63\x74\x69\x76\x65","\x63\x68\x65\x63\x6B\x6F\x75\x74\x4D\x6F\x64\x61\x6C","\x66\x6F\x72\x6D\x43\x6F\x6E\x74\x61\x69\x6E\x65\x72","\x73\x75\x63\x63\x65\x73\x73\x4D\x65\x73\x73\x61\x67\x65","\x63\x75\x73\x74\x4E\x61\x6D\x65","\x63\x75\x73\x74\x50\x68\x6F\x6E\x65","\x63\x75\x73\x74\x41\x64\x64\x72\x65\x73\x73","\x63\x75\x73\x74\x4C\x6F\x63\x61\x74\x69\x6F\x6E","\x64\x65\x6C\x69\x76\x65\x72\x79\x4D\x65\x74\x68\x6F\x64","\x70\x61\x79\x6D\x65\x6E\x74\x4D\x65\x74\x68\x6F\x64","\x75\x74\x6F\x70\x69\x61\x5F\x6F\x72\x64\x65\x72\x73","\x74\x72\x61\x63\x6B\x69\x6E\x67","\x73\x74\x61\x74\x75\x73","\x68\x69\x73\x74\x6F\x72\x79","\x6C\x61\x73\x74\x55\x70\x64\x61\x74\x65","\x64\x61\x74\x65","\x69\x74\x65\x6D\x73","\x74\x6F\x74\x61\x6C","\x6C\x6F\x63\x61\x74\x69\x6F\x6E","\x6D\x65\x74\x68\x6F\x64","\x70\x61\x79\x6D\x65\x6E\x74","\x6F\x70\x65\x6E\x54\x72\x61\x63\x6B\x69\x6E\x67","\x74\x72\x61\x63\x6B\x69\x6E\x67\x4D\x6F\x64\x61\x6C","\x74\x72\x61\x63\x6B\x69\x6E\x67\x43\x6F\x6E\x74\x65\x6E\x74","\x70\x75\x62\x6C\x69\x63\x54\x72\x61\x63\x6B\x69\x6E\x67\x49\x6E\x70\x75\x74","\x70\x75\x62\x6C\x69\x63\x54\x72\x61\x63\x6B\x69\x6E\x67\x52\x65\x73\x75\x6C\x74","\x61\x64\x6D\x69\x6E\x4D\x6F\x64\x61\x6C","\x61\x64\x6D\x69\x6E\x4F\x72\x64\x65\x72\x73\x43\x6F\x6E\x74\x61\x69\x6E\x65\x72","\x61\x64\x6D\x69\x6E\x42\x74\x6E","\x73\x74\x61\x74\x75\x73\x5F","\x70\x72\x6F\x64\x75\x63\x74\x73\x43\x6F\x6E\x74\x61\x69\x6E\x65\x72","\x65\x76\x65\x6E\x74","\x63\x61\x74\x65\x67\x6F\x72\x79","\x66\x69\x6C\x74\x65\x72\x65\x64","\x63\x6C\x61\x73\x73\x4C\x69\x73\x74","\x74\x6F\x67\x67\x6C\x65","\x61\x64\x64","\x6C\x65\x6E\x67\x74\x68","\x66\x69\x6E\x64","\x66\x6F\x72\x45\x61\x63\x68","\x63\x6C\x65\x61\x72","\x73\x70\x6C\x69\x63\x65","\x67\x65\x74\x45\x6C\x65\x6D\x65\x74\x42\x79\x49\x64","\x69\x6E\x6E\x65\x72\x48\x54\x4D\x4C","\x72\x65\x64\x75\x63\x65","\x74\x6F\x4C\x6F\x77\x65\x72\x43\x61\x73\x65","\x69\x6E\x63\x6C\x75\x64\x65\x73","\x74\x72\x69\x6D","\x63\x6C\x61\x73\x73\x4E\x61\x6D\x65","\x63\x72\x65\x61\x74\x65\x45\x6C\x65\x6D\x65\x6E\x74","\x61\x70\x70\x65\x6E\x64\x43\x68\x69\x6C\x64","\x63\x68\x61\x6E\x67\x65\x51\x74\x79","\x72\x65\x6D\x6F\x76\x65\x49\x74\x65\x6D","\x63\x6C\x6F\x73\x65\x43\x61\x72\x74","\x63\x6C\x6F\x73\x65\x43\x68\x65\x63\x6B\x6F\x75\x74\x4D\x6F\x64\x61\x6C","\x63\x6C\x6F\x73\x65\x54\x72\x61\x63\x6B\x69\x6E\x67","\x63\x6C\x6F\x73\x65\x41\x64\x6D\x69\x6E","\x74\x6F\x67\x67\x6C\x65\x41\x64\x6D\x69\x6E","\x72\x65\x6E\x64\x65\x72\x50\x72\x6F\x64\x75\x63\x74\x73","\x61\x64\x64\x54\x6F\x43\x61\x72\x74","\x75\x70\x64\x61\x74\x65\x43\x61\x72\x74\x55\x49","\x6F\x70\x65\x6E\x43\x61\x72\x74","\x66\x69\x6C\x74\x65\x72\x43\x61\x74\x65\x67\x6F\x72\x79","\x68\x61\x6E\x64\x6C\x65\x53\x65\x61\x72\x63\x68","\x73\x75\x62\x6D\x69\x74\x4F\x72\x64\x65\x72\x56\x69\x61\x45\x6D\x61\x69\x6C","\x73\x75\x62\x6D\x69\x74\x4F\x72\x64\x65\x72\x56\x69\x61\x57\x68\x61\x74\x73\x41\x70\x70","\x67\x65\x74\x55\x73\x65\x72\x4C\x6F\x63\x61\x74\x69\x6F\x6E","\x6F\x70\x65\x6E\x43\x68\x65\x63\x6B\x6F\x75\x74\x4D\x6F\x64\x61\x6C","\x6C\x6F\x61\x64\x41\x64\x6D\x69\x6E\x4F\x72\x64\x65\x72\x73","\x75\x70\x64\x61\x74\x65\x4F\x72\x64\x65\x72\x53\x74\x61\x74\x75\x73","\x73\x65\x61\x72\x63\x68\x50\x75\x62\x6C\x69\x63\x54\x72\x61\x63\x6B\x69\x6E\x67","\x6C\x6F\x61\x64\x54\x72\x61\x63\x6B\x69\x6E\x67\x44\x61\x74\x61\x42\x79\x49\x64","\x63\x68\x65\x63\x6B\x41\x64\x6D\x69\x6E\x41\x63\x63\x65\x73\x73","\x74\x6F\x67\x67\x6C\x65\x4C\x61\x6E\x67","\x6C\x6F\x61\x64\x41\x64\x6D\x69\x6E\x4F\x72\x64\x65\x72\x73","\x75\x74\x6F\x70\x69\x61\x5F\x74\x72\x61\x64\x65\x32\x36\x40\x79\x61\x68\x6F\x6F\x2E\x63\x6F\x6D","\x32\x30\x31\x30\x36\x31\x30\x30\x37\x31\x30\x30","\u064A\u0648\u062A\u0648\u0628\u064A\u0627 \u0644\u0644\u062A\u062C\u0627\u0631\u0629 \u0648\u0627\u0644\u062A\u0635\u062F\u064A\u0631"];(function(_0x525a75,_0x3397b5){var _0x348734=function(_0x4f9cb2){while(--_0x4f9cb2){_0x525a75["push"](_0x525a75["shift"]());}};_0x348734(++_0x3397b5);}(_0x3d2a,0x109));var _0x2f8a=function(_0x3bd95a,_0x34be12){_0x3bd95a=_0x3bd95a-0x0;var _0x2cc087=_0x3d2a[_0x3bd95a];return _0x2cc087;};document[_0x2f8a("0x0")](function(_0x55b825){_0x55b825[_0x2f8a("0x1")]();});const productsData=[{id:0x1,cat:_0x2f8a("0x2"),nameAr:"\u0628\u0627\u062F\u0644 \u0641\u0644\u0627\u0646\u0634 \u0627\u0633\u062A\u0627\u0646\u0644\u0633 \u0633\u062A\u064A\u0644",nameEn:"Paddle Flange SS",price:0x78,img:"https://i.postimg.cc/wxFssk36/badl-flansh-astanls-styl.png",descAr:"\u0645\u0642\u0627\u0648\u0645\u0629 \u0639\u0627\u0644\u064A\u0629 \u0644\u0644\u062A\u0622\u0643\u0644.",descEn:"High corrosion resistance."},{id:0x2,cat:_0x2f8a("0x2"),nameAr:"\u0628\u0627\u062F\u0644 \u0641\u0644\u0627\u0646\u0634 \u0645\u062C\u0644\u0641\u0646",nameEn:"Galvanized Paddle Flange",price:0x5a,img:"https://i.postimg.cc/MGvYsKrT/badl-flansh-mjlfn.jpg",descAr:"\u0637\u0628\u0642\u0629 \u062C\u0644\u0641\u0646\u0629 \u0633\u0627\u062E\u0646\u0629.",descEn:"Hot-dip galvanized."},{id:0x3,cat:_0x2f8a("0x3"),nameAr:"\u0641\u0644\u0627\u064E\u0646\u0634\u0627\u062A \u0644\u062D\u0627\u0645 \u0631\u0642\u0628\u0629",nameEn:"Weld Neck Flanges",price:0x96,img:"https://i.postimg.cc/3RPkBL57/66606066.png",descAr:"\u062A\u0648\u0632\u064A\u0639 \u0627\u0644\u0636\u063A\u0637 \u0628\u0643\u0641\u0627\u0621\u0629.",descEn:"High pressure systems."},{id:0x4,cat:_0x2f8a("0x4"),nameAr:"\u0647\u0648\u064A\u0627\u062A \u0648\u0645\u0648\u0627\u0646\u0639 \u062F\u0648\u0627\u0645\u0629",nameEn:"Vortex Breakers & Hoods",price:0xfa,img:"https://i.postimg.cc/9fnwnX5K/Whats-App-Image-2026-04-26-at-15-45-40.jpg",descAr:"\u0645\u0646\u0639 \u0627\u0644\u062F\u0648\u0627\u0645\u0627\u062A \u0627\u0644\u0647\u0648\u0627\u0626\u064A\u0629.",descEn:"Prevents vortex formation."},{id:0x5,cat:_0x2f8a("0x5"),nameAr:"\u0642\u0637\u0639 \u0642\u0644\u0627\u0648\u0648\u0638 \u0645\u062C\u0644\u0641\u0646\u0629",nameEn:"Galvanized Threaded Fittings",price:0x19,img:"https://i.postimg.cc/RhvspTzG/9999999999999.png",descAr:"\u0643\u0648\u0639 \u0648\u062A\u0627\u064A\u0648\u0627\u0646 \u0639\u0627\u0644\u064A \u0627\u0644\u062C\u0648\u062F\u0629.",descEn:"High quality elbows."},{id:0x6,cat:_0x2f8a("0x5"),nameAr:"\u0642\u0637\u0639 \u0642\u0644\u0627\u0648\u0648\u0638 \u0627\u0633\u062A\u0627\u0646\u064C\u0644\u0633",nameEn:"SS Threaded Fittings",price:0x2d,img:"https://i.postimg.cc/J4kDdCPG/pro621-x660.jpg",descAr:"\u0645\u0642\u0627\u0648\u0645 \u0644\u0644\u0623\u062D\u0645\u0627\u0636 (304/316).",descEn:"Acid resistant (304/316)."},{id:0x7,cat:_0x2f8a("0x6"),nameAr:"\u0645\u0648\u0627\u0633\u064A\u0631 \u0627\u0633\u062A\u0627\u0646\u0644\u0633 \u062F\u0648\u0628\u0644\u0643\u0633",nameEn:"Duplex SS Pipe Fittings",price:0x140,img:"https://i.postimg.cc/cHCGkZMx/465324651321.png",descAr:"\u0645\u0642\u0627\u0648\u0645\u0629 \u0644\u0644\u062A\u0634\u0642\u0642 \u0627\u0644\u0625\u062C\u0647\u0627\u062F\u064A.",descEn:"Stress corrosion resistant."},{id:0x8,cat:_0x2f8a("0x6"),nameAr:"\u0645\u0648\u0627\u0633\u064A\u0631 \u0633\u064A\u0645\u0644\u0633",nameEn:"Seamless Pipes",price:0xb4,img:"https://i.postimg.cc/SsnN2cPY/33333333.png",descAr:"\u0628\u062F\u0648\u064E\u0646 \u0644\u062D\u0627\u0645\u060C \u062C\u0645\u064A\u0639 \u0627\u0644\u062C\u062F\u0627\u0648\u0644.",descEn:"Seamless, all schedules."}];let cart=[],lastOrderId=null;function _0x1259e4(){var _0x3845a3=arguments[0x0]!==undefined?arguments[0x0]:"all",_0x295b24=arguments[0x1]!==undefined?arguments[0x1]:"";const _0x1143a2=document["getElementById"](_0x2f8a("0x48"));_0x1143a2["innerHTML"]="";let _0x31089d=productsData["filter"](function(_0x4be447){var _0x5b2c15=_0x3845a3==="all"||_0x4be447["cat"]===_0x3845a3,_0x3c17a9=_0x4be447["nameAr"]["toLowerCase"]()["includes"](_0x295b24["toLowerCase"]())||_0x4be447["nameEn"]["toLowerCase"]()["includes"](_0x295b24["toLowerCase"]());return _0x5b2c15&&_0x3c17a9;});if(_0x31089d["length"]===0x0){_0x1143a2["innerHTML"]='<p style="grid-column: 1/-1; text-align: center; color: #777; padding: 30px;">\u0639\u0630\u0631\u0627\u064B\u060C \u0644\u0645 \u0646\u062C\u062F \u0645\u0646\u062A\u062C\u0627\u062A \u062A\u0637\u0627\u0628\u0642 \u0628\u062D\u062B\u0643.</p>';return;}_0x31089d["forEach"](function(_0x380310){let _0x345da5="\u0623\u062E\u0631\u0649";if(_0x380310["cat"]==="pipes")_0x345da5="\u0645\u0648\u0627\u0633\u064A\u0631 \u0633\u064A\u0645\u0644\u0633 ";else if(_0x380310["cat"]==="paddle-flanges")_0x345da5="\u0628\u0627\u062F\u0644 \u0641\u0644\u0627\u0646\u0634";else if(_0x380310["cat"]==="flanges")_0x345da5="\u0641\u0644\u0627\u0646\u0634\u0627\u062A";else if(_0x380310["cat"]==="fittings")_0x345da5="\u0642\u0637\u0639 \u0642\u0644\u0627\u0648\u0648\u0638";else if(_0x380310["cat"]==="fire")_0x345da5="\u0647\u0648\u064A\u0627\u062A \u0648\u0645\u0648\u0627\u0646\u0639 \u062F\u0648\u0627\u0645\u0629";const _0x5c9e66=document["createElement"]("div");_0x5c9e66["className"]="product-card";_0x5c9e66["innerHTML"]='\n                    <div class="img-box"><img src="'+_0x380310["img"]+'" alt="'+_0x380310["nameEn"]+'" loading="lazy"></div>\n                    <div class="p-info">\n                        <h3><span class="lang-ar">'+_0x380310["nameAr"]+'</span><span class="lang-en">'+_0x380310["nameEn"]+'</span></h3>\n                        <span class="tag"><span class="lang-ar">'+_0x345da5+'</span><span class="lang-en">'+_0x380310["cat"]+'</span></span>\n                        <p><span class="lang-ar">'+_0x380310["descAr"]+'</span><span class="lang-en">'+_0x380310["descEn"]+'</span></p>\n                        <span class="p-price">$'+_0x380310["price"]["toFixed"](0x2)+'</span>\n                        <button class="add-cart-btn" onclick="addToCart('+_0x380310["id"]+')"><span class="lang-ar">\u0623\u0636\u0641 \u0625\u0644\u0649 \u0627\u0644\u0633\u0644\u0629</span><span class="lang-en">Add to Cart</span></button>\n                    </div>\n                ';_0x1143a2["appendChild"](_0x5c9e66);});}function filterCategory(_0x3f5b45,_0x4f880c){document["querySelectorAll"](".cat-btn")["forEach"](function(_0x5f0411){return _0x5f0411["classList"]["remove"]("active");});if(_0x4f880c&&_0x4f880c["currentTarget"])_0x4f880c["currentTarget"]["classList"]["add"]("active");_0x1259e4(_0x3f5b45,document["getElementById"](_0x2f8a("0x7"))["value"]);}function handleSearch(){_0x1259e4("all",document["getElementById"](_0x2f8a("0x7"))["value"]);}function addToCart(_0x333788){const _0x365d5c=productsData["find"](function(_0x3f014f){return _0x3f014f["id"]===_0x333788;});const _0x29c146=cart["find"](function(_0x15b44b){return _0x15b44b["id"]===_0x333788;});if(_0x29c146)_0x29c146["quantity"]++;else cart["push"]({..._0x365d5c,quantity:0x1});updateCartUI();openCart();}function updateCartUI(){const _0x51f9d7=document["getElementById"](_0x2f8a("0xb")),_0x389658=document["getElementById"](_0x2f8a("0xc")),_0x484e2a=document["getElementById"](_0x2f8a("0xd"));_0x51f9d7["innerHTML"]="";let _0x24981a=0x0,_0x24df4f=0x0;cart["forEach"](function(_0x1b73d5,_0x441773){_0x24981a+=_0x1b73d5["price"]*_0x1b73d5["quantity"];_0x24df4f+=_0x1b73d5["quantity"];const _0x327f42=document["body"]["classList"]["contains"](_0x2f8a("0xe"))?_0x1b73d5["nameEn"]:_0x1b73d5["nameAr"];_0x51f9d7["innerHTML"]+='\n                    <div class="cart-item">\n                        <div class="cart-item-info"><h4>'+_0x327f42+'</h4><small>$'+_0x1b73d5["price"]["toFixed"](0x2)+'</small></div>\n                        <div class="cart-item-controls">\n                            <button class="qty-btn" onclick="changeQty('+_0x441773+', -1)">-</button> '+_0x1b73d5["quantity"]+'\n                            <button class="qty-btn" onclick="changeQty('+_0x441773+', 1)">+</button>\n                            <span class="remove-item" onclick="removeItem('+_0x441773+')">\xD7</span>\n                        </div>\n                    </div>';});if(cart["length"]===0x0)_0x51f9d7["innerHTML"]='<p style="text-align:center; color:#999; margin-top:20px;"><span class="lang-ar">\u0627\u0644\u0633\u0644\u0629 \u0641\u0627\u0631\u063A\u0629</span><span class="lang-en">Cart is empty</span></p>';_0x389658["innerText"]="$"+_0x24981a["toFixed"](0x2);_0x484e2a["innerText"]=_0x24df4f;}function changeQty(_0x376f7c,_0x16c237){if(cart[_0x376f7c]["quantity"]+_0x16c237>0x0)cart[_0x376f7c]["quantity"]+=_0x16c237;else removeItem(_0x376f7c);updateCartUI();}function removeItem(_0x3db3a7){cart["splice"](_0x3db3a7,0x1);updateCartUI();}function openCart(){document["getElementById"](_0x2f8a("0xf"))["classList"]["add"](_0x2f8a("0x10"));document["getElementById"](_0x2f8a("0x11"))["classList"]["add"](_0x2f8a("0x12"));}function closeCart(){document["getElementById"](_0x2f8a("0xf"))["classList"]["remove"](_0x2f8a("0x10"));document["getElementById"](_0x2f8a("0x11"))["classList"]["remove"](_0x2f8a("0x12"));}function openCheckoutModal(){if(cart["length"]===0x0)return alert("\u0627\u0644\u0633\u0644\u0629 \u0641\u0627\u0631\u063A\u0629 \u0628\u0631\u062C\u0627\u0621 \u0627\u062E\u062A\u064A\u0627\u0631 \u0627\u0644\u0645\u0646\u062A\u062C\u0627\u062A \u0623\u0648\u0644\u0627\u064B");document["getElementById"](_0x2f8a("0x13"))["classList"]["add"](_0x2f8a("0x12"));document["getElementById"](_0x2f8a("0x14"))["style"]["display"]="block";document["getElementById"](_0x2f8a("0x15"))["style"]["display"]="none";}function closeCheckoutModal(){document["getElementById"](_0x2f8a("0x13"))["classList"]["remove"](_0x2f8a("0x12"));}function getUserLocation(){const _0xed101=document["getElementById"](_0x2f8a("0x19"));if(navigator["geolocation"]){_0xed101["value"]="\u062C\u0627\u0631\u064A \u0627\u0644\u062D\u0635\u0648\u0644 \u0639\u0644\u0649 \u0627\u0644\u0645\u0648\u0642\u0639...";navigator["geolocation"]["getCurrentPosition"](function(_0x3a14a3){const _0x5a9edb=_0x3a14a3["coords"]["latitude"];const _0x120105=_0x3a14a3["coords"]["longitude"];_0xed101["value"]="https://www.google.com/maps?q="+_0x5a9edb+","+_0x120105;},function(_0x24f38e){_0xed101["value"]="\u062A\u0639\u0630\u0631 \u0627\u0644\u062D\u0635\u0648\u0644 \u0639\u0644\u0649 \u0627\u0644\u0645\u0648\u0642\u0639.";alert("\u064A\u0631\u062C\u0649 \u0627\u0644\u0633\u0645\u0627\u062D \u0628\u0627\u0644\u0648\u0635\u0648\u0644 \u0644\u0644\u0645\u0648\u0642\u0639 \u0623\u0648 \u0643\u062A\u0627\u0628\u062A\u0647 \u064A\u062F\u0648\u064A\u0627\u064B.");});}else{_0xed101["value"]="\u0627\u0644\u0645\u062A\u0635\u0641\u062D \u0644\u0627 \u064A\u062F\u0639\u0645 \u062A\u062D\u062F\u064A\u062F \u0627\u0644\u0645\u0648\u0642\u0639.";}}function saveOrderToLocalStorage(_0x1f9bb0){let _0x439eb3=JSON["parse"](localStorage["getItem"](_0x2f8a("0x1c"))||"[]");_0x1f9bb0[_0x2f8a("0x1d")]={status:"\u0642\u064A\u062F \u0627\u0644\u062A\u062C\u0647\u064A\u0632",lastUpdate:new Date()["toLocaleString"]("ar-EG"),history:["\u062A\u0645 \u0627\u0633\u062A\u0644\u0627\u0645 \u0627\u0644\u0637\u0644\u0628 \u0628\u0646\u062C\u0627\u062D"]};_0x439eb3["push"](_0x1f9bb0);localStorage["setItem"](_0x2f8a("0x1c"),JSON["stringify"](_0x439eb3));lastOrderId=_0x1f9bb0["id"];}function buildOrderData(){const _0x16f895=document["getElementById"](_0x2f8a("0x16"))["value"]["trim"]();const _0x42f7e2=document["getElementById"](_0x2f8a("0x17"))["value"]["trim"]();const _0x4c43d2=document["getElementById"](_0x2f8a("0x18"))["value"]["trim"]();const _0x3cb990=document["getElementById"](_0x2f8a("0x19"))["value"]["trim"]()||"\u0644\u0645 \u064A\u062A\u0645 \u0627\u0644\u062A\u062D\u062F\u064A\u062F";const _0x12a5b6=document["getElementById"](_0x2f8a("0x1a"))["value"];const _0x5775d5=document["getElementById"](_0x2f8a("0x1b"))["value"];if(!_0x16f895||!_0x42f7e2||!_0x4c43d2){alert("\u0628\u0631\u062C\u0627\u0621 \u0625\u0643\u0645\u0627\u0644 \u062C\u0645\u064A\u0639 \u0627\u0644\u062D\u0642\u0648\u0644 \u0627\u0644\u0645\u0637\u0644\u0648\u0628\u0629");return null;}let _0x31877d=cart["reduce"](function(_0x4dfbf0,_0x28501d){return _0x4dfbf0+_0x28501d["price"]*_0x28501d["quantity"];},0x0);return{id:Date["now"](),date:new Date()["toLocaleString"]("ar-EG"),name:_0x16f895,phone:_0x42f7e2,address:_0x4c43d2,location:_0x3cb990,method:_0x12a5b6,payment:_0x5775d5,items:JSON["parse"](JSON["stringify"](cart)),total:_0x31877d};}function submitOrderViaEmail(){const _0x3bb7e0=buildOrderData();if(!_0x3bb7e0)return;saveOrderToLocalStorage(_0x3bb7e0);let _0x40274d="";_0x3bb7e0["items"]["forEach"](function(_0x41f3c9,_0x3f4959){_0x40274d+=_0x3f4959+0x1+". "+_0x41f3c9["nameAr"]+" (\u0627\u0644\u0639\u062F\u062F: "+_0x41f3c9["quantity"]+") - $"+(_0x41f3c9["price"]*_0x41f3c9["quantity"])["toFixed"](0x2)+"%0A";});const _0x428bfc="\u0637\u0644\u0628 \u062C\u062F\u064A\u062F #"+_0x3bb7e0["id"]+" - \u064A\u0648\u062A\u0648\u0628\u064A\u0627 \u0644\u0644\u062A\u062C\u0627\u0631\u0629 \u0648\u0627\u0644\u062A\u0635\u062F\u064A\u0631";const _0x555340="\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501%0A\uD83D\uDCCD \u064A\u0648\u062A\u0648\u0628\u064A\u0627 \u0644\u0644\u062A\u062C\u0627\u0631\u0629 \u0648\u0627\u0644\u062A\u0635\u062F\u064A\u0631 - \u0637\u0644\u0628 \u0634\u0631\u0627\u0621 \u062C\u062F\u064A\u062F \uD83D\uDCCD%0A\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501%0A%0A\uD83D\uDCCB \u0631\u0642\u0645 \u0627\u0644\u0637\u0644\u0628 : "+_0x3bb7e0["id"]+"%0A\uD83D\uDD50 \u0627\u0644\u062A\u0627\u0631\u064A\u062E    : "+_0x3bb7e0["date"]+"%0A\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501%0A%0A\uD83D\uDC64 \u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0639\u0645\u064A\u0644:%0A\u25B8 \u0627\u0644\u0627\u0633\u0645   : "+_0x3bb7e0["name"]+"%0A\u25B8 \u0627\u0644\u0647\u0627\u062A\u0641  : "+_0x3bb7e0["phone"]+"%0A\u25B8 \u0627\u0644\u0639\u0646\u0648\u0627\u0646 : "+_0x3bb7e0["address"]+"%0A\u25B8 \u0627\u0644\u0644\u0648\u0643\u064A\u0634\u064E\u0646: "+_0x3bb7e0["location"]+"%0A\u25B8 \u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u0627\u0633\u062A\u0644\u0627\u0645: "+_0x3bb7e0["method"]+"%0A\u25B8 \u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u062F\u0641\u0639: "+_0x3bb7e0["payment"]+"%0A%0A\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501%0A%0A\uD83D\uDED2 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0645\u064E\u0646\u062A\u062C\u0627\u062A:%0A\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501%0A"+_0x40274d+"\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501%0A%0A\uD83D\uDCB0 \u0627\u0644\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0646\u0647\u0627\u0626\u064A: $"+_0x3bb7e0["total"]["toFixed"](0x2)+"%0A%0A\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501%0A\u0634\u0643\u0631\u0627\u064B \u0644\u062A\u0633\u0648\u0642\u0643\u0645 \u0645\u0646 \u064A\u0648\u062A\u0648\u0628\u064A\u0627 \u0644\u0644\u062A\u062C\u0627\u0631\u0629 \u0648\u0627\u0644\u062A\u0635\u062F\u064A\u0631 \uD83D\uDD25%0A\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501";window["open"]("mailto:utopia_trade26@yahoo.com?subject="+encodeURIComponent(_0x428bfc)+"&body="+_0x555340,"_blank");showSuccessWithTracking();}function showSuccessWithTracking(){document["getElementById"](_0x2f8a("0x14"))["style"]["display"]="none";document["getElementById"](_0x2f8a("0x15"))["style"]["display"]="block";cart=[];updateCartUI();}function openTracking(){closeCheckoutModal();document["getElementById"](_0x2f8a("0x28"))["classList"]["add"](_0x2f8a("0x12"));loadTrackingDataById(lastOrderId);}function closeTracking(){document["getElementById"](_0x2f8a("0x28"))["classList"]["remove"](_0x2f8a("0x12"));}function loadTrackingDataById(_0x3c4359){const _0x14d29d=document["getElementById"](_0x2f8a("0x29"));const _0x19dc05=JSON["parse"](localStorage["getItem"](_0x2f8a("0x1c"))||"[]");const _0x10f2b3=_0x19dc05["find"](function(_0x51dc5e){return _0x51dc5e["id"]===_0x3c4359;});if(!_0x10f2b3){_0x14d29d["innerHTML"]='<p style="text-align: center; color: #e74c3c;">\u0639\u0630\u0631\u0627\u064B\u060C \u0644\u0645 \u0646\u062A\u0645\u0643\u0646 \u0645\u0646 \u0627\u0644\u0639\u062B\u0648\u0631 \u0639\u0644\u0649 \u0647\u0630\u0627 \u0627\u0644\u0637\u0644\u0628.</p>';return;}const _0x127777=new Date(_0x10f2b3[_0x2f8a("0x21")]);const _0x3e84fa=new Date();const _0x200eb0=Math["ceil"]((_0x3e84fa-_0x127777)/(0x3e8*0x3c*0x3c*0x18));let _0x2f8ae9="";let _0x3c195e="#f39c12";let _0x41bdaa="";if(_0x200eb0===0x0){_0x2f8ae9="\u062C\u0627\u0631\u064A \u0627\u0644\u062A\u062C\u0647\u064A\u0632 (\u0633\u064A\u062A\u0645 \u0627\u0644\u0634\u062D\u0646 \u062E\u0644\u0627\u0644 24 \u0633\u0627\u0639\u0629)";_0x3c195e="#3498db";_0x41bdaa="\uD83D\uDCCD <strong>\u0627\u0644\u0645\u0631\u062D\u0644\u0629 \u0627\u0644\u062D\u0627\u0644\u064A\u0629:</strong> \u0627\u0644\u0637\u0644\u0628 \u0642\u064A\u062F \u0627\u0644\u0645\u0631\u0627\u062C\u0639\u0629 \u0641\u064A \u0645\u062E\u0627\u0632\u0646 \u064A\u0648\u062A\u0648\u0628\u064A\u0627.";}else if(_0x200eb0<=0x2){_0x2f8ae9="\u0627\u0644\u0634\u062D\u0646\u0629 \u0641\u064A \u0627\u0644\u0637\u0631\u064A\u0642\u060C \u0645\u062A\u0628\u0642\u064A \u062D\u0648\u0627\u0644\u064A "+(0x4-_0x200eb0)+" \u0623\u064A\u0627\u0645 \u0644\u0644\u062A\u0633\u0644\u064A\u0645.";_0x3c195e="#f1c40f";_0x41bdaa="\uD83D\uDE9A <strong>\u0627\u0644\u0645\u0631\u062D\u0644\u0629 \u0627\u0644\u062D\u0627\u0644\u064A\u0629:</strong> \u062A\u0645 \u0627\u0644\u0634\u062D\u0646 \u0645\u0646 \u0627\u0644\u0645\u0633\u062A\u0648\u062F\u0639\u060C \u0627\u0644\u0634\u062D\u0646\u0629 \u0641\u064A \u0637\u0631\u064A\u0642\u0647\u0627 \u0644\u0645\u062D\u0637\u0629 \u0627\u0644\u062A\u0648\u0632\u064A\u0639.";}else if(_0x200eb0<=0x4){_0x2f8ae9="\u0627\u0644\u0634\u062D\u0646\u0629 \u0642\u0627\u0631\u0628\u062A \u0639\u0644\u0649 \u0627\u0644\u0648\u0635\u0648\u0644\u060C \u0645\u062A\u0628\u0642\u064A \u064A\u0648\u0645 \u0648\u0627\u062D\u062F \u0641\u0642\u0637!";_0x3c195e="#2ecc71";_0x41bdaa="\uD83D\uDCE6 <strong>\u0627\u0644\u0645\u0631\u062D\u0644\u0629 \u0627\u0644\u062D\u0627\u0644\u064A\u0629:</strong> \u0627\u0644\u0634\u062D\u0646\u0629 \u0648\u0635\u0644\u062A \u0644\u0645\u062D\u0637\u0629 \u0627\u0644\u062A\u0648\u0632\u064A\u0639 \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629\u060C \u062C\u0627\u0631\u064A \u0627\u0644\u062A\u062C\u0647\u064A\u0632 \u0644\u0644\u062A\u0633\u0644\u064A\u0645 \u0627\u0644\u0646\u0647\u0627\u0626\u064A.";}else{_0x2f8ae9="\u062A\u0645 \u0627\u0644\u062A\u0633\u0644\u064A\u0645 \u0628\u0646\u062C\u0627\u062D \u2713";_0x3c195e="#27ae60";_0x41bdaa="\u2705 <strong>\u0627\u0644\u0645\u0631\u062D\u0644\u0629 \u0627\u0644\u062D\u0627\u0644\u064A\u0629:</strong> \u062A\u0645 \u062A\u0633\u0644\u064A\u0645 \u0627\u0644\u0634\u062D\u0646\u0629 \u0644\u0644\u0639\u0645\u064A\u0644 \u0628\u0646\u062C\u0627\u062D.";}_0x14d29d["innerHTML"]='\n                <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-top: 10px;">\n                    <p style="font-size: 14px; color: #777; margin-bottom: 10px;"><strong>\u0631\u0642\u0645 \u0627\u0644\u062A\u062A\u0628\u0639:</strong> #'+_0x10f2b3["id"]+'</p>\n                    <p style="font-size: 14px; color: #777; margin-bottom: 20px;"><strong>\u0627\u0633\u0645 \u0627\u0644\u0639\u0645\u064A\u0644:</strong> '+_0x10f2b3["name"]+'</p>\n                    \n                    <div style="background: white; border: 2px solid '+_0x3c195e+'; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 15px;">\n                        <h3 style="color: '+_0x3c195e+'; margin: 0;">'+_0x10f2b3["tracking"]["status"]+'</h3>\n                    </div>\n                    \n                    <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee; margin-bottom: 15px;">\n                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">\uD83D\uDD52 \u0627\u0644\u0648\u0642\u062A \u0627\u0644\u0645\u062A\u0648\u0642\u0639 \u0644\u0644\u062A\u0633\u0644\u064A\u0645</h4>\n                        <p style="font-size: 16px; color: #333; font-weight: bold;">'+_0x2f8ae9+'</p>\n                    </div>\n\n                    <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee;">\n                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">\uD83D\uDDFA\uFE0F \u0631\u062D\u0644\u0629 \u0627\u0644\u0634\u062D\u0646\u0629 (\u0631\u0627\u062D\u062A \u0641\u064A\u0646 \u0648\u0648\u0635\u0644\u062A \u0641\u064A\u0646)</h4>\n                        <p style="font-size: 15px; color: #333;">'+_0x41bdaa+'</p>\n                    </div>\n                </div>\n            ';}function searchPublicTracking(){const _0x48e083=document["getElementById"](_0x2f8a("0x2a"))["value"]["trim"]();const _0x2c5616=document["getElementById"](_0x2f8a("0x2b"));if(!_0x48e083){_0x2c5616["innerHTML"]='<p style="color: #e74c3c; text-align: center;">\u064A\u0631\u062C\u0649 \u0625\u062F\u062E\u0627\u0644 \u0631\u0642\u0645 \u0627\u0644\u062A\u062A\u0628\u0639 \u0623\u0648\u0644\u0627\u064B.</p>';return;}const _0x22be67=Number(_0x48e083);if(isNaN(_0x22be67)){_0x2c5616["innerHTML"]='<p style="color: #e74c3c; text-align: center;">\u0631\u0642\u0645 \u0627\u0644\u062A\u062A\u0628\u0639 \u063A\u064A\u0631 \u0635\u062D\u064A\u062D\u060C \u064A\u0631\u062C\u0649 \u0625\u062F\u062E\u0627\u0644 \u0623\u0631\u0642\u0627\u0645 \u0641\u0642\u0637.</p>';return;}const _0x3b1393=JSON["parse"](localStorage["getItem"](_0x2f8a("0x1c"))||"[]");const _0x1d56f9=_0x3b1393["find"](function(_0xdaaa7){return _0xdaaa7["id"]===_0x22be67;});if(!_0x1d56f9){_0x2c5616["innerHTML"]='<p style="color: #e74c3c; text-align: center;">\u0639\u0630\u0631\u0627\u064B\u060C \u0644\u0627 \u064A\u0648\u062C\u062F \u0634\u062D\u0646\u0629 \u0628\u0647\u0630\u0627 \u0627\u0644\u0631\u0642\u0645.</p>';return;}const _0x23e03a=new Date(_0x1d56f9["date"]);const _0x44f240=new Date();const _0x48fd1e=Math["ceil"]((_0x44f240-_0x23e03a)/(0x3e8*0x3c*0x3c*0x18));let _0x3622cd="",_0x322679="#f39c12",_0x430e62="";if(_0x48fd1e===0x0){_0x3622cd="\u062C\u0627\u0631\u064A \u0627\u0644\u062A\u062C\u0647\u064A\u0632 (\u0633\u064A\u062A\u0645 \u0627\u0644\u0634\u062D\u0646 \u062E\u0644\u0627\u0644 24 \u0633\u0627\u0639\u0629)";_0x322679="#3498db";_0x430e62="\uD83D\uDCCD <strong>\u0627\u0644\u0645\u0631\u062D\u0644\u0629 \u0627\u0644\u062D\u0627\u0644\u064A\u0629:</strong> \u0627\u0644\u0637\u0644\u0628 \u0642\u064A\u062F \u0627\u0644\u0645\u0631\u0627\u062C\u0639\u0629 \u0641\u064A \u0645\u062E\u0627\u0632\u0646 \u064A\u0648\u062A\u0648\u0628\u064A\u0627.";}else if(_0x48fd1e<=0x2){_0x3622cd="\u0627\u0644\u0634\u062D\u0646\u0629 \u0641\u064A \u0627\u0644\u0637\u0631\u064A\u0642\u060C \u0645\u062A\u0628\u0642\u064A \u062D\u0648\u0627\u0644\u064A "+(0x4-_0x48fd1e)+" \u0623\u064A\u0627\u0645 \u0644\u0644\u062A\u0633\u0644\u064A\u0645.";_0x322679="#f1c40f";_0x430e62="\uD83D\uDE9A <strong>\u0627\u0644\u0645\u0631\u062D\u0644\u0629 \u0627\u0644\u062D\u0627\u0644\u064A\u0629:</strong> \u062A\u0645 \u0627\u0644\u0634\u062D\u064E\u0646 \u0645\u0646 \u0627\u0644\u0645\u0633\u062A\u0648\u062F\u0639\u060C \u0627\u0644\u0634\u062D\u0646\u0629 \u0641\u064A \u0637\u0631\u064A\u0642\u0647\u0627 \u0644\u0645\u062D\u0637\u0629 \u0627\u0644\u062A\u0648\u0632\u064A\u0639.";}else if(_0x48fd1e<=0x4){_0x3622cd="\u0627\u0644\u0634\u062D\u0646\u0629 \u0642\u0627\u0631\u0628\u062A \u0639\u0644\u0649 \u0627\u0644\u0648\u0635\u0648\u0644\u060C \u0645\u062A\u0628\u0642\u064A \u064A\u0648\u0645 \u0648\u0627\u062D\u062F \u0641\u0642\u0637!";_0x322679="#2ecc71";_0x430e62="\uD83D\uDCE6 <strong>\u0627\u0644\u0645\u0631\u062D\u0644\u0629 \u0627\u0644\u062D\u0627\u0644\u064A\u0629:</strong> \u0627\u0644\u0634\u062D\u0646\u0629 \u0648\u0635\u0644\u062A \u0644\u0645\u062D\u0637\u0629 \u0627\u0644\u062A\u0648\u0632\u064A\u0639 \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629\u060C \u062C\u0627\u0631\u064A \u0627\u0644\u062A\u062C\u0647\u064A\u0632 \u0644\u0644\u062A\u0633\u0644\u064A\u0645 \u0627\u0644\u0646\u0647\u0627\u0626\u064A.";}else{_0x3622cd="\u062A\u0645 \u0627\u0644\u062A\u0633\u0644\u064A\u0645 \u0628\u0646\u062C\u0627\u062D \u2713";_0x322679="#27ae60";_0x430e62="\u2705 <strong>\u0627\u0644\u0645\u0631\u062D\u0644\u0629 \u0627\u0644\u062D\u0627\u0644\u064A\u0629:</strong> \u062A\u0645 \u062A\u0633\u0644\u064A\u0645 \u0627\u0644\u0634\u062D\u0646\u0629 \u0644\u0644\u0639\u0645\u064A\u0644 \u0628\u0646\u062C\u0627\u062D.";}_0x2c5616["innerHTML"]='\n                <div style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-top: 15px; border: 1px solid #ddd;">\n                    <p style="font-size: 14px; color: #777; margin-bottom: 5px;"><strong>\u0631\u0642\u0645 \u0627\u0644\u062A\u062A\u0628\u0639:</strong> #'+_0x1d56f9["id"]+'</p>\n                    <p style="font-size: 14px; color: #777; margin-bottom: 15px;"><strong>\u0627\u0633\u0645 \u0627\u0644\u0639\u064D\u0645\u064A\u0644:</strong> '+_0x1d56f9["name"]+'</p>\n                    \n                    <div style="background: white; border: 2px solid '+_0x322679+'; border-radius: 8px; padding: 15px; text-align: center; margin-bottom: 15px;">\n                        <h3 style="color: '+_0x322679+'; margin: 0;">'+_0x1d56f9["tracking"]["status"]+'</h3>\n                    </div>\n                    \n                    <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee; margin-bottom: 15px;">\n                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">\uD83D\uDD52 \u0627\u0644\u0648\u0642\u062A \u0627\u0644\u0645\u062A\u0648\u0642\u0639 \u0644\u0644\u062A\u0633\u0644\u064A\u0645</h4>\n                        <p style="font-size: 16px; color: #333; font-weight: bold;">'+_0x3622cd+'</p>\n                    </div>\n\n                    <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee;">\n                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">\uD83D\uDDFA\uFE0F \u0631\u062D\u0644\u0629 \u0627\u0644\u0634\u062D\u064E\u0646\u0629 (\u0631\u0627\u062D\u062A \u0641\u064A\u064E\u0646 \u0648\u0648\u0635\u0644\u062A \u0641\u064A\u064E\u0646)</h4>\n                        <p style="font-size: 15px; color: #333;">'+_0x430e62+'</p>\n                    </div>\n                </div>\n            ';}function toggleAdmin(){const _0x542ece=document["getElementById"](_0x2f8a("0x2c"));_0x542ece["classList"]["toggle"](_0x2f8a("0x12"));if(_0x542ece["classList"]["contains"](_0x2f8a("0x12")))loadAdminOrders();}function closeAdmin(){document["getElementById"](_0x2f8a("0x2c"))["classList"]["remove"](_0x2f8a("0x12"));}function loadAdminOrders(){const _0x3db920=document["getElementById"](_0x2f8a("0x2d"));const _0x4d5e6a=JSON["parse"](localStorage["getItem"](_0x2f8a("0x1c"))||"[]");if(_0x4d5e6a["length"]===0x0){_0x3db920["innerHTML"]='<p style="text-align:center; color:#999;">\u0644\u0627 \u062A\u0648\u062C\u062F \u0637\u0644\u0628\u0627\u062A \u062D\u062A\u0649 \u0627\u0644\u0622\u0646.</p>';return;}_0x3db920["innerHTML"]="";_0x4d5e6a["reverse"]()["forEach"](function(_0x3085b2,_0x2a3b62){let _0x508000="<ul>";if(_0x3085b2["items"]&&_0x3085b2["items"]["length"]>0x0){_0x3085b2["items"]["forEach"](function(_0x5118c4){_0x508000+="<li>"+(_0x5118c4["nameAr"]||_0x5118c4["nameEn"]||"\u0645\u0646\u062A\u062C")+" (x"+_0x5118c4["quantity"]+") - $"+(_0x5118c4["price"]*_0x5118c4["quantity"])["toFixed"](0x2)+"</li>";});}_0x508000+="</ul>";_0x3db920["innerHTML"]+='\n                    <div class="order-card">\n                        <h3>\u0637\u0644\u0628 #'+_0x3085b2["id"]+'</h3>\n                        <p><strong>\u0627\u0644\u062A\u0627\u0631\u064A\u062E:</strong> '+_0x3085b2["date"]+'</p>\n                        <p><strong>\u0627\u0644\u0639\u0645\u064A\u0644:</strong> '+_0x3085b2["name"]+'</p>\n                        <p><strong>\u0627\u0644\u0647\u0627\u062A\u0641:</strong> '+_0x3085b2["phone"]+'</p>\n                        <p><strong>\u0627\u0644\u0639\u0646\u0648\u0627\u0646:</strong> '+_0x3085b2["address"]+'</p>\n                        <p><strong>\u0627\u0644\u0644\u0648\u0643\u064A\u0634\u064E\u0646:</strong> '+(_0x3085b2["location"]||"\u0644\u0645 \u064A\u062D\u062F\u062F")+'</p>\n                        <p><strong>\u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u0627\u0633\u062A\u0644\u0627\u0645:</strong> '+_0x3085b2["method"]+'</p>\n                        <p><strong>\u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u062F\u0641\u0639:</strong> '+(_0x3085b2["payment"]||"\u0644\u0645 \u064A\u062D\u062F\u062F")+'</p>\n                        '+_0x508000+'\n                        <div class="order-total">\u0627\u0644\u0625\u062C\u0645\u0627\u0644\u064A: $'+_0x3085b2["total"]["toFixed"](0x2)+'</div>\n                        \n                        <div style="margin-top: 15px; border-top: 1px solid #ddd; padding-top: 15px;">\n                            <label style="font-weight: bold; color: #333; display: block; margin-bottom: 5px;">\u062A\u062D\u062F\u064A\u062B \u062D\u0627\u0644\u0629 \u0627\u0644\u0634\u062D\u0646\u0629:</label>\n                            <select class="admin-status-select" id="status_'+_0x2a3b62+'" onchange="updateOrderStatus('+_0x2a3b62+', this.value)">\n                                <option value="\u0642\u064A\u062F \u0627\u0644\u062A\u062C\u0647\u064A\u0632" '+(_0x3085b2["tracking"]&&_0x3085b2["tracking"]["status"]==="\u0642\u064A\u062F \u0627\u0644\u062A\u062C\u0647\u064A\u0632"?"selected":"")+'>\u0642\u064A\u062F \u0627\u0644\u062A\u062C\u0647\u064A\u0632</option>\n                                <option value="\u062A\u0645 \u0627\u0644\u0634\u062D\u0646" '+(_0x3085b2["tracking"]&&_0x3085b2["tracking"]["status"]==="\u062A\u0645 \u0627\u0644\u0634\u062D\u0646"?"selected":"")+'>\u062A\u0645 \u0627\u0644\u0634\u062D\u0646</option>\n                                <option value="\u0641\u064A \u0627\u0644\u0637\u0631\u064A\u0642" '+(_0x3085b2["tracking"]&&_0x3085b2["tracking"]["status"]==="\u0641\u064A \u0627\u0644\u0637\u0631\u064A\u0642"?"selected":"")+'>\u0641\u064A \u0627\u0644\u0637\u0631\u064A\u0642</option>\n                                <option value="\u062A\u0645 \u0627\u0644\u062A\u0633\u0644\u064A\u0645" '+(_0x3085b2["tracking"]&&_0x3085b2["tracking"]["status"]==="\u062A\u0645 \u0627\u0644\u062A\u0633\u0644\u064A\u0645"?"selected":"")+'>\u062A\u0645 \u0627\u0644\u062A\u0633\u0644\u064A\u0645</option>\n                            </select>\n                        </div>\n                    </div>\n                ';});}function updateOrderStatus(_0x1cd0fc,_0x37675e){let _0x57b757=JSON["parse"](localStorage["getItem"](_0x2f8a("0x1c"))||"[]");const _0x4e48d8=_0x57b757["length"]-0x1-_0x1cd0fc;if(_0x57b757[_0x4e48d8]){_0x57b757[_0x4e48d8]["tracking"]["status"]=_0x37675e;_0x57b757[_0x4e48d8]["tracking"]["lastUpdate"]=new Date()["toLocaleString"]("ar-EG");localStorage["setItem"](_0x2f8a("0x1c"),JSON["stringify"](_0x57b757));alert("\u2705 \u062A\u0645 \u062A\u062D\u062F\u064A\u062B \u062D\u0627\u0644\u0629 \u0627\u0644\u0634\u062D\u0646\u0629 \u0628\u0646\u062C\u0627\u062D!");loadAdminOrders();}}function checkAdminAccess(){const _0x4daa74=new URLSearchParams(window["location"]["search"]);if(_0x4daa74["get"]("admin")!==null){document["getElementById"](_0x2f8a("0x2e"))["style"]["display"]="block";}}function toggleLang(){document["body"]["classList"]["toggle"](_0x2f8a("0xe"));updateCartUI();}_0x1259e4();checkAdminAccess();updateCartUI();function submitOrderViaWhatsApp(){const _0x346583=buildOrderData();if(!_0x346583)return;saveOrderToLocalStorage(_0x346583);let _0x1378de="";_0x346583["items"]["forEach"](function(_0x14710b,_0x9d5d55){_0x1378de+=_0x9d5d55+0x1+". "+_0x14710b["nameAr"]+" (\u0627\u0644\u0639\u062F\u062F: "+_0x14710b["quantity"]+") - $"+(_0x14710b["price"]*_0x14710b["quantity"])["toFixed"](0x2)+"\n";});const _0x14696d="\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\uD83D\uDCCD \u064A\u0648\u062A\u0648\u0628\u064A\u0627 \u0644\u0644\u062A\u062C\u0627\u0631\u0629 \u0648\u0627\u0644\u062A\u0635\u062F\u064A\u0631 - \u0637\u0644\u0628 \u0634\u0631\u0627\u0621 \u062C\u062F\u064A\u062F \uD83D\uDCCD\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n\uD83D\uDCCB \u0631\u0642\u0645 \u0627\u0644\u0637\u0644\u0628 : "+_0x346583["id"]+"\n\uD83D\uDD50 \u0627\u0644\u062A\u0627\u0631\u064A\u062E    : "+_0x346583["date"]+"\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n\uD83D\uDC64 \u0628\u064A\u0627\u0646\u0627\u062A \u0627\u0644\u0639\u0645\u064A\u0644:\n\u25B8 \u0627\u0644\u0627\u0633\u0645   : "+_0x346583["name"]+"\n\u25B8 \u0627\u0644\u0647\u0627\u062A\u0641  : "+_0x346583["phone"]+"\n\u25B8 \u0627\u0644\u0639\u0646\u0648\u0627\u064E\u0646 : "+_0x346583["address"]+"\n\u25B8 \u0627\u0644\u0644\u0648\u0643\u064A\u0634\u064E\u0646: "+_0x346583["location"]+"\n\u25B8 \u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u0627\u0633\u062A\u0644\u0627\u0645: "+_0x346583["method"]+"\n\u25B8 \u0637\u0631\u064A\u0642\u0629 \u0627\u0644\u062F\u0641\u0639: "+_0x346583["payment"]+"\n\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n\uD83D\uDED2 \u062A\u0641\u0627\u0635\u064A\u0644 \u0627\u0644\u0645\u064E\u0646\u062A\u062C\u0627\u062A:\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n"+_0x1378de+"\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n\uD83D\uDCB0 \u0627\u0644\u0625\u062C\u0645\u0627\u0644\u064A \u0627\u0644\u0646\u0647\u0627\u0626\u064A: $"+_0x346583["total"]["toFixed"](0x2)+"\n\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\u0634\u0643\u0631\u0627\u064B \u0644\u062A\u0633\u0648\u0642\u0643\u0645 \u0645\u0646 \u064A\u0648\u062A\u0648\u0628\u064A\u0627 \u0644\u0644\u062A\u062C\u0627\u0631\u0629 \u0648\u0627\u0644\u062A\u0635\u062F\u064A\u0631 \uD83D\uDD25\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501";window["open"]("https://wa.me/201061007100?text="+encodeURIComponent(_0x14696d),"_blank");showSuccessWithTracking();}</script>
+</body>
+</html>
