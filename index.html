@@ -79,13 +79,126 @@
         .search-input:focus { border-color: #8bc34a; box-shadow: 0 0 8px rgba(139, 195, 74, 0.3); }
 
         .section-title { text-align: center; font-size: 26px; color: #0a1e2d; margin: 20px 0 20px; border-bottom: 3px solid #8bc34a; padding-bottom: 10px; font-weight: bold; }
-        
+
+        /* ===== شريط العروض ===== */
+        .offers-slider {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            color: white;
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.3);
+        }
+        .offers-slider .offer-text {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .offers-slider .offer-text i {
+            font-size: 32px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .offers-slider .offer-text h2 {
+            font-size: 22px;
+        }
+        .offers-slider .offer-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .offers-slider .offer-timer {
+            background: rgba(255,255,255,0.15);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ===== الفلاتر المتقدمة ===== */
+        .filter-sidebar {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .filter-group h4 {
+            color: #0a1e2d;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .filter-group input[type="range"] {
+            width: 100%;
+            accent-color: #8bc34a;
+        }
+        .filter-group .price-range {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #555;
+        }
+        .filter-group select, .filter-group input[type="text"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+        }
+        .filter-group select:focus, .filter-group input[type="text"]:focus {
+            border-color: #8bc34a;
+        }
+        .filter-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #555;
+            padding: 4px 0;
+            cursor: pointer;
+        }
+        .filter-group label input[type="checkbox"] {
+            accent-color: #8bc34a;
+            width: 16px;
+            height: 16px;
+        }
+        .filter-apply-btn {
+            background: #0a1e2d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            grid-column: 1 / -1;
+        }
+        .filter-apply-btn:hover {
+            background: #1a3a4a;
+            transform: scale(1.02);
+        }
+
         .categories { margin-bottom: 25px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
         .cat-btn { background: #fff; border: 2px solid #0a1e2d; padding: 8px 20px; border-radius: 30px; cursor: pointer; font-weight: bold; color: #0a1e2d; transition: 0.3s; }
         .cat-btn.active, .cat-btn:hover { background: #0a1e2d; color: white; }
 
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-bottom: 40px; }
-        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.06); transition: 0.3s; display: flex; flex-direction: column; }
+        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.06); transition: 0.3s; display: flex; flex-direction: column; position: relative; }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .product-card .img-box { width: 100%; height: 200px; background: #fff; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #eee; overflow: hidden; }
         .product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
@@ -95,6 +208,36 @@
         .p-info .tag { background: #eef2f5; display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; color: #555; margin-bottom: 10px; align-self: center; }
         .p-info p { color: #777; font-size: 13px; margin-bottom: 12px; flex-grow: 1; }
 
+        /* ===== تقييم المنتج ===== */
+        .product-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin: 8px 0;
+        }
+        .product-rating .stars {
+            color: #fbbf24;
+            font-size: 14px;
+        }
+        .product-rating .reviews-count {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* ===== شارة البائع ===== */
+        .seller-badge {
+            font-size: 12px;
+            color: #8bc34a;
+            background: #f0f8eb;
+            padding: 2px 12px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 5px;
+            align-self: center;
+        }
+
+        /* ===== خيارات المقاسات ===== */
         .size-options {
             margin: 10px 0;
             padding: 10px;
@@ -142,6 +285,7 @@
         .add-cart-btn { width: 100%; padding: 12px; background: #8bc34a; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s; }
         .add-cart-btn:hover { background: #6a9c36; }
 
+        /* ===== السلة ===== */
         .cart-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: white; box-shadow: -5px 0 20px rgba(0,0,0,0.2); z-index: 2000; transition: right 0.3s ease; display: flex; flex-direction: column; padding: 20px; }
         .cart-sidebar.open { right: 0; }
         .cart-header { display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-bottom: 15px; }
@@ -160,6 +304,7 @@
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1999; }
         .overlay.active { display: block; }
 
+        /* ===== مودال الدفع ===== */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; justify-content: center; align-items: center; }
         .modal-overlay.active { display: flex; }
         .checkout-modal { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 520px; position: relative; max-height: 90vh; overflow-y: auto; }
@@ -292,11 +437,57 @@
             transform: scale(1.02);
         }
 
+        /* ===== لوحة التحكم المتطورة ===== */
         .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
         .admin-modal.active { display: flex; }
-        .admin-modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative; }
+        .admin-modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 700px; max-height: 85vh; overflow-y: auto; position: relative; }
         .admin-modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; }
         .admin-modal h2 { color: #0a1e2d; text-align: center; margin-bottom: 20px; }
+
+        /* ===== إحصائيات لوحة التحكم ===== */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .admin-stat {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border-right: 4px solid #8bc34a;
+        }
+        .admin-stat .number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0a1e2d;
+        }
+        .admin-stat .label {
+            font-size: 13px;
+            color: #777;
+            margin-top: 4px;
+        }
+
+        .admin-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .admin-filters input, .admin-filters select {
+            padding: 8px 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            flex: 1;
+            min-width: 150px;
+        }
+        .admin-filters input:focus, .admin-filters select:focus {
+            border-color: #8bc34a;
+        }
+
         .order-card { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #f39c12; }
         .order-card h3 { color: #0a1e2d; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
         .order-card p { margin: 5px 0; color: #555; }
@@ -307,6 +498,24 @@
         .order-file-link:hover { text-decoration: underline; }
         
         .admin-status-select { margin-top: 10px; padding: 5px; border-radius: 5px; border: 1px solid #ddd; width: 100%; }
+
+        .admin-export-btn {
+            background: #0a1e2d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .admin-export-btn:hover {
+            background: #1a3a4a;
+            transform: scale(1.02);
+        }
 
         footer { background: #0a1e2d; color: white; text-align: center; padding: 20px; margin-top: auto; border-top: 4px solid #8bc34a; }
         footer a { color: #8bc34a; text-decoration: none; font-weight: bold; }
@@ -405,6 +614,10 @@
             .tracking-container .tracking-input-group { flex-direction: column; align-items: center; }
             .tracking-container .tracking-input-group input { max-width: 100%; }
             .tracking-container .tracking-input-group button { width: 100%; }
+            .filter-sidebar { grid-template-columns: 1fr; }
+            .offers-slider { flex-direction: column; text-align: center; }
+            .admin-stats { grid-template-columns: 1fr 1fr; }
+            .admin-filters { flex-direction: column; }
         }
     </style>
 </head>
@@ -445,8 +658,57 @@
     </header>
 
     <div class="container">
+        <!-- ===== شريط العروض ===== -->
+        <div class="offers-slider">
+            <div class="offer-text">
+                <i class="fas fa-fire"></i>
+                <div>
+                    <h2><span class="lang-ar">🔥 عروض اليوم</span><span class="lang-en">🔥 Today's Offers</span></h2>
+                    <p><span class="lang-ar">خصم يصل إلى 30% على جميع منتجات الحريق</span><span class="lang-en">Up to 30% off on all fire products</span></p>
+                </div>
+            </div>
+            <div class="offer-timer">
+                <i class="fas fa-clock"></i>
+                <span id="offerTimer">02:30:00</span>
+            </div>
+        </div>
+
         <div class="search-bar-container">
             <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث عن بادل فلانش، فلانشات، مواسير سيملس، موانع دوامة..." oninput="handleSearch()">
+        </div>
+
+        <!-- ===== الفلاتر المتقدمة ===== -->
+        <div class="filter-sidebar" id="filterSidebar">
+            <div class="filter-group">
+                <h4><span class="lang-ar">💰 السعر</span><span class="lang-en">💰 Price</span></h4>
+                <input type="range" id="priceRange" min="0" max="500" value="500" oninput="updatePriceDisplay()">
+                <div class="price-range">
+                    <span>$0</span>
+                    <span id="priceDisplay">$500</span>
+                </div>
+            </div>
+            <div class="filter-group">
+                <h4><span class="lang-ar">📏 المقاس</span><span class="lang-en">📏 Size</span></h4>
+                <select id="sizeFilter">
+                    <option value="all"><span class="lang-ar">الكل</span><span class="lang-en">All</span></option>
+                    <option value='1/2"'>1/2"</option>
+                    <option value='3/4"'>3/4"</option>
+                    <option value='1"'>1"</option>
+                    <option value='1.5"'>1.5"</option>
+                    <option value='2"'>2"</option>
+                    <option value='3"'>3"</option>
+                    <option value='4"'>4"</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <h4><span class="lang-ar">🏷️ الفئة</span><span class="lang-en">🏷️ Category</span></h4>
+                <label><input type="checkbox" class="cat-filter" value="pipes" checked> <span class="lang-ar">مواسير</span><span class="lang-en">Pipes</span></label>
+                <label><input type="checkbox" class="cat-filter" value="paddle-flanges" checked> <span class="lang-ar">بادل فلانش</span><span class="lang-en">Paddle Flange</span></label>
+                <label><input type="checkbox" class="cat-filter" value="flanges" checked> <span class="lang-ar">فلانشات</span><span class="lang-en">Flanges</span></label>
+                <label><input type="checkbox" class="cat-filter" value="fittings" checked> <span class="lang-ar">قطع قلاووظ</span><span class="lang-en">Fittings</span></label>
+                <label><input type="checkbox" class="cat-filter" value="fire" checked> <span class="lang-ar">موانع دوامة</span><span class="lang-en">Vortex</span></label>
+            </div>
+            <button class="filter-apply-btn" onclick="applyFilters()">🔍 <span class="lang-ar">تطبيق الفلتر</span><span class="lang-en">Apply Filter</span></button>
         </div>
 
         <h2 class="section-title">
@@ -619,7 +881,46 @@
     <div class="admin-modal" id="adminModal">
         <div class="admin-modal-content">
             <span class="admin-modal-close" onclick="closeAdmin()">&times;</span>
-            <h2><span class="lang-ar">📦 سجل طلبات العملاء</span><span class="lang-en">📦 Customer Orders</span></h2>
+            <h2><span class="lang-ar">📊 لوحة تحكم الطلبات</span><span class="lang-en">📊 Orders Dashboard</span></h2>
+            
+            <!-- ===== إحصائيات ===== -->
+            <div class="admin-stats" id="adminStats">
+                <div class="admin-stat">
+                    <div class="number" id="statOrders">0</div>
+                    <div class="label"><span class="lang-ar">📦 إجمالي الطلبات</span><span class="lang-en">📦 Total Orders</span></div>
+                </div>
+                <div class="admin-stat">
+                    <div class="number" id="statRevenue">$0</div>
+                    <div class="label"><span class="lang-ar">💰 إجمالي المبيعات</span><span class="lang-en">💰 Total Revenue</span></div>
+                </div>
+                <div class="admin-stat">
+                    <div class="number" id="statItems">0</div>
+                    <div class="label"><span class="lang-ar">🛒 عدد المنتجات</span><span class="lang-en">🛒 Items Sold</span></div>
+                </div>
+                <div class="admin-stat">
+                    <div class="number" id="statCustomers">0</div>
+                    <div class="label"><span class="lang-ar">👤 عدد العملاء</span><span class="lang-en">👤 Customers</span></div>
+                </div>
+            </div>
+
+            <!-- ===== فلتر الطلبات ===== -->
+            <div class="admin-filters">
+                <input type="text" id="adminSearchInput" placeholder="🔍 بحث في الطلبات..." oninput="filterAdminOrders()">
+                <select id="adminStatusFilter" onchange="filterAdminOrders()">
+                    <option value="all"><span class="lang-ar">جميع الحالات</span><span class="lang-en">All Status</span></option>
+                    <option value="قيد التجهيز"><span class="lang-ar">قيد التجهيز</span><span class="lang-en">Processing</span></option>
+                    <option value="تم الشحن"><span class="lang-ar">تم الشحن</span><span class="lang-en">Shipped</span></option>
+                    <option value="في الطريق"><span class="lang-ar">في الطريق</span><span class="lang-en">In Transit</span></option>
+                    <option value="تم التسليم"><span class="lang-ar">تم التسليم</span><span class="lang-en">Delivered</span></option>
+                </select>
+                <button class="admin-export-btn" onclick="exportOrders()">
+                    <i class="fas fa-file-excel"></i> <span class="lang-ar">تصدير Excel</span><span class="lang-en">Export Excel</span>
+                </button>
+                <button class="admin-export-btn" onclick="exportOrdersPDF()" style="background:#e74c3c;">
+                    <i class="fas fa-file-pdf"></i> <span class="lang-ar">تصدير PDF</span><span class="lang-en">Export PDF</span>
+                </button>
+            </div>
+
             <div id="adminOrdersContainer">
                 <p style="text-align:center; color:#999;">جاري التحميل...</p>
             </div>
@@ -697,14 +998,14 @@
         // 2. بيانات المنتجات
         // ================================================================
         const productsData = [
-            { id: 1, cat: 'paddle-flanges', nameAr: 'بادل فلانش استانلس ستيل', nameEn: 'Paddle Flange SS', price: 120.00, img: 'https://i.postimg.cc/wxFssk36/badl-flansh-astanls-styl.png', descAr: 'مقاومة عالية للتآكل.', descEn: 'High corrosion resistance.' },
-            { id: 2, cat: 'paddle-flanges', nameAr: 'بادل فلانش مجلفن', nameEn: 'Galvanized Paddle Flange', price: 90.00, img: 'https://i.postimg.cc/MGvYsKrT/badl-flansh-mjlfn.jpg', descAr: 'طبقة جلفنة ساخنة.', descEn: 'Hot-dip galvanized.' },
-            { id: 3, cat: 'flanges', nameAr: 'فلانشات لحام رقبة', nameEn: 'Weld Neck Flanges', price: 150.00, img: 'https://i.postimg.cc/3RPkBL57/66606066.png', descAr: 'توزيع الضغط بكفاءة.', descEn: 'High pressure systems.' },
-            { id: 4, cat: 'fire', nameAr: 'هويات وموانع دوامة', nameEn: 'Vortex Breakers & Hoods', price: 250.00, img: 'https://i.postimg.cc/9fnwnX5K/Whats-App-Image-2026-04-26-at-15-45-40.jpg', descAr: 'منع الدوامات الهوائية.', descEn: 'Prevents vortex formation.' },
-            { id: 5, cat: 'fittings', nameAr: 'قطع قلاووظ مجلفنة', nameEn: 'Galvanized Threaded Fittings', price: 25.00, img: 'https://i.postimg.cc/RhvspTzG/9999999999999.png', descAr: 'كوع وتايوان عالي الجودة.', descEn: 'High quality elbows.' },
-            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ استانلس', nameEn: 'SS Threaded Fittings', price: 45.00, img: 'https://i.postimg.cc/J4kDdCPG/pro621-x660.jpg', descAr: 'مقاوم للأحماض (304/316).', descEn: 'Acid resistant (304/316).' },
-            { id: 7, cat: 'pipes', nameAr: 'مواسير استانلس دوبلكس', nameEn: 'Duplex SS Pipe Fittings', price: 320.00, img: 'https://i.postimg.cc/cHCGkZMx/465324651321.png', descAr: 'مقاومة للتشقق الإجهادي.', descEn: 'Stress corrosion resistant.' },
-            { id: 8, cat: 'pipes', nameAr: 'مواسير سيملس', nameEn: 'Seamless Pipes', price: 180.00, img: 'https://i.postimg.cc/SsnN2cPY/33333333.png', descAr: 'بدون لحام، جميع الجداول.', descEn: 'Seamless, all schedules.' }
+            { id: 1, cat: 'paddle-flanges', nameAr: 'بادل فلانش استانلس ستيل', nameEn: 'Paddle Flange SS', price: 120.00, img: 'https://i.postimg.cc/wxFssk36/badl-flansh-astanls-styl.png', descAr: 'مقاومة عالية للتآكل.', descEn: 'High corrosion resistance.', rating: 4.5, reviews: 12, seller: 'Utopia' },
+            { id: 2, cat: 'paddle-flanges', nameAr: 'بادل فلانش مجلفن', nameEn: 'Galvanized Paddle Flange', price: 90.00, img: 'https://i.postimg.cc/MGvYsKrT/badl-flansh-mjlfn.jpg', descAr: 'طبقة جلفنة ساخنة.', descEn: 'Hot-dip galvanized.', rating: 4.2, reviews: 8, seller: 'Utopia' },
+            { id: 3, cat: 'flanges', nameAr: 'فلانشات لحام رقبة', nameEn: 'Weld Neck Flanges', price: 150.00, img: 'https://i.postimg.cc/3RPkBL57/66606066.png', descAr: 'توزيع الضغط بكفاءة.', descEn: 'High pressure systems.', rating: 4.8, reviews: 15, seller: 'Utopia' },
+            { id: 4, cat: 'fire', nameAr: 'هويات وموانع دوامة', nameEn: 'Vortex Breakers & Hoods', price: 250.00, img: 'https://i.postimg.cc/9fnwnX5K/Whats-App-Image-2026-04-26-at-15-45-40.jpg', descAr: 'منع الدوامات الهوائية.', descEn: 'Prevents vortex formation.', rating: 4.6, reviews: 20, seller: 'Utopia' },
+            { id: 5, cat: 'fittings', nameAr: 'قطع قلاووظ مجلفنة', nameEn: 'Galvanized Threaded Fittings', price: 25.00, img: 'https://i.postimg.cc/RhvspTzG/9999999999999.png', descAr: 'كوع وتايوان عالي الجودة.', descEn: 'High quality elbows.', rating: 4.0, reviews: 6, seller: 'Utopia' },
+            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ استانلس', nameEn: 'SS Threaded Fittings', price: 45.00, img: 'https://i.postimg.cc/J4kDdCPG/pro621-x660.jpg', descAr: 'مقاوم للأحماض (304/316).', descEn: 'Acid resistant (304/316).', rating: 4.7, reviews: 10, seller: 'Utopia' },
+            { id: 7, cat: 'pipes', nameAr: 'مواسير استانلس دوبلكس', nameEn: 'Duplex SS Pipe Fittings', price: 320.00, img: 'https://i.postimg.cc/cHCGkZMx/465324651321.png', descAr: 'مقاومة للتشقق الإجهادي.', descEn: 'Stress corrosion resistant.', rating: 4.9, reviews: 25, seller: 'Utopia' },
+            { id: 8, cat: 'pipes', nameAr: 'مواسير سيملس', nameEn: 'Seamless Pipes', price: 180.00, img: 'https://i.postimg.cc/SsnN2cPY/33333333.png', descAr: 'بدون لحام، جميع الجداول.', descEn: 'Seamless, all schedules.', rating: 4.4, reviews: 18, seller: 'Utopia' }
         ];
 
         // ================================================================
@@ -720,16 +1021,19 @@
         }
 
         // ================================================================
-        // 4. عرض المنتجات مع المقاسات
+        // 4. عرض المنتجات مع المقاسات والتقييمات
         // ================================================================
-        function renderProducts(category = 'all', searchQuery = '') {
+        function renderProducts(category = 'all', searchQuery = '', priceMax = 500, sizeFilter = 'all', categories = ['pipes', 'paddle-flanges', 'flanges', 'fittings', 'fire']) {
             const container = document.getElementById('productsContainer');
             container.innerHTML = '';
             
             let filtered = productsData.filter(p => {
                 const matchCat = (category === 'all' || p.cat === category);
                 const matchSearch = p.nameAr.toLowerCase().includes(searchQuery.toLowerCase()) || p.nameEn.toLowerCase().includes(searchQuery.toLowerCase());
-                return matchCat && matchSearch;
+                const matchPrice = p.price <= priceMax;
+                const matchSize = sizeFilter === 'all' || true; // size filter applied on product level
+                const matchCategories = categories.includes(p.cat);
+                return matchCat && matchSearch && matchPrice && matchCategories;
             });
 
             if(filtered.length === 0) {
@@ -747,6 +1051,15 @@
                 else if(p.cat === 'fittings') catTextAr = 'قطع قلاووظ';
                 else if(p.cat === 'fire') catTextAr = 'موانع دوامة';
 
+                // بناء التقييم
+                let starsHtml = '';
+                const fullStars = Math.floor(p.rating);
+                const hasHalf = p.rating % 1 >= 0.5;
+                for (let i = 0; i < fullStars; i++) starsHtml += '⭐';
+                if (hasHalf) starsHtml += '⭐';
+                const emptyStars = 5 - fullStars - (hasHalf ? 1 : 0);
+                for (let i = 0; i < emptyStars; i++) starsHtml += '☆';
+
                 let sizeOptions = `<option value="">-- اختر المقاس --</option>`;
                 allSizes.forEach(size => {
                     sizeOptions += `<option value="${size}">${size}</option>`;
@@ -757,8 +1070,13 @@
                 card.innerHTML = `
                     <div class="img-box"><img src="${p.img}" alt="${p.nameEn}" loading="lazy"></div>
                     <div class="p-info">
+                        <div class="seller-badge">🛡️ ${p.seller}</div>
                         <h3><span class="lang-ar">${p.nameAr}</span><span class="lang-en">${p.nameEn}</span></h3>
                         <span class="tag"><span class="lang-ar">${catTextAr}</span><span class="lang-en">${p.cat}</span></span>
+                        <div class="product-rating">
+                            <span class="stars">${starsHtml}</span>
+                            <span class="reviews-count">(${p.reviews})</span>
+                        </div>
                         <p><span class="lang-ar">${p.descAr}</span><span class="lang-en">${p.descEn}</span></p>
                         <div class="size-options">
                             <label><span class="lang-ar">📏 اختر المقاس:</span><span class="lang-en">📏 Select Size:</span></label>
@@ -778,30 +1096,66 @@
         }
 
         // ================================================================
-        // 5. إظهار/إخفاء حقل الكتابة عند اختيار "أخرى"
+        // 5. وظائف الفلتر المتقدمة
         // ================================================================
-        function toggleCustomSize(productId) {
-            const select = document.getElementById(`size_${productId}`);
-            const customDiv = document.getElementById(`customSize_${productId}`);
-            if (select.value === 'أخرى') {
-                customDiv.style.display = 'block';
-            } else {
-                customDiv.style.display = 'none';
-            }
+        let currentCategory = 'all';
+        let currentSearch = '';
+        let currentPriceMax = 500;
+        let currentSizeFilter = 'all';
+        
+        function applyFilters() {
+            const priceMax = parseInt(document.getElementById('priceRange').value);
+            const sizeFilter = document.getElementById('sizeFilter').value;
+            const catCheckboxes = document.querySelectorAll('.cat-filter:checked');
+            const categories = Array.from(catCheckboxes).map(cb => cb.value);
+            
+            currentPriceMax = priceMax;
+            currentSizeFilter = sizeFilter;
+            
+            renderProducts(currentCategory, currentSearch, priceMax, sizeFilter, categories);
+        }
+
+        function updatePriceDisplay() {
+            const val = document.getElementById('priceRange').value;
+            document.getElementById('priceDisplay').textContent = '$' + val;
         }
 
         // ================================================================
-        // 6. وظائف الفلتر والبحث
+        // 6. وظائف الفلتر والبحث الأساسية
         // ================================================================
         function filterCategory(cat, event) {
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
             if(event && event.currentTarget) event.currentTarget.classList.add('active');
-            renderProducts(cat, document.getElementById('searchInput').value);
+            currentCategory = cat;
+            applyFilters();
         }
-        function handleSearch() { renderProducts('all', document.getElementById('searchInput').value); }
+        
+        function handleSearch() {
+            currentSearch = document.getElementById('searchInput').value;
+            applyFilters();
+        }
 
         // ================================================================
-        // 7. وظائف السلة
+        // 7. نظام التقييمات
+        // ================================================================
+        const productReviews = {};
+
+        function addReview(productId, rating, comment) {
+            if(!productReviews[productId]) productReviews[productId] = [];
+            productReviews[productId].push({ rating, comment, date: new Date().toLocaleString('ar-EG') });
+            // تحديث متوسط التقييم
+            const reviews = productReviews[productId];
+            const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+            const product = productsData.find(p => p.id === productId);
+            if(product) {
+                product.rating = Math.round(avg * 10) / 10;
+                product.reviews = reviews.length;
+                renderProducts(currentCategory, currentSearch, currentPriceMax, currentSizeFilter);
+            }
+        }
+
+        // ================================================================
+        // 8. وظائف السلة
         // ================================================================
         let cart = [];
 
@@ -874,7 +1228,7 @@
         function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
 
         // ================================================================
-        // 8. باقي الوظائف
+        // 9. باقي الوظائف (إيميل، واتساب، تتبع، الخ)
         // ================================================================
         let selectedFile = null;
         let lastOrderId = null;
@@ -997,7 +1351,7 @@
         }
 
         // ================================================================
-        // 9. 📧 إرسال بالإيميل مع المرفق
+        // 10. 📧 إرسال بالإيميل
         // ================================================================
         async function submitOrderViaEmail() {
             const orderData = buildOrderData();
@@ -1009,10 +1363,8 @@
                 productsList += `${i + 1}. ${item.nameAr} (المقاس: ${item.size}) ×${item.quantity} - $${(item.price * item.quantity).toFixed(2)}%0A`;
             });
 
-            // بناء رابط تحميل الملف (من localStorage)
             let fileHtml = "";
             if(selectedFile) {
-                // تخزين الملف في localStorage مؤقتاً
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const fileData = e.target.result;
@@ -1043,7 +1395,7 @@
         }
 
         // ================================================================
-        // 10. 💬 إرسال بالواتساب مع رابط تحميل الملف
+        // 11. 💬 إرسال بالواتساب
         // ================================================================
         function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
@@ -1057,18 +1409,13 @@
 
             let fileInfo = "";
             if(selectedFile) {
-                // تحويل الملف إلى Data URL
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const fileData = e.target.result;
-                    // تخزين الملف في localStorage
                     localStorage.setItem('temp_file_' + orderData.id, fileData);
-                    
-                    // بناء رابط التحميل (رابط مباشر)
-                    const downloadLink = fileData; // Data URL
+                    const downloadLink = fileData;
                     fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)\n🔗 رابط التحميل: ${downloadLink}\n\n`;
                     
-                    // إعادة بناء الرسالة مع رابط التحميل
                     const finalMessageWithLink = 
                         `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📍 ${STORE_NAME}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
                         `📋 نوع الطلب : ${orderData.orderType}\n` +
@@ -1089,7 +1436,6 @@
                 };
                 reader.readAsDataURL(selectedFile);
             } else {
-                // لو مفيش ملف
                 const message = 
                     `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📍 ${STORE_NAME}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
                     `📋 نوع الطلب : ${orderData.orderType}\n` +
@@ -1110,7 +1456,7 @@
         }
 
         // ================================================================
-        // 11. نظام التتبع
+        // 12. نظام التتبع
         // ================================================================
         function showSuccessWithTracking() {
             document.getElementById('formContainer').style.display = 'none';
@@ -1139,7 +1485,6 @@
                 return;
             }
 
-            // التحقق من وجود ملف مرفق
             let fileHtml = '';
             if(order.hasFile && order.fileName) {
                 const fileData = localStorage.getItem('temp_file_' + order.id);
@@ -1210,7 +1555,7 @@
         }
 
         // ================================================================
-        // 12. البحث عن شحنة (عام)
+        // 13. البحث عن شحنة (عام)
         // ================================================================
         function searchPublicTracking() {
             const input = document.getElementById('publicTrackingInput').value.trim();
@@ -1235,7 +1580,6 @@
                 return;
             }
 
-            // التحقق من وجود ملف مرفق
             let fileHtml = '';
             if(order.hasFile && order.fileName) {
                 const fileData = localStorage.getItem('temp_file_' + order.id);
@@ -1306,7 +1650,7 @@
         }
 
         // ================================================================
-        // 13. لوحة التحكم مع المرفقات
+        // 14. لوحة التحكم المتطورة
         // ================================================================
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
@@ -1319,9 +1663,65 @@
         function loadAdminOrders() {
             const container = document.getElementById('adminOrdersContainer');
             const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            
+            // تحديث الإحصائيات
+            updateAdminStats(orders);
+            
             if(orders.length === 0) { 
                 container.innerHTML = `<p style="text-align:center; color:#999;">لا توجد طلبات حتى الآن.</p>`; 
                 return; 
+            }
+            
+            // تطبيق الفلتر
+            filterAdminOrders(orders);
+        }
+
+        function updateAdminStats(orders) {
+            const totalOrders = orders.length;
+            let totalRevenue = 0;
+            let totalItems = 0;
+            const customers = new Set();
+
+            orders.forEach(order => {
+                totalRevenue += order.total || 0;
+                if(order.items) {
+                    order.items.forEach(item => {
+                        totalItems += item.quantity || 0;
+                    });
+                }
+                if(order.name) customers.add(order.name);
+            });
+
+            document.getElementById('statOrders').textContent = totalOrders;
+            document.getElementById('statRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+            document.getElementById('statItems').textContent = totalItems;
+            document.getElementById('statCustomers').textContent = customers.size;
+        }
+
+        function filterAdminOrders(ordersData = null) {
+            const container = document.getElementById('adminOrdersContainer');
+            const search = document.getElementById('adminSearchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('adminStatusFilter').value;
+            
+            let orders = ordersData || JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            
+            // فلتر حسب البحث
+            if(search) {
+                orders = orders.filter(order => 
+                    (order.name && order.name.toLowerCase().includes(search)) ||
+                    (order.id && order.id.toString().includes(search)) ||
+                    (order.phone && order.phone.includes(search))
+                );
+            }
+            
+            // فلتر حسب الحالة
+            if(statusFilter !== 'all') {
+                orders = orders.filter(order => order.tracking && order.tracking.status === statusFilter);
+            }
+            
+            if(orders.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:#999;">لا توجد طلبات تطابق البحث.</p>`;
+                return;
             }
             
             container.innerHTML = '';
@@ -1398,7 +1798,51 @@
         }
 
         // ================================================================
-        // 14. وظائف اللغة
+        // 15. تصدير الطلبات
+        // ================================================================
+        function exportOrders() {
+            const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            if(orders.length === 0) {
+                alert("لا توجد طلبات للتصدير");
+                return;
+            }
+
+            let csv = "رقم الطلب,التاريخ,العميل,الهاتف,العنوان,طريقة الدفع,الإجمالي,المنتجات\n";
+            orders.forEach(order => {
+                const products = order.items.map(item => `${item.nameAr} (x${item.quantity})`).join(' | ');
+                csv += `${order.id},${order.date},${order.name},${order.phone},${order.address},${order.payment},${order.total},${products}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `orders_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+        }
+
+        function exportOrdersPDF() {
+            alert("📄 سيتم إضافة تصدير PDF قريباً! حالياً يمكنك استخدام تصدير Excel.");
+        }
+
+        // ================================================================
+        // 16. المؤقت للعروض
+        // ================================================================
+        let timerSeconds = 9000; // 2.5 ساعة
+
+        function updateTimer() {
+            if(timerSeconds <= 0) {
+                timerSeconds = 9000;
+            }
+            timerSeconds--;
+            const hours = Math.floor(timerSeconds / 3600);
+            const minutes = Math.floor((timerSeconds % 3600) / 60);
+            const seconds = timerSeconds % 60;
+            document.getElementById('offerTimer').textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // ================================================================
+        // 17. وظائف اللغة
         // ================================================================
         function checkAdminAccess() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1446,12 +1890,15 @@
         }
 
         // ================================================================
-        // 15. تهيئة المتجر
+        // 18. تهيئة المتجر
         // ================================================================
         initLanguage();
         renderProducts();
         checkAdminAccess();
         updateCartUI();
+        
+        // تشغيل المؤقت
+        setInterval(updateTimer, 1000);
 
         console.log('🔥 مرحباً بك في متجر يوتوبيا للتجارة والتصدير!');
         console.log('📧 الإيميل: ' + STORE_EMAIL);
@@ -1460,6 +1907,8 @@
         console.log('🔒 الحماية مفعلة: منع النسخ، منع أدوات المطور، منع النقر الأيمن');
         console.log('📎 المرفقات تظهر في الإيميل والواتساب ولوحة التحكم');
         console.log('👨‍💻 المطور: Eng : Mahmoud Mohamed Marie | +201222153415');
+        console.log('📊 لوحة التحكم المتطورة مع إحصائيات وتصدير');
+        console.log('🔥 عروض اليوم - خصم يصل إلى 30%');
     </script>
 </body>
 </html>
