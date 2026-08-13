@@ -6,7 +6,7 @@
     <title>يوتوبيا للتجارة والتصدير - لوازم الحريق والصناعة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== جميع الـ Styles السابقة ===== */
+        /* ===== جميع الـ Styles ===== */
         * {
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -154,7 +154,6 @@
         .email-btn { background: #3b82f6; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; flex: 1; justify-content: center; font-size: 16px; }
         .email-btn:hover { background: #2563eb; transform: scale(1.02); }
 
-        /* ===== لوحة التحكم ===== */
         .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
         .admin-modal.active { display: flex; }
         .admin-modal-content { background: white; padding: 30px; border-radius: 12px; width: 95%; max-width: 800px; max-height: 85vh; overflow-y: auto; position: relative; }
@@ -449,7 +448,6 @@
             <button class="admin-modal-close" onclick="closeAdmin()">&times;</button>
             <h2>📊 <span class="lang-ar">لوحة تحكم الطلبات</span><span class="lang-en">Orders Dashboard</span></h2>
             
-            <!-- الإحصائيات -->
             <div class="admin-stats" id="adminStats">
                 <div class="admin-stat">
                     <div class="number" id="statOrders">0</div>
@@ -469,7 +467,6 @@
                 </div>
             </div>
 
-            <!-- فلتر وبحث -->
             <div class="admin-filters">
                 <input type="text" id="adminSearchInput" placeholder="🔍 بحث في الطلبات..." oninput="filterAdminOrders()">
                 <select id="adminStatusFilter" onchange="filterAdminOrders()">
@@ -511,8 +508,8 @@
             <span class="lang-en">All Rights Reserved &copy; 2026</span>
             <br>
             <span style="font-size: 13px; color: #8bc34a;"> 
-                <span class="lang-ar">Developed and designed by Engineer Mahmoud Mohamed Marie | <a href="https://wa.me/201222153415" target="_blank" style="color: #8bc34a; text-decoration: none;">+201222153415</a></span>
-                <span class="lang-en">Developed and designed by Engineer Mahmoud Mohamed Marie | <a href="https://wa.me/201222153415" target="_blank" style="color: #8bc34a; text-decoration: none;">+201222153415</a></span>
+                <span class="lang-ar">تصميم وتطوير: Eng : Mahmoud Mohamed Marie | <a href="https://wa.me/201222153415" target="_blank" style="color: #8bc34a; text-decoration: none;">+201222153415</a></span>
+                <span class="lang-en">Designed by: Eng : Mahmoud Mohamed Marie | <a href="https://wa.me/201222153415" target="_blank" style="color: #8bc34a; text-decoration: none;">+201222153415</a></span>
             </span>
         </p>
     </footer>
@@ -849,6 +846,10 @@
 
         function saveOrderToLocalStorage(orderData) {
             let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            // التأكد من وجود tracking
+            if(!orderData.tracking) {
+                orderData.tracking = { status: 'قيد التجهيز', lastUpdate: new Date().toLocaleString('ar-EG') };
+            }
             orders.push(orderData);
             localStorage.setItem('utopia_orders', JSON.stringify(orders));
             lastOrderId = orderData.id;
@@ -882,7 +883,7 @@
                         "المنتجات": productsText,
                         "الإجمالي": `$${orderData.total.toFixed(2)}`,
                         "اسم الملف": orderData.fileName || 'لا يوجد',
-                        "الحالة": orderData.status
+                        "الحالة": orderData.tracking ? orderData.tracking.status : 'قيد التجهيز'
                     })
                 });
                 return response.ok;
@@ -893,13 +894,16 @@
         }
 
         // ================================================================
-        // 10. 📧 إرسال بالإيميل
+        // 10. 📧 إرسال بالإيميل (مع مرفق حقيقي)
         // ================================================================
         async function submitOrderViaEmail() {
             const orderData = buildOrderData();
             if(!orderData) return;
             
+            // حفظ محلياً
             saveOrderToLocalStorage(orderData);
+            
+            // إرسال للسحابة
             await sendToFormspree(orderData);
 
             let productsList = "";
@@ -909,6 +913,7 @@
 
             let fileHtml = "";
             if(selectedFile) {
+                // تخزين الملف في localStorage
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const fileData = e.target.result;
@@ -938,6 +943,7 @@
 
             window.open(`mailto:${STORE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${finalBody}`, '_blank');
             
+            // إظهار رسالة النجاح
             document.getElementById('formContainer').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             cart = []; updateCartUI();
@@ -949,13 +955,16 @@
         }
 
         // ================================================================
-        // 11. 💬 إرسال بالواتساب
+        // 11. 💬 إرسال بالواتساب (مع رابط تحميل الملف)
         // ================================================================
         async function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
             if(!orderData) return;
             
+            // حفظ محلياً
             saveOrderToLocalStorage(orderData);
+            
+            // إرسال للسحابة
             await sendToFormspree(orderData);
 
             let productsList = "";
@@ -965,15 +974,30 @@
 
             let fileInfo = "";
             if(selectedFile) {
+                // تحويل الملف إلى Data URL
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const fileData = e.target.result;
                     localStorage.setItem('temp_file_' + orderData.id, fileData);
+                    
+                    // بناء رابط التحميل
+                    const downloadLink = fileData;
+                    const fileMessage = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)\n🔗 رابط التحميل: ${downloadLink}\n\n`;
+                    
+                    // إرسال الرسالة
+                    sendWhatsAppMessage(orderData, productsList, fileMessage);
                 };
                 reader.readAsDataURL(selectedFile);
-                fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)\n🔗 يمكنك تحميل الملف من لوحة التحكم (رقم الطلب: ${orderData.id})\n\n`;
+                return; // ننتظر حتى يتم تحميل الملف
+            } else {
+                sendWhatsAppMessage(orderData, productsList, '');
             }
+        }
 
+        // ================================================================
+        // إرسال رسالة واتساب
+        // ================================================================
+        function sendWhatsAppMessage(orderData, productsList, fileInfo) {
             const message = 
                 `📍 ${STORE_NAME}\n` +
                 `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
@@ -1191,7 +1215,7 @@
         }
 
         // ================================================================
-        // 14. لوحة التحكم (تعرض من localStorage)
+        // 14. لوحة التحكم
         // ================================================================
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
@@ -1213,7 +1237,6 @@
         function loadAdminOrders() {
             const container = document.getElementById('adminOrdersContainer');
             
-            // إظهار مؤشر التحميل
             container.innerHTML = `
                 <div class="loading-spinner active">
                     <div class="spinner"></div>
@@ -1221,11 +1244,8 @@
                 </div>
             `;
             
-            // محاكاة تحميل (لإعطاء انطباع بالسرعة)
             setTimeout(() => {
                 const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
-                
-                // تحديث الإحصائيات
                 updateAdminStats(orders);
                 
                 if(orders.length === 0) { 
@@ -1233,7 +1253,6 @@
                     return; 
                 }
                 
-                // عرض الطلبات مع الفلتر
                 displayAdminOrders(orders);
             }, 500);
         }
