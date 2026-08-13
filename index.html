@@ -6,7 +6,6 @@
     <title>يوتوبيا للتجارة والتصدير - لوازم الحريق والصناعة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== جميع الـ Styles السابقة ===== */
         * {
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -47,25 +46,14 @@
         
         .phone-number {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            align-items: center; gap: 8px;
             background: rgba(255,255,255,0.12);
-            padding: 8px 16px;
-            border-radius: 50px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            font-size: 14px;
+            padding: 8px 16px; border-radius: 50px;
+            color: white; text-decoration: none;
+            font-weight: 600; transition: 0.3s; font-size: 14px;
         }
-        .phone-number:hover {
-            background: rgba(255,255,255,0.25);
-            transform: scale(1.02);
-        }
-        .phone-number i {
-            color: #8bc34a;
-            font-size: 18px;
-        }
+        .phone-number:hover { background: rgba(255,255,255,0.25); transform: scale(1.02); }
+        .phone-number i { color: #8bc34a; font-size: 18px; }
 
         .lang-switch { background: #e74c3c; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
         .cart-btn { background: #8bc34a; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; position: relative; }
@@ -95,49 +83,12 @@
         .p-info .tag { background: #eef2f5; display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; color: #555; margin-bottom: 10px; align-self: center; }
         .p-info p { color: #777; font-size: 13px; margin-bottom: 12px; flex-grow: 1; }
 
-        /* ===== خيارات المقاسات ===== */
-        .size-options {
-            margin: 10px 0;
-            padding: 10px;
-            background: #f8fafc;
-            border-radius: 8px;
-        }
-        .size-options label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        .size-options select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            background: white;
-            outline: none;
-        }
-        .size-options select:focus {
-            border-color: #8bc34a;
-        }
-        .size-options .custom-size-input {
-            display: none;
-            margin-top: 8px;
-        }
-        .size-options .custom-size-input input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #8bc34a;
-            border-radius: 6px;
-            font-size: 14px;
-            outline: none;
-            background: #f8fcf5;
-        }
-        .size-options .custom-size-input input:focus {
-            border-color: #6a9c36;
-            box-shadow: 0 0 5px rgba(139, 195, 74, 0.3);
-        }
+        .size-options { margin: 10px 0; padding: 10px; background: #f8fafc; border-radius: 8px; }
+        .size-options label { display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 5px; }
+        .size-options select { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; background: white; outline: none; }
+        .size-options select:focus { border-color: #8bc34a; }
+        .size-options .custom-size-input { display: none; margin-top: 8px; }
+        .size-options .custom-size-input input { width: 100%; padding: 8px 12px; border: 1px solid #8bc34a; border-radius: 6px; font-size: 14px; outline: none; background: #f8fcf5; }
 
         .p-price { font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; display: block; }
         .add-cart-btn { width: 100%; padding: 12px; background: #8bc34a; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s; }
@@ -180,132 +131,62 @@
             transition: 0.3s;
             background: #fafafa;
         }
-        .file-upload-group:hover {
-            border-color: #8bc34a;
-            background: #f8fcf5;
-        }
-        .file-upload-group input[type="file"] {
-            display: none;
-        }
-        .file-upload-group .file-label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        .file-upload-group .file-label i {
-            font-size: 36px;
-            color: #8bc34a;
-        }
-        .file-upload-group .file-label span {
-            color: #555;
-            font-size: 14px;
-        }
-        .file-upload-group .file-label .file-types {
-            font-size: 12px;
-            color: #999;
-        }
-        .file-name-display {
-            margin-top: 8px;
-            font-size: 13px;
-            color: #27ae60;
-            font-weight: 600;
-        }
+        .file-upload-group:hover { border-color: #8bc34a; background: #f8fcf5; }
+        .file-upload-group input[type="file"] { display: none; }
+        .file-upload-group .file-label { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
+        .file-upload-group .file-label i { font-size: 36px; color: #8bc34a; }
+        .file-upload-group .file-label span { color: #555; font-size: 14px; }
+        .file-upload-group .file-label .file-types { font-size: 12px; color: #999; }
+        .file-name-display { margin-top: 8px; font-size: 13px; color: #27ae60; font-weight: 600; }
 
-        .location-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .location-group input {
-            flex: 1;
-            min-width: 150px;
-        }
-        .location-group button {
-            padding: 0 18px;
-            background: #0a1e2d;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            white-space: nowrap;
-        }
-        .location-group button:hover {
-            background: #1a3a4a;
-        }
-        .location-hint {
-            display: block;
-            margin-top: 5px;
-            font-size: 12px;
-            color: #777;
-        }
+        .location-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .location-group input { flex: 1; min-width: 150px; }
+        .location-group button { padding: 0 18px; background: #0a1e2d; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; white-space: nowrap; }
+        .location-group button:hover { background: #1a3a4a; }
+        .location-hint { display: block; margin-top: 5px; font-size: 12px; color: #777; }
 
         .success-msg { display: none; text-align: center; color: #27ae60; font-weight: bold; font-size: 18px; padding: 20px; }
 
-        .contact-options {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 15px;
-        }
-        .whatsapp-btn {
-            background: #25d366;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-            flex: 1;
-            justify-content: center;
-            font-size: 16px;
-        }
-        .whatsapp-btn:hover {
-            background: #128C7E;
-            transform: scale(1.02);
-        }
-        .email-btn {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-            flex: 1;
-            justify-content: center;
-            font-size: 16px;
-        }
-        .email-btn:hover {
-            background: #2563eb;
-            transform: scale(1.02);
-        }
+        .contact-options { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 15px; }
+        .whatsapp-btn { background: #25d366; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; flex: 1; justify-content: center; font-size: 16px; }
+        .whatsapp-btn:hover { background: #128C7E; transform: scale(1.02); }
+        .email-btn { background: #3b82f6; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; flex: 1; justify-content: center; font-size: 16px; }
+        .email-btn:hover { background: #2563eb; transform: scale(1.02); }
 
+        /* ===== لوحة التحكم المتطورة ===== */
         .admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
         .admin-modal.active { display: flex; }
-        .admin-modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative; }
-        .admin-modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; }
+        .admin-modal-content { background: white; padding: 30px; border-radius: 12px; width: 95%; max-width: 800px; max-height: 85vh; overflow-y: auto; position: relative; }
+        .admin-modal-close { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: #999; background: none; border: none; }
         .admin-modal h2 { color: #0a1e2d; text-align: center; margin-bottom: 20px; }
+
+        .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .admin-stat { background: #f8f9fa; border-radius: 10px; padding: 15px; text-align: center; border-right: 4px solid #8bc34a; }
+        .admin-stat .number { font-size: 28px; font-weight: 700; color: #0a1e2d; }
+        .admin-stat .label { font-size: 13px; color: #777; margin-top: 4px; }
+
+        .admin-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+        .admin-filters input, .admin-filters select { padding: 8px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; flex: 1; min-width: 150px; }
+        .admin-filters input:focus, .admin-filters select:focus { border-color: #8bc34a; }
+
+        .admin-export-btn { background: #0a1e2d; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
+        .admin-export-btn:hover { background: #1a3a4a; transform: scale(1.02); }
+        .admin-export-btn.pdf { background: #e74c3c; }
+        .admin-export-btn.pdf:hover { background: #c0392b; }
+
         .order-card { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #f39c12; }
         .order-card h3 { color: #0a1e2d; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
-        .order-card p { margin: 5px 0; color: #555; }
+        .order-card p { margin: 5px 0; color: #555; font-size: 14px; }
         .order-card ul { margin: 10px 0; padding-right: 20px; }
         .order-card li { margin-bottom: 5px; }
         .order-total { font-size: 18px; font-weight: bold; color: #2ecc71; margin-top: 10px; }
         .order-file-link { display: inline-block; margin-top: 8px; color: #3b82f6; text-decoration: none; font-weight: 600; }
         .order-file-link:hover { text-decoration: underline; }
+        .order-status-badge { display: inline-block; padding: 3px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; }
+        .order-status-badge.processing { background: #fbbf24; color: #1e293b; }
+        .order-status-badge.shipped { background: #3b82f6; color: white; }
+        .order-status-badge.transit { background: #8b5cf6; color: white; }
+        .order-status-badge.delivered { background: #22c55e; color: white; }
         
         .admin-status-select { margin-top: 10px; padding: 5px; border-radius: 5px; border: 1px solid #ddd; width: 100%; }
 
@@ -318,79 +199,17 @@
         body.dir-rtl { direction: rtl; text-align: right; }
         body.dir-ltr { direction: ltr; text-align: left; }
 
-        .loading-spinner { display: none; text-align: center; padding: 10px; color: #8b5cf6; font-weight: bold; }
-        .loading-spinner.active { display: block; }
-        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #8b5cf6; border-radius: 50%; width: 30px; height: 30px; animation: spin 0.8s linear infinite; margin: 0 auto 8px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .tracking-container { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.06); text-align: center; margin-bottom: 30px; }
+        .tracking-container h3 { color: #0a1e2d; margin-bottom: 15px; }
+        .tracking-container .tracking-input-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .tracking-container .tracking-input-group input { padding: 12px 20px; border: 2px solid #ddd; border-radius: 30px; font-size: 16px; outline: none; width: 100%; max-width: 400px; transition: 0.3s; }
+        .tracking-container .tracking-input-group input:focus { border-color: #8bc34a; box-shadow: 0 0 8px rgba(139, 195, 74, 0.3); }
+        .tracking-container .tracking-input-group button { padding: 12px 30px; background: #0a1e2d; color: white; border: none; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .tracking-container .tracking-input-group button:hover { background: #1a3a4a; transform: scale(1.02); }
+        .tracking-result { margin-top: 15px; text-align: right; }
 
-        .tracking-container {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .tracking-container h3 {
-            color: #0a1e2d;
-            margin-bottom: 15px;
-        }
-        .tracking-container .tracking-input-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .tracking-container .tracking-input-group input {
-            padding: 12px 20px;
-            border: 2px solid #ddd;
-            border-radius: 30px;
-            font-size: 16px;
-            outline: none;
-            width: 100%;
-            max-width: 400px;
-            transition: 0.3s;
-        }
-        .tracking-container .tracking-input-group input:focus {
-            border-color: #8bc34a;
-            box-shadow: 0 0 8px rgba(139, 195, 74, 0.3);
-        }
-        .tracking-container .tracking-input-group button {
-            padding: 12px 30px;
-            background: #0a1e2d;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .tracking-container .tracking-input-group button:hover {
-            background: #1a3a4a;
-            transform: scale(1.02);
-        }
-        .tracking-result {
-            margin-top: 15px;
-            text-align: right;
-        }
-
-        .file-download-btn {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 6px 14px;
-            background: #3b82f6;
-            color: white;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 13px;
-            transition: 0.3s;
-        }
-        .file-download-btn:hover {
-            background: #2563eb;
-            transform: scale(1.02);
-        }
+        .file-download-btn { display: inline-block; margin-top: 8px; padding: 6px 14px; background: #3b82f6; color: white; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 13px; transition: 0.3s; }
+        .file-download-btn:hover { background: #2563eb; transform: scale(1.02); }
 
         @media (max-width: 600px) {
             .brand-logo { max-height: 50px; max-width: 140px; }
@@ -406,6 +225,9 @@
             .tracking-container .tracking-input-group { flex-direction: column; align-items: center; }
             .tracking-container .tracking-input-group input { max-width: 100%; }
             .tracking-container .tracking-input-group button { width: 100%; }
+            .admin-stats { grid-template-columns: 1fr 1fr; }
+            .admin-filters { flex-direction: column; }
+            .admin-modal-content { padding: 15px; }
         }
     </style>
 </head>
@@ -569,14 +391,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label><span class="lang-ar">📎 إرفاق ملف (PDF, Word, Excel)</span><span class="lang-en">📎 Attach File (PDF, Word, Excel)</span></label>
+                    <label><span class="lang-ar">📎 إرفاق ملف (PDF, Word, Excel, صور)</span><span class="lang-en">📎 Attach File (PDF, Word, Excel, Images)</span></label>
                     <div class="file-upload-group" onclick="document.getElementById('fileInput').click()">
                         <div class="file-label">
                             <i class="fas fa-cloud-upload-alt"></i>
                             <span><span class="lang-ar">اضغط لرفع ملف</span><span class="lang-en">Click to upload file</span></span>
-                            <span class="file-types">PDF, DOC, DOCX, XLS, XLSX (حد أقصى 5 ميجابايت)</span>
+                            <span class="file-types">PDF, DOC, DOCX, XLS, XLSX, JPG, PNG, GIF (حد أقصى 5 ميجابايت)</span>
                         </div>
-                        <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.xls,.xlsx" onchange="handleFileSelect(event)">
+                        <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif" onchange="handleFileSelect(event)">
                         <div class="file-name-display" id="fileNameDisplay"></div>
                     </div>
                 </div>
@@ -617,17 +439,58 @@
         </div>
     </div>
 
+    <!-- ===== لوحة التحكم المتطورة ===== -->
     <div class="admin-modal" id="adminModal">
         <div class="admin-modal-content">
-            <span class="admin-modal-close" onclick="closeAdmin()">&times;</span>
-            <h2><span class="lang-ar">📦 سجل طلبات العملاء</span><span class="lang-en">📦 Customer Orders</span></h2>
-            <div id="adminOrdersContainer">
-                <p style="text-align:center; color:#999;">جاري التحميل...</p>
+            <button class="admin-modal-close" onclick="closeAdmin()">&times;</button>
+            <h2>📊 <span class="lang-ar">لوحة تحكم الطلبات</span><span class="lang-en">Orders Dashboard</span></h2>
+            
+            <!-- الإحصائيات -->
+            <div class="admin-stats" id="adminStats">
+                <div class="admin-stat">
+                    <div class="number" id="statOrders">0</div>
+                    <div class="label">📦 <span class="lang-ar">إجمالي الطلبات</span><span class="lang-en">Total Orders</span></div>
+                </div>
+                <div class="admin-stat">
+                    <div class="number" id="statRevenue">$0</div>
+                    <div class="label">💰 <span class="lang-ar">إجمالي المبيعات</span><span class="lang-en">Revenue</span></div>
+                </div>
+                <div class="admin-stat">
+                    <div class="number" id="statItems">0</div>
+                    <div class="label">🛒 <span class="lang-ar">عدد المنتجات</span><span class="lang-en">Items Sold</span></div>
+                </div>
+                <div class="admin-stat">
+                    <div class="number" id="statCustomers">0</div>
+                    <div class="label">👤 <span class="lang-ar">عدد العملاء</span><span class="lang-en">Customers</span></div>
+                </div>
             </div>
+
+            <!-- فلتر وبحث -->
+            <div class="admin-filters">
+                <input type="text" id="adminSearchInput" placeholder="🔍 بحث في الطلبات..." oninput="filterAdminOrders()">
+                <select id="adminStatusFilter" onchange="filterAdminOrders()">
+                    <option value="all">📋 <span class="lang-ar">جميع الحالات</span><span class="lang-en">All Status</span></option>
+                    <option value="قيد التجهيز">⏳ <span class="lang-ar">قيد التجهيز</span><span class="lang-en">Processing</span></option>
+                    <option value="تم الشحن">🚚 <span class="lang-ar">تم الشحن</span><span class="lang-en">Shipped</span></option>
+                    <option value="في الطريق">🚛 <span class="lang-ar">في الطريق</span><span class="lang-en">In Transit</span></option>
+                    <option value="تم التسليم">✅ <span class="lang-ar">تم التسليم</span><span class="lang-en">Delivered</span></option>
+                </select>
+                <button class="admin-export-btn" onclick="exportOrders()">
+                    <i class="fas fa-file-excel"></i> <span class="lang-ar">تصدير Excel</span><span class="lang-en">Export</span>
+                </button>
+                <button class="admin-export-btn pdf" onclick="exportOrdersPDF()">
+                    <i class="fas fa-file-pdf"></i> <span class="lang-ar">PDF</span><span class="lang-en">PDF</span>
+                </button>
+            </div>
+
+            <div id="adminOrdersContainer">
+                <p style="text-align:center; color:#999;">📭 <span class="lang-ar">لا توجد طلبات حتى الآن</span><span class="lang-en">No orders yet</span></p>
+            </div>
+            
             <hr style="margin: 20px 0;">
             <p style="text-align:center; color:#666; font-size:14px;">
-                📧 الطلبات بتوصل على الإيميل: <strong>utopia_trade26@yahoo.com</strong><br>
-                💬 والواتساب: <strong>01061007100</strong>
+                📧 <span class="lang-ar">الطلبات بتوصل على الإيميل</span><span class="lang-en">Orders sent to</span>: <strong>utopia_trade26@yahoo.com</strong><br>
+                💬 <span class="lang-ar">والواتساب</span><span class="lang-en">WhatsApp</span>: <strong>01061007100</strong>
             </p>
         </div>
     </div>
@@ -648,11 +511,7 @@
         // ================================================================
         // 0. 🔒 نظام الحماية المتكامل
         // ================================================================
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-        });
-
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && e.key === 'u') { e.preventDefault(); return false; }
             if (e.ctrlKey && e.shiftKey && e.key === 'I') { e.preventDefault(); return false; }
@@ -662,30 +521,19 @@
             if (e.ctrlKey && e.key === 'c') {
                 const tagName = document.activeElement.tagName.toLowerCase();
                 if (tagName !== 'input' && tagName !== 'textarea' && tagName !== 'select') {
-                    e.preventDefault();
-                    return false;
+                    e.preventDefault(); return false;
                 }
             }
             if (e.key === 'F12') { e.preventDefault(); return false; }
         });
-
-        document.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
-
+        document.addEventListener('dragstart', function(e) { e.preventDefault(); return false; });
         document.addEventListener('copy', function(e) {
             const tagName = document.activeElement.tagName.toLowerCase();
             if (tagName !== 'input' && tagName !== 'textarea' && tagName !== 'select') {
-                e.preventDefault();
-                return false;
+                e.preventDefault(); return false;
             }
         });
-
-        document.addEventListener('dblclick', function(e) {
-            e.preventDefault();
-            return false;
-        });
+        document.addEventListener('dblclick', function(e) { e.preventDefault(); return false; });
 
         // ================================================================
         // 1. إعدادات التواصل
@@ -693,6 +541,7 @@
         const STORE_EMAIL = 'utopia_trade26@yahoo.com';
         const WHATSAPP_NUMBER = '201061007100';
         const STORE_NAME = 'يوتوبيا للتجارة والتصدير';
+        const FORMSPREE_URL = 'https://formspree.io/f/xbgrgwog'; // 🔥 رابط Formspree
 
         // ================================================================
         // 2. بيانات المنتجات
@@ -708,8 +557,12 @@
             { id: 8, cat: 'pipes', nameAr: 'مواسير سيملس', nameEn: 'Seamless Pipes', price: 180.00, img: 'https://i.postimg.cc/SsnN2cPY/33333333.png', descAr: 'بدون لحام، جميع الجداول.', descEn: 'Seamless, all schedules.' }
         ];
 
+        let cart = [];
+        let selectedFile = null;
+        let lastOrderId = null;
+
         // ================================================================
-        // 3. جميع المقاسات من 1/2" إلى 24" + أخرى
+        // 3. جميع المقاسات
         // ================================================================
         function getAllSizes() {
             const sizes = ['1/2"', '3/4"'];
@@ -721,7 +574,7 @@
         }
 
         // ================================================================
-        // 4. عرض المنتجات مع المقاسات
+        // 4. عرض المنتجات
         // ================================================================
         function renderProducts(category = 'all', searchQuery = '') {
             const container = document.getElementById('productsContainer');
@@ -779,7 +632,7 @@
         }
 
         // ================================================================
-        // 5. إظهار/إخفاء حقل الكتابة عند اختيار "أخرى"
+        // 5. وظائف إضافية
         // ================================================================
         function toggleCustomSize(productId) {
             const select = document.getElementById(`size_${productId}`);
@@ -791,9 +644,6 @@
             }
         }
 
-        // ================================================================
-        // 6. وظائف الفلتر والبحث
-        // ================================================================
         function filterCategory(cat, event) {
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
             if(event && event.currentTarget) event.currentTarget.classList.add('active');
@@ -802,10 +652,8 @@
         function handleSearch() { renderProducts('all', document.getElementById('searchInput').value); }
 
         // ================================================================
-        // 7. وظائف السلة
+        // 6. السلة
         // ================================================================
-        let cart = [];
-
         function addToCart(id) {
             const product = productsData.find(p => p.id === id);
             const sizeSelect = document.getElementById(`size_${id}`);
@@ -875,11 +723,8 @@
         function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
 
         // ================================================================
-        // 8. باقي الوظائف
+        // 7. نموذج الطلب
         // ================================================================
-        let selectedFile = null;
-        let lastOrderId = null;
-
         function openCheckoutModal() {
             if(cart.length === 0) return alert("السلة فارغة برجاء اختيار المنتجات أولاً");
             document.getElementById('checkoutModal').classList.add('active');
@@ -944,9 +789,16 @@
         function handleFileSelect(event) {
             const file = event.target.files[0];
             if(file) {
-                const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+                const validTypes = [
+                    'application/pdf', 
+                    'application/msword', 
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'application/vnd.ms-excel', 
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'image/jpeg', 'image/png', 'image/gif', 'image/webp'
+                ];
                 if(!validTypes.includes(file.type)) {
-                    alert("⚠️ برجاء رفع ملف بصيغة PDF, Word أو Excel فقط");
+                    alert("⚠️ برجاء رفع ملف بصيغة PDF, Word, Excel أو صور فقط");
                     document.getElementById('fileInput').value = '';
                     return;
                 }
@@ -961,18 +813,9 @@
             }
         }
 
-        function saveOrderToLocalStorage(orderData) {
-            let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
-            orderData.tracking = {
-                status: 'قيد التجهيز',
-                lastUpdate: new Date().toLocaleString('ar-EG'),
-                history: ['تم استلام الطلب بنجاح']
-            };
-            orders.push(orderData);
-            localStorage.setItem('utopia_orders', JSON.stringify(orders));
-            lastOrderId = orderData.id;
-        }
-
+        // ================================================================
+        // 8. بناء وحفظ الطلب
+        // ================================================================
         function buildOrderData() {
             const name = document.getElementById('custName').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
@@ -993,17 +836,65 @@
                 hasFile: !!selectedFile,
                 fileName: selectedFile ? selectedFile.name : '',
                 fileType: selectedFile ? selectedFile.type : '',
-                fileData: selectedFile ? selectedFile : null
+                fileData: selectedFile ? selectedFile : null,
+                status: 'قيد التجهيز'
             };
         }
 
+        function saveOrderToLocalStorage(orderData) {
+            let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            orders.push(orderData);
+            localStorage.setItem('utopia_orders', JSON.stringify(orders));
+            lastOrderId = orderData.id;
+        }
+
         // ================================================================
-        // 9. 📧 إرسال بالإيميل مع المرفق
+        // 9. إرسال للـ Formspree (سحابي)
+        // ================================================================
+        async function sendToFormspree(orderData) {
+            const productsText = orderData.items.map((item, i) => {
+                return `${i + 1}- ${item.nameAr} (المقاس: ${item.size}) ×${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`;
+            }).join('\n');
+
+            try {
+                const response = await fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "رقم الطلب": orderData.id,
+                        "التاريخ": orderData.date,
+                        "نوع الطلب": orderData.orderType,
+                        "العميل": orderData.name,
+                        "الهاتف": orderData.phone,
+                        "العنوان": orderData.address,
+                        "اللوكيشن": orderData.location,
+                        "طريقة الاستلام": orderData.method,
+                        "طريقة الدفع": orderData.payment,
+                        "المنتجات": productsText,
+                        "الإجمالي": `$${orderData.total.toFixed(2)}`,
+                        "اسم الملف": orderData.fileName || 'لا يوجد',
+                        "الحالة": orderData.status
+                    })
+                });
+                return response.ok;
+            } catch (error) {
+                console.error("خطأ في الإرسال السحابي:", error);
+                return false;
+            }
+        }
+
+        // ================================================================
+        // 10. 📧 إرسال بالإيميل
         // ================================================================
         async function submitOrderViaEmail() {
             const orderData = buildOrderData();
             if(!orderData) return;
+            
             saveOrderToLocalStorage(orderData);
+            await sendToFormspree(orderData);
 
             let productsList = "";
             orderData.items.forEach((item, i) => {
@@ -1040,43 +931,49 @@
             finalBody += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0Aشكراً لتسوقكم ${STORE_NAME} 🔥%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
             window.open(`mailto:${STORE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${finalBody}`, '_blank');
-            showSuccessWithTracking();
+            
+            document.getElementById('formContainer').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            cart = []; updateCartUI();
+            selectedFile = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('fileNameDisplay').textContent = '';
+            showNotification('✅ تم إرسال طلبك بنجاح!', 'success');
+            setTimeout(() => closeCheckoutModal(), 4000);
         }
 
         // ================================================================
-        // 10. 💬 إرسال بالواتساب (بدون أكواد طويلة)
+        // 11. 💬 إرسال بالواتساب
         // ================================================================
-        function submitOrderViaWhatsApp() {
+        async function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
             if(!orderData) return;
+            
             saveOrderToLocalStorage(orderData);
+            await sendToFormspree(orderData);
 
             let productsList = "";
             orderData.items.forEach((item, i) => {
                 productsList += `${i + 1}. ${item.nameAr} (المقاس: ${item.size}) ×${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`;
             });
 
-            // بناء الرسالة بدون أكواد base64 طويلة
             let fileInfo = "";
             if(selectedFile) {
-                // تخزين الملف في localStorage مع رقم الطلب
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const fileData = e.target.result;
                     localStorage.setItem('temp_file_' + orderData.id, fileData);
                 };
                 reader.readAsDataURL(selectedFile);
-                
-                // إرسال اسم الملف فقط مع رابط مختصر (سيتم فتحه من لوحة التحكم)
-                fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)\n🔗 يمكنك تحميل الملف من خلال لوحة التحكم باستخدام رقم الطلب\n\n`;
+                fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)\n🔗 يمكنك تحميل الملف من لوحة التحكم (رقم الطلب: ${orderData.id})\n\n`;
             }
 
             const message = 
                 `📍 ${STORE_NAME}\n` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
                 `📋 نوع الطلب : ${orderData.orderType}\n` +
                 `📋 رقم الطلب : ${orderData.id}\n🕐 التاريخ    : ${orderData.date}\n` +
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
                 `👤 بيانات العميل:\n▸ الاسم   : ${orderData.name}\n▸ الهاتف  : ${orderData.phone}\n▸ العنوان : ${orderData.address}\n▸ اللوكيشن: ${orderData.location}\n▸ طريقة الاستلام: ${orderData.method}\n▸ طريقة الدفع: ${orderData.payment}\n\n` +
                 `🛒 تفاصيل المنتجات:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
                 fileInfo;
@@ -1086,22 +983,23 @@
                 finalMessage += `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}\n\n`;
             }
             
-            finalMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nشكراً لتسوقكم ${STORE_NAME} 🔥\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+            finalMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nشكراً لتسوقكم ${STORE_NAME} 🔥\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(finalMessage)}`, '_blank');
-            showSuccessWithTracking();
-        }
-
-        // ================================================================
-        // 11. نظام التتبع
-        // ================================================================
-        function showSuccessWithTracking() {
+            
             document.getElementById('formContainer').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             cart = []; updateCartUI();
+            selectedFile = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('fileNameDisplay').textContent = '';
             showNotification('✅ تم إرسال طلبك بنجاح!', 'success');
+            setTimeout(() => closeCheckoutModal(), 4000);
         }
 
+        // ================================================================
+        // 12. التتبع
+        // ================================================================
         function openTracking() {
             closeCheckoutModal();
             document.getElementById('trackingModal').classList.add('active');
@@ -1175,7 +1073,7 @@
                     ${fileHtml}
                     
                     <div style="background: white; border: 2px solid ${progressColor}; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 15px;">
-                        <h3 style="color: ${progressColor}; margin: 0;">${order.tracking.status}</h3>
+                        <h3 style="color: ${progressColor}; margin: 0;">${order.tracking ? order.tracking.status : 'قيد التجهيز'}</h3>
                     </div>
                     
                     <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee; margin-bottom: 15px;">
@@ -1192,7 +1090,7 @@
         }
 
         // ================================================================
-        // 12. البحث عن شحنة (عام)
+        // 13. البحث العام عن الشحنات
         // ================================================================
         function searchPublicTracking() {
             const input = document.getElementById('publicTrackingInput').value.trim();
@@ -1270,7 +1168,7 @@
                     ${fileHtml}
                     
                     <div style="background: white; border: 2px solid ${progressColor}; border-radius: 8px; padding: 15px; text-align: center; margin-bottom: 15px;">
-                        <h3 style="color: ${progressColor}; margin: 0;">${order.tracking.status}</h3>
+                        <h3 style="color: ${progressColor}; margin: 0;">${order.tracking ? order.tracking.status : 'قيد التجهيز'}</h3>
                     </div>
                     
                     <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee; margin-bottom: 15px;">
@@ -1287,7 +1185,7 @@
         }
 
         // ================================================================
-        // 13. لوحة التحكم مع المرفقات
+        // 14. لوحة التحكم المتطورة
         // ================================================================
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
@@ -1300,13 +1198,76 @@
         function loadAdminOrders() {
             const container = document.getElementById('adminOrdersContainer');
             const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            
+            // تحديث الإحصائيات
+            updateAdminStats(orders);
+            
             if(orders.length === 0) { 
-                container.innerHTML = `<p style="text-align:center; color:#999;">لا توجد طلبات حتى الآن.</p>`; 
+                container.innerHTML = `<p style="text-align:center; color:#999; padding:30px;">📭 <span class="lang-ar">لا توجد طلبات حتى الآن</span><span class="lang-en">No orders yet</span></p>`; 
                 return; 
+            }
+            
+            // عرض الطلبات مع الفلتر
+            filterAdminOrders(orders);
+        }
+
+        function updateAdminStats(orders) {
+            const totalOrders = orders.length;
+            let totalRevenue = 0;
+            let totalItems = 0;
+            const customers = new Set();
+
+            orders.forEach(order => {
+                totalRevenue += order.total || 0;
+                if(order.items) {
+                    order.items.forEach(item => {
+                        totalItems += item.quantity || 0;
+                    });
+                }
+                if(order.name) customers.add(order.name);
+            });
+
+            document.getElementById('statOrders').textContent = totalOrders;
+            document.getElementById('statRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
+            document.getElementById('statItems').textContent = totalItems;
+            document.getElementById('statCustomers').textContent = customers.size;
+        }
+
+        function filterAdminOrders(ordersData = null) {
+            const container = document.getElementById('adminOrdersContainer');
+            const search = document.getElementById('adminSearchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('adminStatusFilter').value;
+            
+            let orders = ordersData || JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            
+            if(search) {
+                orders = orders.filter(order => 
+                    (order.name && order.name.toLowerCase().includes(search)) ||
+                    (order.id && order.id.toString().includes(search)) ||
+                    (order.phone && order.phone.includes(search))
+                );
+            }
+            
+            if(statusFilter !== 'all') {
+                orders = orders.filter(order => {
+                    const status = order.tracking ? order.tracking.status : 'قيد التجهيز';
+                    return status === statusFilter;
+                });
+            }
+            
+            if(orders.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:#999; padding:20px;">🔍 <span class="lang-ar">لا توجد طلبات تطابق البحث</span><span class="lang-en">No orders match</span></p>`;
+                return;
             }
             
             container.innerHTML = '';
             orders.reverse().forEach((order, index) => {
+                // حالة الطلب
+                const status = order.tracking ? order.tracking.status : 'قيد التجهيز';
+                const statusClass = status === 'قيد التجهيز' ? 'processing' : 
+                                  status === 'تم الشحن' ? 'shipped' : 
+                                  status === 'في الطريق' ? 'transit' : 'delivered';
+                
                 let itemsHtml = `<ul>`;
                 if(order.items && order.items.length > 0) {
                     order.items.forEach(item => { 
@@ -1339,7 +1300,10 @@
 
                 container.innerHTML += `
                     <div class="order-card">
-                        <h3>طلب #${order.id}</h3>
+                        <h3>
+                            <span>طلب #${order.id}</span>
+                            <span class="order-status-badge ${statusClass}">${status}</span>
+                        </h3>
                         <p><strong>التاريخ:</strong> ${order.date}</p>
                         <p><strong>نوع الطلب:</strong> ${order.orderType || 'غير محدد'}</p>
                         <p><strong>العميل:</strong> ${order.name}</p>
@@ -1355,10 +1319,10 @@
                         <div style="margin-top: 15px; border-top: 1px solid #ddd; padding-top: 15px;">
                             <label style="font-weight: bold; color: #333; display: block; margin-bottom: 5px;">تحديث حالة الشحنة:</label>
                             <select class="admin-status-select" id="status_${index}" onchange="updateOrderStatus(${index}, this.value)">
-                                <option value="قيد التجهيز" ${order.tracking && order.tracking.status === 'قيد التجهيز' ? 'selected' : ''}>قيد التجهيز</option>
-                                <option value="تم الشحن" ${order.tracking && order.tracking.status === 'تم الشحن' ? 'selected' : ''}>تم الشحن</option>
-                                <option value="في الطريق" ${order.tracking && order.tracking.status === 'في الطريق' ? 'selected' : ''}>في الطريق</option>
-                                <option value="تم التسليم" ${order.tracking && order.tracking.status === 'تم التسليم' ? 'selected' : ''}>تم التسليم</option>
+                                <option value="قيد التجهيز" ${status === 'قيد التجهيز' ? 'selected' : ''}>قيد التجهيز</option>
+                                <option value="تم الشحن" ${status === 'تم الشحن' ? 'selected' : ''}>تم الشحن</option>
+                                <option value="في الطريق" ${status === 'في الطريق' ? 'selected' : ''}>في الطريق</option>
+                                <option value="تم التسليم" ${status === 'تم التسليم' ? 'selected' : ''}>تم التسليم</option>
                             </select>
                         </div>
                     </div>
@@ -1370,6 +1334,9 @@
             let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
             const realIndex = orders.length - 1 - index;
             if(orders[realIndex]) {
+                if(!orders[realIndex].tracking) {
+                    orders[realIndex].tracking = {};
+                }
                 orders[realIndex].tracking.status = newStatus;
                 orders[realIndex].tracking.lastUpdate = new Date().toLocaleString('ar-EG');
                 localStorage.setItem('utopia_orders', JSON.stringify(orders));
@@ -1379,7 +1346,35 @@
         }
 
         // ================================================================
-        // 14. وظائف اللغة
+        // 15. تصدير الطلبات
+        // ================================================================
+        function exportOrders() {
+            const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            if(orders.length === 0) {
+                alert("لا توجد طلبات للتصدير");
+                return;
+            }
+
+            let csv = "رقم الطلب,التاريخ,العميل,الهاتف,العنوان,طريقة الدفع,الإجمالي,الحالة,المنتجات\n";
+            orders.forEach(order => {
+                const status = order.tracking ? order.tracking.status : 'قيد التجهيز';
+                const products = order.items.map(item => `${item.nameAr} (x${item.quantity})`).join(' | ');
+                csv += `${order.id},${order.date},${order.name},${order.phone},${order.address},${order.payment},${order.total},${status},${products}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `orders_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+        }
+
+        function exportOrdersPDF() {
+            alert("📄 سيتم إضافة تصدير PDF قريباً! حالياً يمكنك استخدام تصدير Excel.");
+        }
+
+        // ================================================================
+        // 16. اللغة
         // ================================================================
         function checkAdminAccess() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1427,7 +1422,7 @@
         }
 
         // ================================================================
-        // 15. تهيئة المتجر
+        // 17. تهيئة المتجر
         // ================================================================
         initLanguage();
         renderProducts();
@@ -1437,10 +1432,8 @@
         console.log('🔥 مرحباً بك في متجر يوتوبيا للتجارة والتصدير!');
         console.log('📧 الإيميل: ' + STORE_EMAIL);
         console.log('💬 واتساب: +' + WHATSAPP_NUMBER);
-        console.log('📏 جميع المقاسات من 1/2" إلى 24" متوفرة مع خيار "أخرى"');
-        console.log('🔒 الحماية مفعلة: منع النسخ، منع أدوات المطور، منع النقر الأيمن');
-        console.log('📎 المرفقات تظهر في الإيميل والواتساب ولوحة التحكم');
-        console.log('👨‍💻 المطور: Eng : Mahmoud Mohamed Marie | +201222153415');
+        console.log('☁️ Formspree: ' + FORMSPREE_URL);
+        console.log('📋 لوحة التحكم: أضف ?admin في نهاية الرابط');
     </script>
 </body>
 </html>
