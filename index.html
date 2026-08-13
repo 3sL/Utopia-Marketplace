@@ -13,8 +13,6 @@
             -ms-user-select: none;
             user-select: none;
         }
-
-        /* ===== السماح بالتحديد فقط في حقول الإدخال ===== */
         input, textarea, select {
             -webkit-user-select: text;
             -moz-user-select: text;
@@ -97,6 +95,7 @@
         .p-info .tag { background: #eef2f5; display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; color: #555; margin-bottom: 10px; align-self: center; }
         .p-info p { color: #777; font-size: 13px; margin-bottom: 12px; flex-grow: 1; }
 
+        /* ===== خيارات المقاسات ===== */
         .size-options {
             margin: 10px 0;
             padding: 10px;
@@ -121,6 +120,23 @@
         }
         .size-options select:focus {
             border-color: #8bc34a;
+        }
+        .size-options .custom-size-input {
+            display: none;
+            margin-top: 8px;
+        }
+        .size-options .custom-size-input input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #8bc34a;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            background: #f8fcf5;
+        }
+        .size-options .custom-size-input input:focus {
+            border-color: #6a9c36;
+            box-shadow: 0 0 5px rgba(139, 195, 74, 0.3);
         }
 
         .p-price { font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; display: block; }
@@ -357,6 +373,24 @@
         .tracking-result {
             margin-top: 15px;
             text-align: right;
+        }
+
+        /* ===== زر تحميل المرفق ===== */
+        .file-download-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 14px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+        .file-download-btn:hover {
+            background: #2563eb;
+            transform: scale(1.02);
         }
 
         @media (max-width: 600px) {
@@ -601,8 +635,13 @@
 
     <footer>
         <p>
-            <span class="lang-ar">جميع الحقوق محفوظة - Utopia For Trading And Export &copy; 2026 | <span style="color: #8bc34a;">UTOPIA</span></span>
-            <span class="lang-en">All Rights Reserved &copy; 2026 | <span style="color: #8bc34a;">UTOPIA</span></span>
+            <span class="lang-ar">جميع الحقوق محفوظة - Utopia For Trading And Export &copy; 2026</span>
+            <span class="lang-en">All Rights Reserved &copy; 2026</span>
+            <br>
+            <span style="font-size: 13px; color: #8bc34a;">
+                <span class="lang-ar">تصميم وتطوير: Eng : Mahmoud Mohamed Marie | <a href="tel:+201222153415" style="color: #8bc34a; text-decoration: none;">+201222153415</a></span>
+                <span class="lang-en">Designed by: Eng : Mahmoud Mohamed Marie | <a href="tel:+201222153415" style="color: #8bc34a; text-decoration: none;">+201222153415</a></span>
+            </span>
         </p>
     </footer>
 
@@ -610,41 +649,17 @@
         // ================================================================
         // 0. 🔒 نظام الحماية المتكامل
         // ================================================================
-        
-        // ===== 1. منع النقر الأيمن =====
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             return false;
         });
 
-        // ===== 2. منع اختصارات لوحة المفاتيح =====
         document.addEventListener('keydown', function(e) {
-            // منع Ctrl+U (عرض المصدر)
-            if (e.ctrlKey && e.key === 'u') {
-                e.preventDefault();
-                return false;
-            }
-            // منع Ctrl+Shift+I (أدوات المطور)
-            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-                e.preventDefault();
-                return false;
-            }
-            // منع Ctrl+Shift+J (الكونسول)
-            if (e.ctrlKey && e.shiftKey && e.key === 'J') {
-                e.preventDefault();
-                return false;
-            }
-            // منع Ctrl+S (حفظ الصفحة)
-            if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                return false;
-            }
-            // منع Ctrl+P (طباعة)
-            if (e.ctrlKey && e.key === 'p') {
-                e.preventDefault();
-                return false;
-            }
-            // منع Ctrl+C (نسخ) - مع السماح في حقول الإدخال
+            if (e.ctrlKey && e.key === 'u') { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.shiftKey && e.key === 'J') { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.key === 's') { e.preventDefault(); return false; }
+            if (e.ctrlKey && e.key === 'p') { e.preventDefault(); return false; }
             if (e.ctrlKey && e.key === 'c') {
                 const tagName = document.activeElement.tagName.toLowerCase();
                 if (tagName !== 'input' && tagName !== 'textarea' && tagName !== 'select') {
@@ -652,20 +667,14 @@
                     return false;
                 }
             }
-            // منع F12 (أدوات المطور)
-            if (e.key === 'F12') {
-                e.preventDefault();
-                return false;
-            }
+            if (e.key === 'F12') { e.preventDefault(); return false; }
         });
 
-        // ===== 3. منع السحب والإفلات (لحماية الصور) =====
         document.addEventListener('dragstart', function(e) {
             e.preventDefault();
             return false;
         });
 
-        // ===== 4. منع النسخ من الصور =====
         document.addEventListener('copy', function(e) {
             const tagName = document.activeElement.tagName.toLowerCase();
             if (tagName !== 'input' && tagName !== 'textarea' && tagName !== 'select') {
@@ -674,7 +683,6 @@
             }
         });
 
-        // ===== 5. منع فتح أدوات المطور عبر النقر المزدوج =====
         document.addEventListener('dblclick', function(e) {
             e.preventDefault();
             return false;
@@ -688,25 +696,33 @@
         const STORE_NAME = 'يوتوبيا للتجارة والتصدير';
 
         // ================================================================
-        // 2. بيانات المنتجات مع المقاسات
+        // 2. بيانات المنتجات
         // ================================================================
         const productsData = [
-            { id: 1, cat: 'paddle-flanges', nameAr: 'بادل فلانش استانلس ستيل', nameEn: 'Paddle Flange SS', price: 120.00, img: 'https://i.postimg.cc/wxFssk36/badl-flansh-astanls-styl.png', descAr: 'مقاومة عالية للتآكل.', descEn: 'High corrosion resistance.', sizes: ['1/2"', '3/4"', '1"', '1.5"', '2"', '3"', '4"'] },
-            { id: 2, cat: 'paddle-flanges', nameAr: 'بادل فلانش مجلفن', nameEn: 'Galvanized Paddle Flange', price: 90.00, img: 'https://i.postimg.cc/MGvYsKrT/badl-flansh-mjlfn.jpg', descAr: 'طبقة جلفنة ساخنة.', descEn: 'Hot-dip galvanized.', sizes: ['1/2"', '3/4"', '1"', '1.5"', '2"', '3"', '4"'] },
-            { id: 3, cat: 'flanges', nameAr: 'فلانشات لحام رقبة', nameEn: 'Weld Neck Flanges', price: 150.00, img: 'https://i.postimg.cc/3RPkBL57/66606066.png', descAr: 'توزيع الضغط بكفاءة.', descEn: 'High pressure systems.', sizes: ['1"', '2"', '3"', '4"', '6"', '8"', '10"'] },
-            { id: 4, cat: 'fire', nameAr: 'هويات وموانع دوامة', nameEn: 'Vortex Breakers & Hoods', price: 250.00, img: 'https://i.postimg.cc/9fnwnX5K/Whats-App-Image-2026-04-26-at-15-45-40.jpg', descAr: 'منع الدوامات الهوائية.', descEn: 'Prevents vortex formation.', sizes: ['2"', '3"', '4"', '6"', '8"'] },
-            { id: 5, cat: 'fittings', nameAr: 'قطع قلاووظ مجلفنة', nameEn: 'Galvanized Threaded Fittings', price: 25.00, img: 'https://i.postimg.cc/RhvspTzG/9999999999999.png', descAr: 'كوع وتايوان عالي الجودة.', descEn: 'High quality elbows.', sizes: ['1/4"', '3/8"', '1/2"', '3/4"', '1"', '1.5"', '2"'] },
-            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ استانلس', nameEn: 'SS Threaded Fittings', price: 45.00, img: 'https://i.postimg.cc/J4kDdCPG/pro621-x660.jpg', descAr: 'مقاوم للأحماض (304/316).', descEn: 'Acid resistant (304/316).', sizes: ['1/4"', '3/8"', '1/2"', '3/4"', '1"', '1.5"', '2"'] },
-            { id: 7, cat: 'pipes', nameAr: 'مواسير استانلس دوبلكس', nameEn: 'Duplex SS Pipe Fittings', price: 320.00, img: 'https://i.postimg.cc/cHCGkZMx/465324651321.png', descAr: 'مقاومة للتشقق الإجهادي.', descEn: 'Stress corrosion resistant.', sizes: ['1/2"', '3/4"', '1"', '1.5"', '2"', '3"', '4"', '6"'] },
-            { id: 8, cat: 'pipes', nameAr: 'مواسير سيملس', nameEn: 'Seamless Pipes', price: 180.00, img: 'https://i.postimg.cc/SsnN2cPY/33333333.png', descAr: 'بدون لحام، جميع الجداول.', descEn: 'Seamless, all schedules.', sizes: ['1/2"', '3/4"', '1"', '1.5"', '2"', '3"', '4"', '6"', '8"', '10"', '12"'] }
+            { id: 1, cat: 'paddle-flanges', nameAr: 'بادل فلانش استانلس ستيل', nameEn: 'Paddle Flange SS', price: 120.00, img: 'https://i.postimg.cc/wxFssk36/badl-flansh-astanls-styl.png', descAr: 'مقاومة عالية للتآكل.', descEn: 'High corrosion resistance.' },
+            { id: 2, cat: 'paddle-flanges', nameAr: 'بادل فلانش مجلفن', nameEn: 'Galvanized Paddle Flange', price: 90.00, img: 'https://i.postimg.cc/MGvYsKrT/badl-flansh-mjlfn.jpg', descAr: 'طبقة جلفنة ساخنة.', descEn: 'Hot-dip galvanized.' },
+            { id: 3, cat: 'flanges', nameAr: 'فلانشات لحام رقبة', nameEn: 'Weld Neck Flanges', price: 150.00, img: 'https://i.postimg.cc/3RPkBL57/66606066.png', descAr: 'توزيع الضغط بكفاءة.', descEn: 'High pressure systems.' },
+            { id: 4, cat: 'fire', nameAr: 'هويات وموانع دوامة', nameEn: 'Vortex Breakers & Hoods', price: 250.00, img: 'https://i.postimg.cc/9fnwnX5K/Whats-App-Image-2026-04-26-at-15-45-40.jpg', descAr: 'منع الدوامات الهوائية.', descEn: 'Prevents vortex formation.' },
+            { id: 5, cat: 'fittings', nameAr: 'قطع قلاووظ مجلفنة', nameEn: 'Galvanized Threaded Fittings', price: 25.00, img: 'https://i.postimg.cc/RhvspTzG/9999999999999.png', descAr: 'كوع وتايوان عالي الجودة.', descEn: 'High quality elbows.' },
+            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ استانلس', nameEn: 'SS Threaded Fittings', price: 45.00, img: 'https://i.postimg.cc/J4kDdCPG/pro621-x660.jpg', descAr: 'مقاوم للأحماض (304/316).', descEn: 'Acid resistant (304/316).' },
+            { id: 7, cat: 'pipes', nameAr: 'مواسير استانلس دوبلكس', nameEn: 'Duplex SS Pipe Fittings', price: 320.00, img: 'https://i.postimg.cc/cHCGkZMx/465324651321.png', descAr: 'مقاومة للتشقق الإجهادي.', descEn: 'Stress corrosion resistant.' },
+            { id: 8, cat: 'pipes', nameAr: 'مواسير سيملس', nameEn: 'Seamless Pipes', price: 180.00, img: 'https://i.postimg.cc/SsnN2cPY/33333333.png', descAr: 'بدون لحام، جميع الجداول.', descEn: 'Seamless, all schedules.' }
         ];
 
-        let cart = [];
-        let selectedFile = null;
-        let lastOrderId = null;
+        // ================================================================
+        // 3. جميع المقاسات من 1/2" إلى 24" + أخرى
+        // ================================================================
+        function getAllSizes() {
+            const sizes = ['1/2"', '3/4"'];
+            for (let i = 1; i <= 24; i++) {
+                sizes.push(i + '"');
+            }
+            sizes.push('أخرى');
+            return sizes;
+        }
 
         // ================================================================
-        // 3. عرض المنتجات مع المقاسات
+        // 4. عرض المنتجات مع المقاسات
         // ================================================================
         function renderProducts(category = 'all', searchQuery = '') {
             const container = document.getElementById('productsContainer');
@@ -723,6 +739,8 @@
                 return;
             }
             
+            const allSizes = getAllSizes();
+            
             filtered.forEach(p => {
                 let catTextAr = 'أخرى';
                 if(p.cat === 'pipes') catTextAr = 'مواسير سيملس';
@@ -731,13 +749,10 @@
                 else if(p.cat === 'fittings') catTextAr = 'قطع قلاووظ';
                 else if(p.cat === 'fire') catTextAr = 'موانع دوامة';
 
-                let sizeOptions = '';
-                if(p.sizes && p.sizes.length > 0) {
-                    sizeOptions = `<option value="">-- اختر المقاس --</option>`;
-                    p.sizes.forEach(size => {
-                        sizeOptions += `<option value="${size}">${size}</option>`;
-                    });
-                }
+                let sizeOptions = `<option value="">-- اختر المقاس --</option>`;
+                allSizes.forEach(size => {
+                    sizeOptions += `<option value="${size}">${size}</option>`;
+                });
 
                 const card = document.createElement('div');
                 card.className = 'product-card';
@@ -749,9 +764,12 @@
                         <p><span class="lang-ar">${p.descAr}</span><span class="lang-en">${p.descEn}</span></p>
                         <div class="size-options">
                             <label><span class="lang-ar">📏 اختر المقاس:</span><span class="lang-en">📏 Select Size:</span></label>
-                            <select id="size_${p.id}" class="size-select">
+                            <select id="size_${p.id}" class="size-select" onchange="toggleCustomSize(${p.id})">
                                 ${sizeOptions}
                             </select>
+                            <div class="custom-size-input" id="customSize_${p.id}">
+                                <input type="text" placeholder="✏️ اكتب المقاس المطلوب...">
+                            </div>
                         </div>
                         <span class="p-price">$${p.price.toFixed(2)}</span>
                         <button class="add-cart-btn" onclick="addToCart(${p.id})"><span class="lang-ar">أضف إلى السلة</span><span class="lang-en">Add to Cart</span></button>
@@ -762,7 +780,20 @@
         }
 
         // ================================================================
-        // 4. وظائف الفلتر والبحث
+        // 5. إظهار/إخفاء حقل الكتابة عند اختيار "أخرى"
+        // ================================================================
+        function toggleCustomSize(productId) {
+            const select = document.getElementById(`size_${productId}`);
+            const customDiv = document.getElementById(`customSize_${productId}`);
+            if (select.value === 'أخرى') {
+                customDiv.style.display = 'block';
+            } else {
+                customDiv.style.display = 'none';
+            }
+        }
+
+        // ================================================================
+        // 6. وظائف الفلتر والبحث
         // ================================================================
         function filterCategory(cat, event) {
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
@@ -772,14 +803,21 @@
         function handleSearch() { renderProducts('all', document.getElementById('searchInput').value); }
 
         // ================================================================
-        // 5. وظائف السلة مع المقاس
+        // 7. وظائف السلة
         // ================================================================
+        let cart = [];
+
         function addToCart(id) {
             const product = productsData.find(p => p.id === id);
             const sizeSelect = document.getElementById(`size_${id}`);
-            const selectedSize = sizeSelect ? sizeSelect.value : '';
+            const customInput = document.getElementById(`customSize_${id}`).querySelector('input');
+            let selectedSize = sizeSelect.value;
             
-            if(!selectedSize) {
+            if (selectedSize === 'أخرى') {
+                selectedSize = customInput.value.trim() || 'أخرى (لم يحدد)';
+            }
+            
+            if(!selectedSize || selectedSize === '-- اختر المقاس --') {
                 alert("برجاء اختيار المقاس المطلوب");
                 return;
             }
@@ -838,8 +876,11 @@
         function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
 
         // ================================================================
-        // 6. فتح وإغلاق النماذج
+        // 8. باقي الوظائف
         // ================================================================
+        let selectedFile = null;
+        let lastOrderId = null;
+
         function openCheckoutModal() {
             if(cart.length === 0) return alert("السلة فارغة برجاء اختيار المنتجات أولاً");
             document.getElementById('checkoutModal').classList.add('active');
@@ -851,9 +892,6 @@
         }
         function closeCheckoutModal() { document.getElementById('checkoutModal').classList.remove('active'); }
 
-        // ================================================================
-        // 7. الموقع الجغرافي
-        // ================================================================
         function getUserLocation() {
             const locationInput = document.getElementById('custLocation');
             if (navigator.geolocation) {
@@ -876,9 +914,6 @@
             }
         }
 
-        // ================================================================
-        // 8. الإشعارات
-        // ================================================================
         function showNotification(message, type = 'info') {
             const notif = document.createElement('div');
             notif.style.cssText = `
@@ -907,9 +942,6 @@
             }, 3000);
         }
 
-        // ================================================================
-        // 9. رفع الملفات
-        // ================================================================
         function handleFileSelect(event) {
             const file = event.target.files[0];
             if(file) {
@@ -930,9 +962,6 @@
             }
         }
 
-        // ================================================================
-        // 10. حفظ الطلب في LocalStorage
-        // ================================================================
         function saveOrderToLocalStorage(orderData) {
             let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
             orderData.tracking = {
@@ -945,9 +974,6 @@
             lastOrderId = orderData.id;
         }
 
-        // ================================================================
-        // 11. بناء بيانات الطلب
-        // ================================================================
         function buildOrderData() {
             const name = document.getElementById('custName').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
@@ -967,14 +993,15 @@
                 total: total,
                 hasFile: !!selectedFile,
                 fileName: selectedFile ? selectedFile.name : '',
-                fileType: selectedFile ? selectedFile.type : ''
+                fileType: selectedFile ? selectedFile.type : '',
+                fileData: selectedFile ? selectedFile : null
             };
         }
 
         // ================================================================
-        // 12. 📧 إرسال بالإيميل
+        // 9. 📧 إرسال بالإيميل مع المرفق
         // ================================================================
-        function submitOrderViaEmail() {
+        async function submitOrderViaEmail() {
             const orderData = buildOrderData();
             if(!orderData) return;
             saveOrderToLocalStorage(orderData);
@@ -984,9 +1011,17 @@
                 productsList += `${i + 1}. ${item.nameAr} (المقاس: ${item.size}) ×${item.quantity} - $${(item.price * item.quantity).toFixed(2)}%0A`;
             });
 
-            let fileInfo = "";
+            // بناء رابط تحميل الملف (من localStorage)
+            let fileHtml = "";
             if(selectedFile) {
-                fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)%0A`;
+                // تخزين الملف في localStorage مؤقتاً
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const fileData = e.target.result;
+                    localStorage.setItem('temp_file_' + orderData.id, fileData);
+                };
+                reader.readAsDataURL(selectedFile);
+                fileHtml = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)%0A`;
             }
 
             const subject = `${orderData.orderType} #${orderData.id} - ${STORE_NAME}`;
@@ -996,7 +1031,7 @@
                 `📋 رقم الطلب : ${orderData.id}%0A🕐 التاريخ    : ${orderData.date}%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
                 `👤 بيانات العميل:%0A▸ الاسم   : ${orderData.name}%0A▸ الهاتف  : ${orderData.phone}%0A▸ العنوان : ${orderData.address}%0A▸ اللوكيشن: ${orderData.location}%0A▸ طريقة الاستلام: ${orderData.method}%0A▸ طريقة الدفع: ${orderData.payment}%0A%0A` +
                 `🛒 تفاصيل المنتجات:%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
-                fileInfo;
+                fileHtml;
 
             let finalBody = body;
             if(orderData.orderType === 'طلب شراء') {
@@ -1010,7 +1045,7 @@
         }
 
         // ================================================================
-        // 13. 💬 إرسال بالواتساب
+        // 10. 💬 إرسال بالواتساب مع رابط الملف
         // ================================================================
         function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
@@ -1024,7 +1059,14 @@
 
             let fileInfo = "";
             if(selectedFile) {
-                fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)\n⚠️ الملف لا يمكن إرساله عبر واتساب، برجاء إرساله للإيميل.\n\n`;
+                // تخزين الملف في localStorage
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const fileData = e.target.result;
+                    localStorage.setItem('temp_file_' + orderData.id, fileData);
+                };
+                reader.readAsDataURL(selectedFile);
+                fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)\n🔗 يمكنك تحميل الملف عبر لوحة التحكم\n\n`;
             }
 
             const message = 
@@ -1047,7 +1089,7 @@
         }
 
         // ================================================================
-        // 14. نظام التتبع
+        // 11. نظام التتبع
         // ================================================================
         function showSuccessWithTracking() {
             document.getElementById('formContainer').style.display = 'none';
@@ -1074,6 +1116,29 @@
             if(!order) {
                 container.innerHTML = `<p style="text-align: center; color: #e74c3c;">عذراً، لم نتمكن من العثور على هذا الطلب.</p>`;
                 return;
+            }
+
+            // التحقق من وجود ملف مرفق
+            let fileHtml = '';
+            if(order.hasFile && order.fileName) {
+                const fileData = localStorage.getItem('temp_file_' + order.id);
+                if(fileData) {
+                    fileHtml = `
+                        <div style="background: #f0f7ff; border-radius: 8px; padding: 12px; margin: 10px 0; border: 1px solid #3b82f6;">
+                            <p style="color: #3b82f6; font-weight: 600;">📎 المرفق: ${order.fileName}</p>
+                            <a href="${fileData}" download="${order.fileName}" class="file-download-btn">
+                                ⬇️ تحميل الملف
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    fileHtml = `
+                        <div style="background: #fef3c7; border-radius: 8px; padding: 12px; margin: 10px 0; border: 1px solid #f59e0b;">
+                            <p style="color: #92400e;">📎 المرفق: ${order.fileName}</p>
+                            <p style="font-size: 13px; color: #92400e;">⚠️ الملف غير متاح للتحميل حالياً</p>
+                        </div>
+                    `;
+                }
             }
 
             const orderDate = new Date(order.date);
@@ -1104,6 +1169,8 @@
                     <p style="font-size: 14px; color: #777; margin-bottom: 10px;"><strong>رقم التتبع:</strong> #${order.id}</p>
                     <p style="font-size: 14px; color: #777; margin-bottom: 20px;"><strong>اسم العميل:</strong> ${order.name}</p>
                     
+                    ${fileHtml}
+                    
                     <div style="background: white; border: 2px solid ${progressColor}; border-radius: 10px; padding: 20px; text-align: center; margin-bottom: 15px;">
                         <h3 style="color: ${progressColor}; margin: 0;">${order.tracking.status}</h3>
                     </div>
@@ -1122,7 +1189,7 @@
         }
 
         // ================================================================
-        // 15. البحث عن شحنة (عام)
+        // 12. البحث عن شحنة (عام)
         // ================================================================
         function searchPublicTracking() {
             const input = document.getElementById('publicTrackingInput').value.trim();
@@ -1145,6 +1212,29 @@
             if(!order) {
                 resultContainer.innerHTML = `<p style="color: #e74c3c; text-align: center;">عذراً، لا يوجد شحنة بهذا الرقم.</p>`;
                 return;
+            }
+
+            // التحقق من وجود ملف مرفق
+            let fileHtml = '';
+            if(order.hasFile && order.fileName) {
+                const fileData = localStorage.getItem('temp_file_' + order.id);
+                if(fileData) {
+                    fileHtml = `
+                        <div style="background: #f0f7ff; border-radius: 8px; padding: 12px; margin: 10px 0; border: 1px solid #3b82f6;">
+                            <p style="color: #3b82f6; font-weight: 600;">📎 المرفق: ${order.fileName}</p>
+                            <a href="${fileData}" download="${order.fileName}" class="file-download-btn">
+                                ⬇️ تحميل الملف
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    fileHtml = `
+                        <div style="background: #fef3c7; border-radius: 8px; padding: 12px; margin: 10px 0; border: 1px solid #f59e0b;">
+                            <p style="color: #92400e;">📎 المرفق: ${order.fileName}</p>
+                            <p style="font-size: 13px; color: #92400e;">⚠️ الملف غير متاح للتحميل حالياً</p>
+                        </div>
+                    `;
+                }
             }
 
             const orderDate = new Date(order.date);
@@ -1175,6 +1265,8 @@
                     <p style="font-size: 14px; color: #777; margin-bottom: 5px;"><strong>رقم التتبع:</strong> #${order.id}</p>
                     <p style="font-size: 14px; color: #777; margin-bottom: 15px;"><strong>اسم العميل:</strong> ${order.name}</p>
                     
+                    ${fileHtml}
+                    
                     <div style="background: white; border: 2px solid ${progressColor}; border-radius: 8px; padding: 15px; text-align: center; margin-bottom: 15px;">
                         <h3 style="color: ${progressColor}; margin: 0;">${order.tracking.status}</h3>
                     </div>
@@ -1193,7 +1285,7 @@
         }
 
         // ================================================================
-        // 16. لوحة التحكم
+        // 13. لوحة التحكم مع المرفقات
         // ================================================================
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
@@ -1223,7 +1315,24 @@
 
                 let fileHtml = '';
                 if(order.hasFile && order.fileName) {
-                    fileHtml = `<p><strong>📎 المرفق:</strong> ${order.fileName}</p>`;
+                    const fileData = localStorage.getItem('temp_file_' + order.id);
+                    if(fileData) {
+                        fileHtml = `
+                            <div style="background: #f0f7ff; border-radius: 6px; padding: 10px; margin: 8px 0; border: 1px solid #3b82f6;">
+                                <p style="color: #3b82f6; font-weight: 600;">📎 المرفق: ${order.fileName}</p>
+                                <a href="${fileData}" download="${order.fileName}" class="file-download-btn" style="font-size: 14px; padding: 5px 12px;">
+                                    ⬇️ تحميل الملف
+                                </a>
+                            </div>
+                        `;
+                    } else {
+                        fileHtml = `
+                            <div style="background: #fef3c7; border-radius: 6px; padding: 10px; margin: 8px 0; border: 1px solid #f59e0b;">
+                                <p style="color: #92400e;">📎 المرفق: ${order.fileName}</p>
+                                <p style="font-size: 12px; color: #92400e;">⚠️ الملف غير متاح للتحميل حالياً</p>
+                            </div>
+                        `;
+                    }
                 }
 
                 container.innerHTML += `
@@ -1268,7 +1377,7 @@
         }
 
         // ================================================================
-        // 17. وظائف عامة
+        // 14. وظائف اللغة
         // ================================================================
         function checkAdminAccess() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1316,7 +1425,7 @@
         }
 
         // ================================================================
-        // 18. تهيئة المتجر
+        // 15. تهيئة المتجر
         // ================================================================
         initLanguage();
         renderProducts();
@@ -1326,7 +1435,10 @@
         console.log('🔥 مرحباً بك في متجر يوتوبيا للتجارة والتصدير!');
         console.log('📧 الإيميل: ' + STORE_EMAIL);
         console.log('💬 واتساب: +' + WHATSAPP_NUMBER);
+        console.log('📏 جميع المقاسات من 1/2" إلى 24" متوفرة مع خيار "أخرى"');
         console.log('🔒 الحماية مفعلة: منع النسخ، منع أدوات المطور، منع النقر الأيمن');
+        console.log('📎 المرفقات تظهر في الإيميل والواتساب ولوحة التحكم');
+        console.log('👨‍💻 المطور: Eng : Mahmoud Mohamed Marie | +201222153415');
     </script>
 </body>
 </html>
