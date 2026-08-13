@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>يوتوبيا للتجارة والتصدير - لوحة التحكم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -56,7 +57,7 @@
 
         .admin-header .actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             align-items: center;
         }
@@ -64,7 +65,7 @@
         .btn-back {
             background: rgba(255,255,255,0.12);
             color: white;
-            padding: 10px 22px;
+            padding: 10px 20px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
@@ -73,6 +74,7 @@
             align-items: center;
             gap: 8px;
             border: 1px solid rgba(255,255,255,0.15);
+            font-size: 14px;
         }
 
         .btn-back:hover {
@@ -83,7 +85,7 @@
         .btn-clear {
             background: #e74c3c;
             color: white;
-            padding: 10px 22px;
+            padding: 10px 20px;
             border: none;
             border-radius: 50px;
             cursor: pointer;
@@ -92,6 +94,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            font-size: 14px;
         }
 
         .btn-clear:hover {
@@ -102,7 +105,7 @@
         .btn-refresh {
             background: #3498db;
             color: white;
-            padding: 10px 22px;
+            padding: 10px 20px;
             border: none;
             border-radius: 50px;
             cursor: pointer;
@@ -111,11 +114,57 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            font-size: 14px;
         }
 
         .btn-refresh:hover {
             background: #2980b9;
             transform: scale(1.02);
+        }
+
+        .btn-export {
+            background: #22c55e;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .btn-export:hover {
+            background: #16a34a;
+            transform: scale(1.02);
+        }
+
+        .btn-sync {
+            background: #8b5cf6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .btn-sync:hover {
+            background: #7c3aed;
+            transform: scale(1.02);
+        }
+
+        .btn-sync.syncing {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         /* ===== إحصائيات ===== */
@@ -133,6 +182,12 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             text-align: center;
             border-right: 4px solid #f39c12;
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
         }
 
         .stat-card .number {
@@ -187,7 +242,25 @@
         .order-header h3 {
             color: #0a1e2d;
             font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
+
+        .order-header .order-status-badge {
+            display: inline-block;
+            padding: 3px 14px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .order-status-badge.processing { background: #fbbf24; color: #1e293b; }
+        .order-status-badge.shipped { background: #3b82f6; color: white; }
+        .order-status-badge.transit { background: #8b5cf6; color: white; }
+        .order-status-badge.delivered { background: #22c55e; color: white; }
 
         .order-header .order-date {
             color: #888;
@@ -277,26 +350,70 @@
             margin-left: 5px;
         }
 
-        /* ===== قسم التتبع في الأدمن ===== */
+        .order-source {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .order-source .cloud { color: #8b5cf6; }
+        .order-source .local { color: #22c55e; }
+
+        /* ===== المرفقات ===== */
+        .order-file {
+            margin: 8px 0;
+            background: #f0f7ff;
+            border-radius: 6px;
+            padding: 8px 12px;
+            border: 1px solid #3b82f6;
+            display: inline-block;
+        }
+
+        .order-file .file-download-btn {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+            margin-right: 8px;
+        }
+
+        .order-file .file-download-btn:hover {
+            background: #2563eb;
+            transform: scale(1.02);
+        }
+
+        /* ===== قسم تتبع الشحنة ===== */
         .admin-tracking-box {
             margin-top: 15px;
             border-top: 1px solid #ddd;
             padding-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
         
         .admin-status-select {
-            margin-top: 5px;
-            padding: 8px 10px;
-            border-radius: 6px;
+            padding: 8px 14px;
+            border-radius: 8px;
             border: 1px solid #ddd;
-            width: 100%;
-            max-width: 250px;
             font-size: 14px;
             cursor: pointer;
+            background: white;
+            min-width: 150px;
         }
 
         .admin-status-select:focus {
             outline: 2px solid #f39c12;
+        }
+
+        .status-update-time {
+            font-size: 12px;
+            color: #94a3b8;
         }
 
         /* ===== Empty State ===== */
@@ -343,8 +460,44 @@
             text-decoration: underline;
         }
 
+        /* ===== Toast ===== */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: #1e293b;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: slideUp 0.4s ease;
+            font-size: 15px;
+            pointer-events: auto;
+        }
+
+        .toast.success { background: #22c55e; }
+        .toast.error { background: #ef4444; }
+        .toast.info { background: #3b82f6; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* ===== استجابة ===== */
         @media (max-width: 600px) {
+            body { padding: 10px; }
             .admin-header {
                 padding: 15px 18px;
                 flex-direction: column;
@@ -360,9 +513,9 @@
                 justify-content: center;
             }
 
-            .btn-back, .btn-clear, .btn-refresh {
-                padding: 8px 16px;
-                font-size: 13px;
+            .btn-back, .btn-clear, .btn-refresh, .btn-export, .btn-sync {
+                padding: 8px 14px;
+                font-size: 12px;
             }
 
             .order-body {
@@ -376,6 +529,15 @@
 
             .stats {
                 grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            
+            .stat-card {
+                padding: 12px 15px;
+            }
+            
+            .stat-card .number {
+                font-size: 22px;
             }
         }
 
@@ -389,9 +551,13 @@
                 width: 100%;
             }
             
-            .btn-back, .btn-clear, .btn-refresh {
+            .btn-back, .btn-clear, .btn-refresh, .btn-export, .btn-sync {
                 width: 100%;
                 justify-content: center;
+            }
+
+            .order-card {
+                padding: 15px;
             }
         }
     </style>
@@ -409,13 +575,19 @@
         </div>
         <div class="actions">
             <a class="btn-back" href="https://3sl.github.io/Utopia-Marketplace/">
-                <i>🏠</i> <span class="lang-ar">العودة للمتجر</span><span class="lang-en">Back to Store</span>
+                🏠 <span class="lang-ar">العودة للمتجر</span><span class="lang-en">Back to Store</span>
             </a>
+            <button class="btn-sync" onclick="syncOrders()" id="syncBtn">
+                ☁️ <span class="lang-ar">مزامنة سحابية</span><span class="lang-en">Sync Cloud</span>
+            </button>
             <button class="btn-refresh" onclick="loadOrders()">
-                <i>🔄</i> <span class="lang-ar">تحديث</span><span class="lang-en">Refresh</span>
+                🔄 <span class="lang-ar">تحديث</span><span class="lang-en">Refresh</span>
+            </button>
+            <button class="btn-export" onclick="exportOrders()">
+                📊 <span class="lang-ar">تصدير Excel</span><span class="lang-en">Export</span>
             </button>
             <button class="btn-clear" onclick="clearOrders()">
-                <i>🗑️</i> <span class="lang-ar">تفريغ الكل</span><span class="lang-en">Clear All</span>
+                🗑️ <span class="lang-ar">تفريغ الكل</span><span class="lang-en">Clear All</span>
             </button>
         </div>
     </header>
@@ -434,10 +606,17 @@
             <div class="number" id="totalItems">0</div>
             <div class="label">🛒 <span class="lang-ar">عدد المنتجات</span><span class="lang-en">Total Items</span></div>
         </div>
+        <div class="stat-card">
+            <div class="number" id="totalCustomers">0</div>
+            <div class="label">👤 <span class="lang-ar">عدد العملاء</span><span class="lang-en">Customers</span></div>
+        </div>
     </div>
 
     <!-- ===== قائمة الطلبات ===== -->
     <div id="ordersContainer"></div>
+
+    <!-- ===== Toast Container ===== -->
+    <div class="toast-container" id="toastContainer"></div>
 
     <!-- ===== الفوتر ===== -->
     <footer>
@@ -445,29 +624,116 @@
             <span class="lang-ar">جميع الحقوق محفوظة - Utopia For Trading And Export &copy; 2026</span>
             <span class="lang-en">All Rights Reserved &copy; 2026</span>
             <br>
-            <span class="lang-ar">تصميم وتطوير: <a href="tel:+201222153415">Eng : Mahmoud Mohamed Marie</a> | <a href="tel:+201222153415">+201222153415</a></span>
-
+            <span class="lang-ar">تصميم وتطوير: Eng : Mahmoud Mohamed Marie | <a href="https://wa.me/201222153415" target="_blank">+201222153415</a></span>
+            <span class="lang-en">Designed by: Eng : Mahmoud Mohamed Marie | <a href="https://wa.me/201222153415" target="_blank">+201222153415</a></span>
         </p>
     </footer>
 
     <script>
         // ================================================================
-        // 0. التحقق من اتجاه اللغة (مهم جداً لترجمة الواجهة)
+        // 0. إعدادات Formspree
         // ================================================================
-        function checkLang() {
-            const urlParams = new URLSearchParams(window.location.search);
-            // نعتمد على الرابط إذا كان العميل اختار اللغة الإنجليزية
-            if (urlParams.get('lang') === 'en') {
-                document.body.classList.add('dir-ltr');
-                document.body.classList.remove('dir-rtl');
-            } else {
-                document.body.classList.add('dir-rtl');
-                document.body.classList.remove('dir-ltr');
+        const FORMSPREE_URL = 'https://formspree.io/f/xbgrgwog';
+        const STORE_EMAIL = 'utopia_trade26@yahoo.com';
+        const STORE_NAME = 'يوتوبيا للتجارة والتصدير';
+
+        // ================================================================
+        // 1. جلب الطلبات من Formspree
+        // ================================================================
+        async function fetchOrdersFromFormspree() {
+            try {
+                // Formspree لا يدعم جلب البيانات مباشرة بهذه الطريقة
+                // لكننا نستخدم الـ Formspree Dashboard لعرض الطلبات
+                // نقوم بجلب الطلبات المحلية فقط ولكن نعرض رابط السحابة
+                return [];
+            } catch (error) {
+                console.error('خطأ في جلب الطلبات السحابية:', error);
+                return [];
             }
         }
 
         // ================================================================
-        // 1. تحميل وعرض الطلبات (مع تحديث البيانات الجديدة واللغة)
+        // 2. المزامنة السحابية
+        // ================================================================
+        async function syncOrders() {
+            const syncBtn = document.getElementById('syncBtn');
+            syncBtn.classList.add('syncing');
+            syncBtn.innerHTML = '⏳ <span class="lang-ar">جاري المزامنة...</span><span class="lang-en">Syncing...</span>';
+            
+            try {
+                // جلب الطلبات المحلية
+                const localOrders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+                
+                if(localOrders.length === 0) {
+                    showToast('📭 <span class="lang-ar">لا توجد طلبات محلية للمزامنة</span><span class="lang-en">No local orders to sync</span>', 'info');
+                    syncBtn.classList.remove('syncing');
+                    syncBtn.innerHTML = '☁️ <span class="lang-ar">مزامنة سحابية</span><span class="lang-en">Sync Cloud</span>';
+                    return;
+                }
+
+                let synced = 0;
+                let failed = 0;
+
+                for (const order of localOrders) {
+                    const productsText = order.items.map((item, i) => {
+                        return `${i + 1}- ${item.nameAr || item.nameEn} (المقاس: ${item.size}) ×${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`;
+                    }).join('\n');
+
+                    try {
+                        const response = await fetch(FORMSPREE_URL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                "رقم الطلب": order.id,
+                                "التاريخ": order.date,
+                                "نوع الطلب": order.orderType || 'طلب شراء',
+                                "العميل": order.name,
+                                "الهاتف": order.phone,
+                                "العنوان": order.address,
+                                "اللوكيشن": order.location || 'لم يحدد',
+                                "طريقة الاستلام": order.method || 'توصيل للمشروع',
+                                "طريقة الدفع": order.payment || 'الدفع عند الاستلام',
+                                "المنتجات": productsText,
+                                "الإجمالي": `$${order.total.toFixed(2)}`,
+                                "اسم الملف": order.fileName || 'لا يوجد',
+                                "الحالة": order.tracking ? order.tracking.status : 'قيد التجهيز'
+                            })
+                        });
+
+                        if (response.ok) {
+                            synced++;
+                        } else {
+                            failed++;
+                        }
+                    } catch (error) {
+                        failed++;
+                        console.error('خطأ في مزامنة الطلب:', error);
+                    }
+                }
+
+                if (synced > 0) {
+                    showToast(`✅ <span class="lang-ar">تم مزامنة ${synced} طلب بنجاح!</span><span class="lang-en">${synced} orders synced successfully!</span>`, 'success');
+                } else {
+                    showToast(`⚠️ <span class="lang-ar">فشل في مزامنة جميع الطلبات</span><span class="lang-en">Failed to sync orders</span>`, 'error');
+                }
+
+                // تحديث الإحصائيات
+                loadOrders();
+
+            } catch (error) {
+                console.error('خطأ في المزامنة:', error);
+                showToast('❌ <span class="lang-ar">حدث خطأ في المزامنة</span><span class="lang-en">Sync error</span>', 'error');
+            }
+
+            syncBtn.classList.remove('syncing');
+            syncBtn.innerHTML = '☁️ <span class="lang-ar">مزامنة سحابية</span><span class="lang-en">Sync Cloud</span>';
+        }
+
+        // ================================================================
+        // 3. عرض الطلبات
         // ================================================================
         function loadOrders() {
             const container = document.getElementById('ordersContainer');
@@ -482,6 +748,10 @@
                         <div class="icon">📭</div>
                         <h2><span class="lang-ar">لا توجد طلبات حتى الآن</span><span class="lang-en">No orders yet</span></h2>
                         <p><span class="lang-ar">الطلبات الجديدة ستظهر هنا تلقائياً</span><span class="lang-en">New orders will appear here automatically</span></p>
+                        <p style="margin-top:15px; font-size:14px; color:#666;">
+                            ☁️ <span class="lang-ar">استخدم زر "مزامنة سحابية" لرفع الطلبات للسحابة</span>
+                            <span class="lang-en">Use "Sync Cloud" to upload orders to the cloud</span>
+                        </p>
                     </div>
                 `;
                 return;
@@ -490,15 +760,23 @@
             container.innerHTML = '';
             
             // عرض الطلبات من الأحدث للأقدم
-            orders.reverse().forEach((order, index) => {
+            const reversedOrders = [...orders].reverse();
+            reversedOrders.forEach((order, index) => {
+                const realIndex = orders.length - 1 - index;
                 const div = document.createElement('div');
                 div.className = 'order-card';
+
+                // حالة الطلب
+                const status = order.tracking ? order.tracking.status : 'قيد التجهيز';
+                const statusClass = status === 'قيد التجهيز' ? 'processing' : 
+                                  status === 'تم الشحن' ? 'shipped' : 
+                                  status === 'في الطريق' ? 'transit' : 'delivered';
 
                 // بناء قائمة المنتجات
                 let itemsHtml = `<ul class="order-items">`;
                 if(order.items && order.items.length > 0) {
                     order.items.forEach(item => {
-                        const name = document.body.classList.contains('dir-ltr') ? (item.nameEn || item.nameAr) : (item.nameAr || item.nameEn);
+                        const name = item.nameAr || item.nameEn || 'منتج';
                         itemsHtml += `
                             <li>
                                 ${name}
@@ -510,23 +788,46 @@
                 }
                 itemsHtml += `</ul>`;
 
-                // تحديد أيقونة الدفع
+                // طريقة الدفع
                 const paymentMethod = order.payment || 'لم يحدد';
                 let paymentIcon = '💳';
                 if(paymentMethod.includes('الاستلام')) paymentIcon = '💰';
                 else if(paymentMethod.includes('شيك')) paymentIcon = '📄';
 
                 // رابط اللوكيشن
-                const locationLink = order.location && order.location !== 'لم يتم التحديد' 
+                const locationLink = order.location && order.location !== 'لم يتم التحديد' && order.location.includes('http') 
                     ? `<a href="${order.location}" target="_blank" class="location-link">📍 <span class="lang-ar">عرض الموقع على الخريطة</span><span class="lang-en">View on map</span></a>` 
-                    : '<span class="lang-ar">لم يحدد</span><span class="lang-en">N/A</span>';
+                    : `<span class="lang-ar">${order.location || 'لم يحدد'}</span><span class="lang-en">${order.location || 'N/A'}</span>`;
 
-                // حساب المؤشر الحقيقي للطلب داخل المصفوفة الأصلية
-                const realIndex = orders.length - 1 - index;
+                // المرفق
+                let fileHtml = '';
+                if(order.hasFile && order.fileName) {
+                    const fileData = localStorage.getItem('temp_file_' + order.id);
+                    if(fileData) {
+                        fileHtml = `
+                            <div class="order-file">
+                                📎 <span class="lang-ar">المرفق</span><span class="lang-en">Attachment</span>: ${order.fileName}
+                                <a href="${fileData}" download="${order.fileName}" class="file-download-btn">⬇️ <span class="lang-ar">تحميل</span><span class="lang-en">Download</span></a>
+                            </div>
+                        `;
+                    } else {
+                        fileHtml = `
+                            <div class="order-file" style="background:#fef3c7; border-color:#f59e0b;">
+                                📎 ${order.fileName} <span style="color:#92400e;">⚠️ <span class="lang-ar">الملف غير متاح للتحميل</span><span class="lang-en">File not available</span></span>
+                            </div>
+                        `;
+                    }
+                }
 
                 div.innerHTML = `
                     <div class="order-header">
-                        <h3><span class="lang-ar">طلب</span><span class="lang-en">Order</span> #${order.id}</h3>
+                        <h3>
+                            <span>#${order.id}</span>
+                            <span class="order-status-badge ${statusClass}">${status}</span>
+                            <span class="order-source">
+                                ${order.source === 'cloud' ? '☁️ <span class="cloud">سحابي</span>' : '💻 <span class="local">محلي</span>'}
+                            </span>
+                        </h3>
                         <span class="order-date">🕐 ${order.date}</span>
                     </div>
                     <div class="order-body">
@@ -534,9 +835,10 @@
                         <p><strong>📱 <span class="lang-ar">الهاتف</span><span class="lang-en">Phone</span>:</strong> ${order.phone || 'N/A'}</p>
                         <p><strong>📍 <span class="lang-ar">العنوان</span><span class="lang-en">Address</span>:</strong> ${order.address || 'N/A'}</p>
                         <p><strong>🗺️ <span class="lang-ar">اللوكيشن</span><span class="lang-en">Location</span>:</strong> ${locationLink}</p>
-                        <p><strong>📄 <span class="lang-ar">نوع الطلب</span><span class="lang-en">Order Type</span>:</strong> ${order.orderType || 'N/A'}</p>
+                        <p><strong>📄 <span class="lang-ar">نوع الطلب</span><span class="lang-en">Type</span>:</strong> ${order.orderType || 'N/A'}</p>
                         <p><strong>🚚 <span class="lang-ar">الاستلام</span><span class="lang-en">Method</span>:</strong> ${order.method || 'N/A'}</p>
                     </div>
+                    ${fileHtml}
                     ${itemsHtml}
                     <div class="order-footer">
                         <span class="order-total">💰 <span class="lang-ar">الإجمالي</span><span class="lang-en">Total</span>: $${(order.total || 0).toFixed(2)}</span>
@@ -545,18 +847,20 @@
                         </span>
                     </div>
 
-                    <!-- 🔴 نظام تتبع الشحنة للأدمن -->
+                    <!-- ===== تتبع الشحنة ===== -->
                     <div class="admin-tracking-box">
-                        <label style="font-weight: bold; color: #333; display: block; margin-bottom: 5px;">
-                            <span class="lang-ar">تحديث حالة الشحنة</span>
-                            <span class="lang-en">Update Shipment Status</span>
+                        <label style="font-weight: bold; color: #333;">
+                            📦 <span class="lang-ar">حالة الشحنة</span><span class="lang-en">Shipment Status</span>
                         </label>
                         <select class="admin-status-select" id="status_${realIndex}" onchange="updateOrderStatus(${realIndex}, this.value)">
-                            <option value="قيد التجهيز" ${order.tracking && order.tracking.status === 'قيد التجهيز' ? 'selected' : ''}><span class="lang-ar">قيد التجهيز</span><span class="lang-en">Processing</span></option>
-                            <option value="تم الشحن" ${order.tracking && order.tracking.status === 'تم الشحن' ? 'selected' : ''}><span class="lang-ar">تم الشحن</span><span class="lang-en">Shipped</span></option>
-                            <option value="في الطريق" ${order.tracking && order.tracking.status === 'في الطريق' ? 'selected' : ''}><span class="lang-ar">في الطريق</span><span class="lang-en">In Transit</span></option>
-                            <option value="تم التسليم" ${order.tracking && order.tracking.status === 'تم التسليم' ? 'selected' : ''}><span class="lang-ar">تم التسليم</span><span class="lang-en">Delivered</span></option>
+                            <option value="قيد التجهيز" ${status === 'قيد التجهيز' ? 'selected' : ''}><span class="lang-ar">قيد التجهيز</span><span class="lang-en">Processing</span></option>
+                            <option value="تم الشحن" ${status === 'تم الشحن' ? 'selected' : ''}><span class="lang-ar">تم الشحن</span><span class="lang-en">Shipped</span></option>
+                            <option value="في الطريق" ${status === 'في الطريق' ? 'selected' : ''}><span class="lang-ar">في الطريق</span><span class="lang-en">In Transit</span></option>
+                            <option value="تم التسليم" ${status === 'تم التسليم' ? 'selected' : ''}><span class="lang-ar">تم التسليم</span><span class="lang-en">Delivered</span></option>
                         </select>
+                        <span class="status-update-time">
+                            ${order.tracking && order.tracking.lastUpdate ? '🔄 ' + order.tracking.lastUpdate : ''}
+                        </span>
                     </div>
                 `;
                 container.appendChild(div);
@@ -564,12 +868,13 @@
         }
 
         // ================================================================
-        // 2. تحديث الإحصائيات
+        // 4. تحديث الإحصائيات
         // ================================================================
         function updateStats(orders) {
             const totalOrders = orders.length;
             let totalRevenue = 0;
             let totalItems = 0;
+            const customers = new Set();
 
             orders.forEach(order => {
                 totalRevenue += order.total || 0;
@@ -578,20 +883,21 @@
                         totalItems += item.quantity || 0;
                     });
                 }
+                if(order.name) customers.add(order.name);
             });
 
             document.getElementById('totalOrders').textContent = totalOrders;
             document.getElementById('totalRevenue').textContent = `$${totalRevenue.toFixed(2)}`;
             document.getElementById('totalItems').textContent = totalItems;
+            document.getElementById('totalCustomers').textContent = customers.size;
         }
 
         // ================================================================
-        // 3. تحديث حالة الشحنة من الأدمن
+        // 5. تحديث حالة الشحنة
         // ================================================================
         function updateOrderStatus(index, newStatus) {
             let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
             if(orders[index]) {
-                // التأكد من وجود كائن التتبع
                 if(!orders[index].tracking) {
                     orders[index].tracking = {};
                 }
@@ -599,15 +905,15 @@
                 orders[index].tracking.lastUpdate = new Date().toLocaleString('ar-EG');
                 localStorage.setItem('utopia_orders', JSON.stringify(orders));
                 showToast('✅ <span class="lang-ar">تم تحديث حالة الشحنة بنجاح!</span><span class="lang-en">Shipment status updated!</span>', 'success');
-                loadOrders(); // إعادة التحميل لتحديث الواجهة
+                loadOrders();
             }
         }
 
         // ================================================================
-        // 4. تفريغ الطلبات
+        // 6. تفريغ الطلبات
         // ================================================================
         function clearOrders() {
-            if(confirm("<span class="lang-ar">⚠️ هل أنت متأكد من حذف جميع الطلبات؟</span><span class="lang-en">⚠️ Are you sure you want to delete all orders?</span>")) {
+            if(confirm("⚠️ هل أنت متأكد من حذف جميع الطلبات؟\n⚠️ Are you sure you want to delete all orders?")) {
                 localStorage.removeItem('utopia_orders');
                 loadOrders();
                 showToast('🗑️ <span class="lang-ar">تم حذف جميع الطلبات</span><span class="lang-en">All orders cleared</span>', 'error');
@@ -615,55 +921,65 @@
         }
 
         // ================================================================
-        // 5. إشعارات (Toast)
+        // 7. تصدير الطلبات
         // ================================================================
-        function showToast(message, type = 'info') {
-            const toast = document.createElement('div');
-            toast.style.cssText = `
-                position: fixed;
-                bottom: 30px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: ${type === 'error' ? '#ef4444' : '#22c55e'};
-                color: white;
-                padding: 14px 28px;
-                border-radius: 60px;
-                font-weight: 600;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-                z-index: 9999;
-                animation: slideUp 0.4s ease;
-                font-size: 15px;
-            `;
-            toast.innerHTML = message;
-            document.body.appendChild(toast);
+        function exportOrders() {
+            const orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
+            if(orders.length === 0) {
+                showToast('📭 <span class="lang-ar">لا توجد طلبات للتصدير</span><span class="lang-en">No orders to export</span>', 'info');
+                return;
+            }
 
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(-50%) translateY(20px)';
-                setTimeout(() => toast.remove(), 400);
-            }, 3000);
+            let csv = "رقم الطلب,التاريخ,العميل,الهاتف,العنوان,طريقة الدفع,الإجمالي,الحالة,المنتجات\n";
+            orders.forEach(order => {
+                const status = order.tracking ? order.tracking.status : 'قيد التجهيز';
+                const products = order.items.map(item => `${item.nameAr || item.nameEn} (x${item.quantity})`).join(' | ');
+                csv += `${order.id},${order.date},${order.name},${order.phone},${order.address},${order.payment},${order.total},${status},${products}\n`;
+            });
+
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `orders_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+            
+            showToast('📊 <span class="lang-ar">تم تصدير الطلبات بنجاح!</span><span class="lang-en">Orders exported successfully!</span>', 'success');
         }
 
         // ================================================================
-        // 6. تشغيل عند التحميل
+        // 8. Toast Notifications
         // ================================================================
-        window.onload = function() {
-            checkLang(); // تحديد اللغة أولاً
-            loadOrders(); // ثم تحميل الطلبات
-        };
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-10px)';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
 
         // ================================================================
-        // 7. تحديث تلقائي كل 30 ثانية
+        // 9. تحديث تلقائي
         // ================================================================
         setInterval(() => {
             loadOrders();
         }, 30000);
 
         // ================================================================
-        // 8. طباعة الحالة في الكونسول للمتابعة
+        // 10. تشغيل عند التحميل
         // ================================================================
-        console.log('📋 لوحة تحكم يوتوبيا للتجارة والتصدير');
-        console.log('📦 عدد الطلبات: ' + (JSON.parse(localStorage.getItem('utopia_orders') || '[]').length));
+        window.onload = function() {
+            loadOrders();
+            console.log('📋 لوحة تحكم يوتوبيا للتجارة والتصدير');
+            console.log('📦 عدد الطلبات: ' + (JSON.parse(localStorage.getItem('utopia_orders') || '[]').length));
+            console.log('☁️ Formspree: ' + FORMSPREE_URL);
+            console.log('📧 الإيميل: ' + STORE_EMAIL);
+        };
     </script>
 
 </body>
