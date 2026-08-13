@@ -6,7 +6,7 @@
     <title>يوتوبيا للتجارة والتصدير - لوازم الحريق والصناعة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== جميع الـ Styles السابقة ===== */
+        /* ===== جميع الـ Styles السابقة مع التعديلات ===== */
         * { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
         input, textarea, select { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
 
@@ -630,14 +630,17 @@
         // ================================================================
         // 4. عرض المنتجات
         // ================================================================
-        function renderProducts(category = 'all', searchQuery = '') {
+        function renderProducts(category = 'all', searchQuery = '', priceMax = 500, sizeFilter = 'all', categories = ['pipes', 'paddle-flanges', 'flanges', 'fittings', 'fire']) {
             const container = document.getElementById('productsContainer');
             container.innerHTML = '';
             
             let filtered = productsData.filter(p => {
                 const matchCat = (category === 'all' || p.cat === category);
                 const matchSearch = p.nameAr.toLowerCase().includes(searchQuery.toLowerCase()) || p.nameEn.toLowerCase().includes(searchQuery.toLowerCase());
-                return matchCat && matchSearch;
+                const matchPrice = p.price <= priceMax;
+                const matchSize = sizeFilter === 'all' || true;
+                const matchCategories = categories.includes(p.cat);
+                return matchCat && matchSearch && matchPrice && matchCategories;
             });
 
             if(filtered.length === 0) {
@@ -709,7 +712,7 @@
             currentPriceMax = priceMax;
             currentSizeFilter = sizeFilter;
             
-            renderProducts(currentCategory, currentSearch);
+            renderProducts(currentCategory, currentSearch, priceMax, sizeFilter, categories);
         }
 
         function updatePriceDisplay() {
@@ -946,7 +949,7 @@
         }
 
         // ================================================================
-        // 10. 💬 إرسال بالواتساب (بدون تعقيد، رسالة نظيفة)
+        // 10. 💬 إرسال بالواتساب (تعديل: إرسال رابط التحميل المباشر للعميل)
         // ================================================================
         function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
@@ -960,15 +963,16 @@
 
             let fileInfo = "";
             if(selectedFile) {
-                // تخزين الملف في localStorage ليتسنى لك تحميله من لوحة التحكم لاحقاً
+                // تحويل الملف لـ Data URL وتخزينه
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    localStorage.setItem('temp_file_' + orderData.id, e.target.result);
+                    const fileData = e.target.result;
+                    localStorage.setItem('temp_file_' + orderData.id, fileData);
                 };
                 reader.readAsDataURL(selectedFile);
                 
-                // في رسالة الواتساب بنقول للعميل إن الملف وصل
-                fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024 / 1024).toFixed(2)} MB)\n✅ تم استلام ملفك بنجاح وسيصلك رابط التحميل عبر الإيميل أو من خلال فريق الدعم.\n\n`;
+                // إضافة رابط التحميل المباشر في رسالة الواتساب
+                fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024 / 1024).toFixed(2)} MB)\n🔗 رابط التحميل: https://${window.location.hostname}/?download=${orderData.id}\n\n`;
             }
 
             const message = 
