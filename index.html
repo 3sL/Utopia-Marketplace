@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>يوتوبيا للتجارة والتصدير - لوازم الحريق والصناعة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -29,6 +30,30 @@
         .brand-text span { font-size: 13px; color: #8bc34a; display: block; }
 
         .controls { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        
+        /* ===== رقم التليفون ===== */
+        .phone-number {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.12);
+            padding: 8px 16px;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+        .phone-number:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.02);
+        }
+        .phone-number i {
+            color: #8bc34a;
+            font-size: 18px;
+        }
+
         .lang-switch { background: #e74c3c; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
         .cart-btn { background: #8bc34a; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; position: relative; }
         .cart-count { background: #e74c3c; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; position: absolute; top: -8px; right: -8px; }
@@ -46,7 +71,7 @@
         .cat-btn { background: #fff; border: 2px solid #0a1e2d; padding: 8px 20px; border-radius: 30px; cursor: pointer; font-weight: bold; color: #0a1e2d; transition: 0.3s; }
         .cat-btn.active, .cat-btn:hover { background: #0a1e2d; color: white; }
 
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-bottom: 40px; }
         .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.06); transition: 0.3s; display: flex; flex-direction: column; }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .product-card .img-box { width: 100%; height: 200px; background: #fff; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #eee; overflow: hidden; }
@@ -56,6 +81,34 @@
         .p-info h3 { font-size: 16px; margin-bottom: 8px; color: #0a1e2d; min-height: 45px; display: flex; align-items: center; justify-content: center; }
         .p-info .tag { background: #eef2f5; display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; color: #555; margin-bottom: 10px; align-self: center; }
         .p-info p { color: #777; font-size: 13px; margin-bottom: 12px; flex-grow: 1; }
+
+        /* ===== خيارات المقاسات ===== */
+        .size-options {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+        .size-options label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .size-options select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            outline: none;
+        }
+        .size-options select:focus {
+            border-color: #8bc34a;
+        }
+
         .p-price { font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; display: block; }
         .add-cart-btn { width: 100%; padding: 12px; background: #8bc34a; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.2s; }
         .add-cart-btn:hover { background: #6a9c36; }
@@ -68,6 +121,7 @@
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
         .cart-item-info { flex-grow: 1; margin: 0 10px; }
         .cart-item-info h4 { font-size: 14px; margin-bottom: 3px; }
+        .cart-item-info .item-size { font-size: 12px; color: #888; }
         .cart-item-controls { display: flex; align-items: center; gap: 10px; }
         .qty-btn { background: #eee; border: none; width: 28px; height: 28px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         .remove-item { color: #e74c3c; cursor: pointer; font-weight: bold; margin-left: 10px; }
@@ -79,12 +133,88 @@
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; justify-content: center; align-items: center; }
         .modal-overlay.active { display: flex; }
-        .checkout-modal { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 450px; position: relative; }
+        .checkout-modal { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 520px; position: relative; max-height: 90vh; overflow-y: auto; }
         .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; }
         .checkout-modal h2 { margin-bottom: 15px; color: #0a1e2d; text-align: center; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+
+        /* ===== رفع الملفات ===== */
+        .file-upload-group {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #fafafa;
+        }
+        .file-upload-group:hover {
+            border-color: #8bc34a;
+            background: #f8fcf5;
+        }
+        .file-upload-group input[type="file"] {
+            display: none;
+        }
+        .file-upload-group .file-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .file-upload-group .file-label i {
+            font-size: 36px;
+            color: #8bc34a;
+        }
+        .file-upload-group .file-label span {
+            color: #555;
+            font-size: 14px;
+        }
+        .file-upload-group .file-label .file-types {
+            font-size: 12px;
+            color: #999;
+        }
+        .file-name-display {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        /* ===== اللوكيشن ===== */
+        .location-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .location-group input {
+            flex: 1;
+            min-width: 150px;
+        }
+        .location-group button {
+            padding: 0 18px;
+            background: #0a1e2d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+        .location-group button:hover {
+            background: #1a3a4a;
+        }
+        .location-hint {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #777;
+        }
+
         .success-msg { display: none; text-align: center; color: #27ae60; font-weight: bold; font-size: 18px; padding: 20px; }
 
         .contact-options {
@@ -146,6 +276,8 @@
         .order-card ul { margin: 10px 0; padding-right: 20px; }
         .order-card li { margin-bottom: 5px; }
         .order-total { font-size: 18px; font-weight: bold; color: #2ecc71; margin-top: 10px; }
+        .order-file-link { display: inline-block; margin-top: 8px; color: #3b82f6; text-decoration: none; font-weight: 600; }
+        .order-file-link:hover { text-decoration: underline; }
         
         .admin-status-select { margin-top: 10px; padding: 5px; border-radius: 5px; border: 1px solid #ddd; width: 100%; }
 
@@ -158,12 +290,77 @@
         body.dir-rtl { direction: rtl; text-align: right; }
         body.dir-ltr { direction: ltr; text-align: left; }
 
+        .loading-spinner { display: none; text-align: center; padding: 10px; color: #8b5cf6; font-weight: bold; }
+        .loading-spinner.active { display: block; }
+        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #8b5cf6; border-radius: 50%; width: 30px; height: 30px; animation: spin 0.8s linear infinite; margin: 0 auto 8px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .tracking-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .tracking-container h3 {
+            color: #0a1e2d;
+            margin-bottom: 15px;
+        }
+        .tracking-container .tracking-input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .tracking-container .tracking-input-group input {
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            font-size: 16px;
+            outline: none;
+            width: 100%;
+            max-width: 400px;
+            transition: 0.3s;
+        }
+        .tracking-container .tracking-input-group input:focus {
+            border-color: #8bc34a;
+            box-shadow: 0 0 8px rgba(139, 195, 74, 0.3);
+        }
+        .tracking-container .tracking-input-group button {
+            padding: 12px 30px;
+            background: #0a1e2d;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .tracking-container .tracking-input-group button:hover {
+            background: #1a3a4a;
+            transform: scale(1.02);
+        }
+        .tracking-result {
+            margin-top: 15px;
+            text-align: right;
+        }
+
         @media (max-width: 600px) {
             .brand-logo { max-height: 50px; max-width: 140px; }
             .products-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .cart-sidebar { width: 100%; right: -100%; }
             .contact-options { flex-direction: column; }
             .whatsapp-btn, .email-btn { width: 100%; }
+            .phone-number span { display: none; }
+            .phone-number { padding: 8px 12px; }
+            .location-group { flex-direction: column; }
+            .location-group button { width: 100%; padding: 10px; }
+            .checkout-modal { padding: 20px; }
+            .tracking-container .tracking-input-group { flex-direction: column; align-items: center; }
+            .tracking-container .tracking-input-group input { max-width: 100%; }
+            .tracking-container .tracking-input-group button { width: 100%; }
         }
     </style>
 </head>
@@ -183,6 +380,11 @@
             </div>
         </div>
         <div class="controls">
+            <!-- ===== رقم التليفون ===== -->
+            <a href="tel:+201061007100" class="phone-number">
+                <i class="fas fa-phone-alt"></i>
+                <span>01061007100</span>
+            </a>
             <button class="lang-switch" onclick="toggleLang()">
                 <span class="lang-ar">English</span>
                 <span class="lang-en">العربية</span>
@@ -214,7 +416,7 @@
                 <span class="lang-ar">الكل</span><span class="lang-en">All</span>
             </button>
             <button class="cat-btn" onclick="filterCategory('pipes', event)">
-                <span class="lang-ar">مواسير سيملس </span><span class="lang-en">Pipes</span>
+                <span class="lang-ar">مواسير سيملس</span><span class="lang-en">Pipes</span>
             </button>
             <button class="cat-btn" onclick="filterCategory('paddle-flanges', event)">
                 <span class="lang-ar">بادل فلانش</span><span class="lang-en">Paddle Flange</span>
@@ -233,15 +435,15 @@
         <div class="products-grid" id="productsContainer"></div>
     </div>
 
-    <!-- قائمة البحث عن الشحنات -->
-    <div class="container" style="margin-top: -20px; margin-bottom: 30px;">
-        <div style="background: white; border-radius: 12px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.06); text-align: center;">
-            <h3 style="color: #0a1e2d; margin-bottom: 15px;">📦 تتبع شحنة موجودة</h3>
-            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                <input type="text" id="publicTrackingInput" placeholder="أدخل رقم التتبع (مثال: 1712345678901)" style="padding: 12px 20px; border: 2px solid #ddd; border-radius: 30px; font-size: 16px; outline: none; width: 100%; max-width: 400px; transition: 0.3s;">
-                <button onclick="searchPublicTracking()" style="padding: 12px 30px; background: #0a1e2d; color: white; border: none; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s;">🔍 بحث</button>
+    <!-- ===== تتبع الشحنات ===== -->
+    <div class="container">
+        <div class="tracking-container">
+            <h3>📦 <span class="lang-ar">تتبع شحنة موجودة</span><span class="lang-en">Track Your Order</span></h3>
+            <div class="tracking-input-group">
+                <input type="text" id="publicTrackingInput" placeholder="🔢 أدخل رقم التتبع (مثال: 1712345678901)">
+                <button onclick="searchPublicTracking()">🔍 <span class="lang-ar">بحث</span><span class="lang-en">Search</span></button>
             </div>
-            <div id="publicTrackingResult" style="margin-top: 15px; text-align: right;"></div>
+            <div class="tracking-result" id="publicTrackingResult"></div>
         </div>
     </div>
 
@@ -281,48 +483,61 @@
                     <input type="tel" id="custPhone" placeholder="+20 100 000 0000">
                 </div>
 
-                <!-- 🔴 جديد: نوع الطلب مع الترجمة -->
                 <div class="form-group">
                     <label><span class="lang-ar">نوع الطلب</span><span class="lang-en">Order Type</span></label>
-                    <select id="orderType" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
+                    <select id="orderType">
                         <option value="طلب شراء">🛒 <span class="lang-ar">طلب شراء</span><span class="lang-en">Purchase Order</span></option>
                         <option value="عرض سعر">📄 <span class="lang-ar">عرض سعر</span><span class="lang-en">Price Quote</span></option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label><span class="lang-ar">طريقة الاستلام</span><span class="lang-en">Pickup/Delivery Method</span></label>
-                    <select id="deliveryMethod" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
+                    <label><span class="lang-ar">طريقة الاستلام</span><span class="lang-en">Delivery Method</span></label>
+                    <select id="deliveryMethod">
                         <option value="توصيل للمشروع">🚚 <span class="lang-ar">توصيل للمشروع</span><span class="lang-en">Delivery to Site</span></option>
                         <option value="استلام من المخازن">🏢 <span class="lang-ar">استلام من المخازن</span><span class="lang-en">Pickup from Warehouse</span></option>
                     </select>
                 </div>
 
-                <!-- 🔴 خيارات طرق الدفع مع الترجمة -->
                 <div class="form-group">
                     <label><span class="lang-ar">طريقة الدفع</span><span class="lang-en">Payment Method</span></label>
-                    <select id="paymentMethod" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px;">
+                    <select id="paymentMethod">
                         <option value="الدفع عند الاستلام">💰 <span class="lang-ar">الدفع عند الاستلام</span><span class="lang-en">Cash on Delivery</span></option>
-                        <option value="50% مقدم و 50% عند الاستلام">💳 <span class="lang-ar">50% مقدم و 50% عند الاستلام</span><span class="lang-en">50% Deposit & 50% on Delivery</span></option>
+                        <option value="50% مقدم و 50% عند الاستلام">💳 <span class="lang-ar">50% مقدم و 50% عند الاستلام</span><span class="lang-en">50% Deposit</span></option>
                         <option value="شيك">📄 <span class="lang-ar">شيك</span><span class="lang-en">Check</span></option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label><span class="lang-ar">العنوان / الملاحظات والأقطار المطلوبة</span><span class="lang-en">Address / Notes & Required Sizes</span></label>
-                    <textarea id="custAddress" rows="3" placeholder="أدخل العنوان أو تفاصيل الجداول والأقطار المطلوبة..."></textarea>
+                    <label><span class="lang-ar">العنوان / الملاحظات</span><span class="lang-en">Address / Notes</span></label>
+                    <textarea id="custAddress" rows="3" placeholder="أدخل العنوان أو أي ملاحظات إضافية..."></textarea>
                 </div>
-                
+
+                <!-- ===== اللوكيشن (تحديد تلقائي + كتابة يدوي) ===== -->
                 <div class="form-group">
-                    <label><span class="lang-ar">📍 إضافة الموقع الجغرافي (اللوكيشن)</span><span class="lang-en">📍 Add Location</span></label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="custLocation" placeholder="اضغط على الزر للحصول على موقعك" readonly style="flex-grow: 1; background-color: #f9f9f9; cursor: not-allowed;">
-                        <button type="button" onclick="getUserLocation()" style="padding: 0 15px; background: #0a1e2d; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">📍 تحديد</button>
+                    <label><span class="lang-ar">📍 الموقع الجغرافي (اللوكيشن)</span><span class="lang-en">📍 Location</span></label>
+                    <div class="location-group">
+                        <input type="text" id="custLocation" placeholder="📍 اكتب الموقع يدوياً أو اضغط تحديد">
+                        <button type="button" onclick="getUserLocation()"><i class="fas fa-location-dot"></i> <span class="lang-ar">تحديد</span><span class="lang-en">Locate</span></button>
                     </div>
-                    <small style="display: block; margin-top: 5px; color: #777;">
-                        <span class="lang-ar">اضغط "تحديد" للحصول على موقعك الحالي (يعمل فقط عبر HTTPS).</span>
-                        <span class="lang-en">Click "Locate" to get your current position (HTTPS only).</span>
-                    </small>
+                    <span class="location-hint">
+                        <span class="lang-ar">📍 اضغط "تحديد" للحصول على موقعك الحالي، أو اكتب الموقع يدوياً</span>
+                        <span class="lang-en">📍 Click "Locate" for current position, or type manually</span>
+                    </span>
+                </div>
+
+                <!-- ===== رفع الملفات ===== -->
+                <div class="form-group">
+                    <label><span class="lang-ar">📎 إرفاق ملف (PDF, Word, Excel)</span><span class="lang-en">📎 Attach File (PDF, Word, Excel)</span></label>
+                    <div class="file-upload-group" onclick="document.getElementById('fileInput').click()">
+                        <div class="file-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span><span class="lang-ar">اضغط لرفع ملف</span><span class="lang-en">Click to upload file</span></span>
+                            <span class="file-types">PDF, DOC, DOCX, XLS, XLSX (حد أقصى 5 ميجابايت)</span>
+                        </div>
+                        <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.xls,.xlsx" onchange="handleFileSelect(event)">
+                        <div class="file-name-display" id="fileNameDisplay"></div>
+                    </div>
                 </div>
 
                 <div class="contact-options">
@@ -340,7 +555,7 @@
                 </p>
             </div>
             
-            <div class="success-msg" id="successMessage" style="display:none;">
+            <div class="success-msg" id="successMessage">
                 <span class="lang-ar">🎉 تم استلام طلبك بنجاح!</span>
                 <span class="lang-en">🎉 Order received successfully!</span>
                 <br>
@@ -397,24 +612,25 @@
         document.addEventListener('contextmenu', e => e.preventDefault());
 
         // ================================================================
-        // 3. بيانات المنتجات
+        // 3. بيانات المنتجات مع المقاسات
         // ================================================================
         const productsData = [
-            { id: 1, cat: 'paddle-flanges', nameAr: 'بادل فلانش استانلس ستيل', nameEn: 'Paddle Flange SS', price: 120.00, img: 'https://i.postimg.cc/wxFssk36/badl-flansh-astanls-styl.png', descAr: 'مقاومة عالية للتآكل.', descEn: 'High corrosion resistance.' },
-            { id: 2, cat: 'paddle-flanges', nameAr: 'بادل فلانش مجلفن', nameEn: 'Galvanized Paddle Flange', price: 90.00, img: 'https://i.postimg.cc/MGvYsKrT/badl-flansh-mjlfn.jpg', descAr: 'طبقة جلفنة ساخنة.', descEn: 'Hot-dip galvanized.' },
-            { id: 3, cat: 'flanges', nameAr: 'فلانشات لحام رقبة', nameEn: 'Weld Neck Flanges', price: 150.00, img: 'https://i.postimg.cc/3RPkBL57/66606066.png', descAr: 'توزيع الضغط بكفاءة.', descEn: 'High pressure systems.' },
-            { id: 4, cat: 'fire', nameAr: 'هويات وموانع دوامة', nameEn: 'Vortex Breakers & Hoods', price: 250.00, img: 'https://i.postimg.cc/9fnwnX5K/Whats-App-Image-2026-04-26-at-15-45-40.jpg', descAr: 'منع الدوامات الهوائية.', descEn: 'Prevents vortex formation.' },
-            { id: 5, cat: 'fittings', nameAr: 'قطع قلاووظ مجلفنة', nameEn: 'Galvanized Threaded Fittings', price: 25.00, img: 'https://i.postimg.cc/RhvspTzG/9999999999999.png', descAr: 'كوع وتايوان عالي الجودة.', descEn: 'High quality elbows.' },
-            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ استانلس', nameEn: 'SS Threaded Fittings', price: 45.00, img: 'https://i.postimg.cc/J4kDdCPG/pro621-x660.jpg', descAr: 'مقاوم للأحماض (304/316).', descEn: 'Acid resistant (304/316).' },
-            { id: 7, cat: 'pipes', nameAr: 'مواسير استانلس دوبلكس', nameEn: 'Duplex SS Pipe Fittings', price: 320.00, img: 'https://i.postimg.cc/cHCGkZMx/465324651321.png', descAr: 'مقاومة للتشقق الإجهادي.', descEn: 'Stress corrosion resistant.' },
-            { id: 8, cat: 'pipes', nameAr: 'مواسير سيملس', nameEn: 'Seamless Pipes', price: 180.00, img: 'https://i.postimg.cc/SsnN2cPY/33333333.png', descAr: 'بدون لحام، جميع الجداول.', descEn: 'Seamless, all schedules.' }
+            { id: 1, cat: 'paddle-flanges', nameAr: 'بادل فلانش استانلس ستيل', nameEn: 'Paddle Flange SS', price: 120.00, img: 'https://i.postimg.cc/wxFssk36/badl-flansh-astanls-styl.png', descAr: 'مقاومة عالية للتآكل.', descEn: 'High corrosion resistance.', sizes: ['1/2"', '3/4"', '1"', '1.5"', '2"', '3"', '4"'] },
+            { id: 2, cat: 'paddle-flanges', nameAr: 'بادل فلانش مجلفن', nameEn: 'Galvanized Paddle Flange', price: 90.00, img: 'https://i.postimg.cc/MGvYsKrT/badl-flansh-mjlfn.jpg', descAr: 'طبقة جلفنة ساخنة.', descEn: 'Hot-dip galvanized.', sizes: ['1/2"', '3/4"', '1"', '1.5"', '2"', '3"', '4"'] },
+            { id: 3, cat: 'flanges', nameAr: 'فلانشات لحام رقبة', nameEn: 'Weld Neck Flanges', price: 150.00, img: 'https://i.postimg.cc/3RPkBL57/66606066.png', descAr: 'توزيع الضغط بكفاءة.', descEn: 'High pressure systems.', sizes: ['1"', '2"', '3"', '4"', '6"', '8"', '10"'] },
+            { id: 4, cat: 'fire', nameAr: 'هويات وموانع دوامة', nameEn: 'Vortex Breakers & Hoods', price: 250.00, img: 'https://i.postimg.cc/9fnwnX5K/Whats-App-Image-2026-04-26-at-15-45-40.jpg', descAr: 'منع الدوامات الهوائية.', descEn: 'Prevents vortex formation.', sizes: ['2"', '3"', '4"', '6"', '8"'] },
+            { id: 5, cat: 'fittings', nameAr: 'قطع قلاووظ مجلفنة', nameEn: 'Galvanized Threaded Fittings', price: 25.00, img: 'https://i.postimg.cc/RhvspTzG/9999999999999.png', descAr: 'كوع وتايوان عالي الجودة.', descEn: 'High quality elbows.', sizes: ['1/4"', '3/8"', '1/2"', '3/4"', '1"', '1.5"', '2"'] },
+            { id: 6, cat: 'fittings', nameAr: 'قطع قلاووظ استانلس', nameEn: 'SS Threaded Fittings', price: 45.00, img: 'https://i.postimg.cc/J4kDdCPG/pro621-x660.jpg', descAr: 'مقاوم للأحماض (304/316).', descEn: 'Acid resistant (304/316).', sizes: ['1/4"', '3/8"', '1/2"', '3/4"', '1"', '1.5"', '2"'] },
+            { id: 7, cat: 'pipes', nameAr: 'مواسير استانلس دوبلكس', nameEn: 'Duplex SS Pipe Fittings', price: 320.00, img: 'https://i.postimg.cc/cHCGkZMx/465324651321.png', descAr: 'مقاومة للتشقق الإجهادي.', descEn: 'Stress corrosion resistant.', sizes: ['1/2"', '3/4"', '1"', '1.5"', '2"', '3"', '4"', '6"'] },
+            { id: 8, cat: 'pipes', nameAr: 'مواسير سيملس', nameEn: 'Seamless Pipes', price: 180.00, img: 'https://i.postimg.cc/SsnN2cPY/33333333.png', descAr: 'بدون لحام، جميع الجداول.', descEn: 'Seamless, all schedules.', sizes: ['1/2"', '3/4"', '1"', '1.5"', '2"', '3"', '4"', '6"', '8"', '10"', '12"'] }
         ];
 
         let cart = [];
-        let lastOrderId = null; // لتخزين رقم آخر طلب للتتبع
+        let selectedFile = null;
+        let lastOrderId = null;
 
         // ================================================================
-        // 4. عرض المنتجات
+        // 4. عرض المنتجات مع المقاسات
         // ================================================================
         function renderProducts(category = 'all', searchQuery = '') {
             const container = document.getElementById('productsContainer');
@@ -433,11 +649,19 @@
             
             filtered.forEach(p => {
                 let catTextAr = 'أخرى';
-                if(p.cat === 'pipes') catTextAr = 'مواسير سيملس ';
+                if(p.cat === 'pipes') catTextAr = 'مواسير سيملس';
                 else if(p.cat === 'paddle-flanges') catTextAr = 'بادل فلانش';
                 else if(p.cat === 'flanges') catTextAr = 'فلانشات';
                 else if(p.cat === 'fittings') catTextAr = 'قطع قلاووظ';
-                else if(p.cat === 'fire') catTextAr = 'هويات وموانع دوامة';
+                else if(p.cat === 'fire') catTextAr = 'موانع دوامة';
+
+                let sizeOptions = '';
+                if(p.sizes && p.sizes.length > 0) {
+                    sizeOptions = `<option value="">-- اختر المقاس --</option>`;
+                    p.sizes.forEach(size => {
+                        sizeOptions += `<option value="${size}">${size}</option>`;
+                    });
+                }
 
                 const card = document.createElement('div');
                 card.className = 'product-card';
@@ -447,6 +671,12 @@
                         <h3><span class="lang-ar">${p.nameAr}</span><span class="lang-en">${p.nameEn}</span></h3>
                         <span class="tag"><span class="lang-ar">${catTextAr}</span><span class="lang-en">${p.cat}</span></span>
                         <p><span class="lang-ar">${p.descAr}</span><span class="lang-en">${p.descEn}</span></p>
+                        <div class="size-options">
+                            <label><span class="lang-ar">📏 اختر المقاس:</span><span class="lang-en">📏 Select Size:</span></label>
+                            <select id="size_${p.id}" class="size-select">
+                                ${sizeOptions}
+                            </select>
+                        </div>
                         <span class="p-price">$${p.price.toFixed(2)}</span>
                         <button class="add-cart-btn" onclick="addToCart(${p.id})"><span class="lang-ar">أضف إلى السلة</span><span class="lang-en">Add to Cart</span></button>
                     </div>
@@ -455,6 +685,9 @@
             });
         }
 
+        // ================================================================
+        // 5. وظائف الفلتر والبحث
+        // ================================================================
         function filterCategory(cat, event) {
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
             if(event && event.currentTarget) event.currentTarget.classList.add('active');
@@ -463,14 +696,37 @@
         function handleSearch() { renderProducts('all', document.getElementById('searchInput').value); }
 
         // ================================================================
-        // 5. وظائف السلة
+        // 6. وظائف السلة مع المقاس
         // ================================================================
         function addToCart(id) {
-            const item = productsData.find(p => p.id === id);
-            const exist = cart.find(p => p.id === id);
-            if(exist) exist.quantity++; else cart.push({...item, quantity: 1});
-            updateCartUI(); openCart();
+            const product = productsData.find(p => p.id === id);
+            const sizeSelect = document.getElementById(`size_${id}`);
+            const selectedSize = sizeSelect ? sizeSelect.value : '';
+            
+            if(!selectedSize) {
+                alert("برجاء اختيار المقاس المطلوب");
+                return;
+            }
+
+            const cartItem = {
+                id: product.id,
+                nameAr: product.nameAr,
+                nameEn: product.nameEn,
+                price: product.price,
+                size: selectedSize,
+                quantity: 1
+            };
+
+            const existing = cart.find(item => item.id === id && item.size === selectedSize);
+            if(existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push(cartItem);
+            }
+            updateCartUI();
+            openCart();
         }
+
         function updateCartUI() {
             const container = document.getElementById('cartItemsContainer');
             const totalEl = document.getElementById('cartTotalPrice');
@@ -478,11 +734,16 @@
             container.innerHTML = '';
             let total = 0, count = 0;
             cart.forEach((item, i) => {
-                total += item.price * item.quantity; count += item.quantity;
+                total += item.price * item.quantity;
+                count += item.quantity;
                 const name = document.body.classList.contains('dir-ltr') ? item.nameEn : item.nameAr;
                 container.innerHTML += `
                     <div class="cart-item">
-                        <div class="cart-item-info"><h4>${name}</h4><small>$${item.price.toFixed(2)}</small></div>
+                        <div class="cart-item-info">
+                            <h4>${name}</h4>
+                            <div class="item-size">📏 ${item.size}</div>
+                            <small>$${item.price.toFixed(2)}</small>
+                        </div>
                         <div class="cart-item-controls">
                             <button class="qty-btn" onclick="changeQty(${i}, -1)">-</button> ${item.quantity}
                             <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
@@ -494,47 +755,112 @@
             totalEl.innerText = `$${total.toFixed(2)}`;
             countEl.innerText = count;
         }
+
         function changeQty(i, c) { if(cart[i].quantity + c > 0) cart[i].quantity += c; else removeItem(i); updateCartUI(); }
         function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
         function openCart() { document.getElementById('cartSidebar').classList.add('open'); document.getElementById('overlay').classList.add('active'); }
         function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
 
         // ================================================================
-        // 6. فتح وإغلاق النماذج
+        // 7. فتح وإغلاق النماذج
         // ================================================================
         function openCheckoutModal() {
             if(cart.length === 0) return alert("السلة فارغة برجاء اختيار المنتجات أولاً");
             document.getElementById('checkoutModal').classList.add('active');
             document.getElementById('formContainer').style.display = 'block';
             document.getElementById('successMessage').style.display = 'none';
+            selectedFile = null;
+            document.getElementById('fileNameDisplay').textContent = '';
+            document.getElementById('fileInput').value = '';
         }
         function closeCheckoutModal() { document.getElementById('checkoutModal').classList.remove('active'); }
 
         // ================================================================
-        // 7. الموقع الجغرافي
+        // 8. الموقع الجغرافي (تحديد تلقائي + كتابة يدوي)
         // ================================================================
         function getUserLocation() {
             const locationInput = document.getElementById('custLocation');
             if (navigator.geolocation) {
-                locationInput.value = "جاري الحصول على الموقع...";
+                locationInput.value = "⏳ جاري الحصول على الموقع...";
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        const lat = position.coords.latitude; const lng = position.coords.longitude;
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
                         locationInput.value = `https://www.google.com/maps?q=${lat},${lng}`;
+                        showNotification("✅ تم تحديد موقعك بنجاح!", "success");
                     },
-                    (error) => { locationInput.value = "تعذر الحصول على الموقع."; alert("يرجى السماح بالوصول للموقع أو كتابته يدوياً."); }
+                    (error) => {
+                        locationInput.value = "";
+                        showNotification("❌ تعذر الحصول على الموقع، يرجى كتابته يدوياً", "error");
+                    }
                 );
-            } else { locationInput.value = "المتصفح لا يدعم تحديد الموقع."; }
+            } else {
+                locationInput.value = "";
+                showNotification("❌ المتصفح لا يدعم تحديد الموقع، يرجى كتابته يدوياً", "error");
+            }
         }
 
         // ================================================================
-        // 8. حفظ الطلب في LocalStorage (مع نظام التتبع)
+        // 9. الإشعارات
+        // ================================================================
+        function showNotification(message, type = 'info') {
+            const notif = document.createElement('div');
+            notif.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                color: white;
+                padding: 14px 28px;
+                border-radius: 60px;
+                font-weight: 600;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                z-index: 9999;
+                animation: slideUp 0.4s ease;
+                font-size: 15px;
+                text-align: center;
+                max-width: 90%;
+            `;
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            setTimeout(() => {
+                notif.style.opacity = '0';
+                notif.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => notif.remove(), 400);
+            }, 3000);
+        }
+
+        // ================================================================
+        // 10. رفع الملفات
+        // ================================================================
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if(file) {
+                const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+                if(!validTypes.includes(file.type)) {
+                    alert("⚠️ برجاء رفع ملف بصيغة PDF, Word أو Excel فقط");
+                    document.getElementById('fileInput').value = '';
+                    return;
+                }
+                if(file.size > 5 * 1024 * 1024) {
+                    alert("⚠️ حجم الملف كبير جداً (الحد الأقصى 5 ميجابايت)");
+                    document.getElementById('fileInput').value = '';
+                    return;
+                }
+                selectedFile = file;
+                document.getElementById('fileNameDisplay').textContent = `📎 ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+                showNotification(`✅ تم رفع الملف: ${file.name}`, 'success');
+            }
+        }
+
+        // ================================================================
+        // 11. حفظ الطلب في LocalStorage
         // ================================================================
         function saveOrderToLocalStorage(orderData) {
             let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
-            // إضافة حالات التتبع
             orderData.tracking = {
-                status: 'قيد التجهيز', // الحالة الافتراضية
+                status: 'قيد التجهيز',
                 lastUpdate: new Date().toLocaleString('ar-EG'),
                 history: ['تم استلام الطلب بنجاح']
             };
@@ -544,14 +870,14 @@
         }
 
         // ================================================================
-        // 9. بناء بيانات الطلب (تم تحديثه ليشمل نوع الطلب وطريقة الدفع)
+        // 12. بناء بيانات الطلب
         // ================================================================
         function buildOrderData() {
             const name = document.getElementById('custName').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
             const address = document.getElementById('custAddress').value.trim();
             const location = document.getElementById('custLocation').value.trim() || "لم يتم التحديد";
-            const orderType = document.getElementById('orderType').value; // 🔴 جديد
+            const orderType = document.getElementById('orderType').value;
             const method = document.getElementById('deliveryMethod').value;
             const payment = document.getElementById('paymentMethod').value;
 
@@ -562,12 +888,15 @@
                 date: new Date().toLocaleString('ar-EG'),
                 name, phone, address, location, orderType, method, payment,
                 items: JSON.parse(JSON.stringify(cart)),
-                total: total
+                total: total,
+                hasFile: !!selectedFile,
+                fileName: selectedFile ? selectedFile.name : '',
+                fileType: selectedFile ? selectedFile.type : ''
             };
         }
 
         // ================================================================
-        // 10. 📧 إرسال بالإيميل (تم تحديثه)
+        // 13. 📧 إرسال بالإيميل
         // ================================================================
         function submitOrderViaEmail() {
             const orderData = buildOrderData();
@@ -575,7 +904,14 @@
             saveOrderToLocalStorage(orderData);
 
             let productsList = "";
-            orderData.items.forEach((item, i) => { productsList += `${i + 1}. ${item.nameAr} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}%0A`; });
+            orderData.items.forEach((item, i) => {
+                productsList += `${i + 1}. ${item.nameAr} (المقاس: ${item.size}) ×${item.quantity} - $${(item.price * item.quantity).toFixed(2)}%0A`;
+            });
+
+            let fileInfo = "";
+            if(selectedFile) {
+                fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)%0A`;
+            }
 
             const subject = `${orderData.orderType} #${orderData.id} - ${STORE_NAME}`;
             const body = 
@@ -583,9 +919,9 @@
                 `📋 نوع الطلب : ${orderData.orderType}%0A` +
                 `📋 رقم الطلب : ${orderData.id}%0A🕐 التاريخ    : ${orderData.date}%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
                 `👤 بيانات العميل:%0A▸ الاسم   : ${orderData.name}%0A▸ الهاتف  : ${orderData.phone}%0A▸ العنوان : ${orderData.address}%0A▸ اللوكيشن: ${orderData.location}%0A▸ طريقة الاستلام: ${orderData.method}%0A▸ طريقة الدفع: ${orderData.payment}%0A%0A` +
-                `🛒 تفاصيل المنتجات:%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A`;
-            
-            // إضافة الإجمالي فقط إذا كان طلب شراء
+                `🛒 تفاصيل المنتجات:%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                fileInfo;
+
             let finalBody = body;
             if(orderData.orderType === 'طلب شراء') {
                 finalBody += `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}%0A%0A`;
@@ -598,7 +934,7 @@
         }
 
         // ================================================================
-        // 11. 💬 إرسال بالواتساب (تم تحديثه)
+        // 14. 💬 إرسال بالواتساب
         // ================================================================
         function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
@@ -606,16 +942,23 @@
             saveOrderToLocalStorage(orderData);
 
             let productsList = "";
-            orderData.items.forEach((item, i) => { productsList += `${i + 1}. ${item.nameAr} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`; });
+            orderData.items.forEach((item, i) => {
+                productsList += `${i + 1}. ${item.nameAr} (المقاس: ${item.size}) ×${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`;
+            });
+
+            let fileInfo = "";
+            if(selectedFile) {
+                fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)\n⚠️ الملف لا يمكن إرساله عبر واتساب، برجاء إرساله للإيميل.\n\n`;
+            }
 
             const message = 
                 `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📍 ${STORE_NAME}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
                 `📋 نوع الطلب : ${orderData.orderType}\n` +
                 `📋 رقم الطلب : ${orderData.id}\n🕐 التاريخ    : ${orderData.date}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
                 `👤 بيانات العميل:\n▸ الاسم   : ${orderData.name}\n▸ الهاتف  : ${orderData.phone}\n▸ العنوان : ${orderData.address}\n▸ اللوكيشن: ${orderData.location}\n▸ طريقة الاستلام: ${orderData.method}\n▸ طريقة الدفع: ${orderData.payment}\n\n` +
-                `🛒 تفاصيل المنتجات:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-            
-            // إضافة الإجمالي فقط إذا كان طلب شراء
+                `🛒 تفاصيل المنتجات:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                fileInfo;
+
             let finalMessage = message;
             if(orderData.orderType === 'طلب شراء') {
                 finalMessage += `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}\n\n`;
@@ -628,12 +971,13 @@
         }
 
         // ================================================================
-        // 12. 🔴 نظام التتبع (للعميل الخاص / زر الطلب)
+        // 15. نظام التتبع
         // ================================================================
         function showSuccessWithTracking() {
             document.getElementById('formContainer').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             cart = []; updateCartUI();
+            showNotification('✅ تم إرسال طلبك بنجاح!', 'success');
         }
 
         function openTracking() {
@@ -659,9 +1003,7 @@
             const orderDate = new Date(order.date);
             const currentDate = new Date();
             const diffDays = Math.ceil((currentDate - orderDate) / (1000 * 60 * 60 * 24));
-            let remainingTime = "";
-            let progressColor = "#f39c12";
-            let journey = "";
+            let remainingTime = "", progressColor = "#f39c12", journey = "";
 
             if (diffDays === 0) {
                 remainingTime = "جاري التجهيز (سيتم الشحن خلال 24 ساعة)";
@@ -696,7 +1038,7 @@
                     </div>
 
                     <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
-                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">🗺️ رحلة الشحنة (راحت فين ووصلت فين)</h4>
+                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">🗺️ رحلة الشحنة</h4>
                         <p style="font-size: 15px; color: #333;">${journey}</p>
                     </div>
                 </div>
@@ -704,7 +1046,7 @@
         }
 
         // ================================================================
-        // 13. 🔴 قائمة البحث العامة
+        // 16. البحث عن شحنة (عام)
         // ================================================================
         function searchPublicTracking() {
             const input = document.getElementById('publicTrackingInput').value.trim();
@@ -767,7 +1109,7 @@
                     </div>
 
                     <div style="background: #fff; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
-                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">🗺️ رحلة الشحنة (راحت فين ووصلت فين)</h4>
+                        <h4 style="color: #0a1e2d; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">🗺️ رحلة الشحنة</h4>
                         <p style="font-size: 15px; color: #333;">${journey}</p>
                     </div>
                 </div>
@@ -775,7 +1117,7 @@
         }
 
         // ================================================================
-        // 14. لوحة التحكم (عرض نوع الطلب)
+        // 17. لوحة التحكم
         // ================================================================
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
@@ -798,10 +1140,15 @@
                 let itemsHtml = `<ul>`;
                 if(order.items && order.items.length > 0) {
                     order.items.forEach(item => { 
-                        itemsHtml += `<li>${item.nameAr || item.nameEn || 'منتج'} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}</li>`; 
+                        itemsHtml += `<li>${item.nameAr || item.nameEn || 'منتج'} (المقاس: ${item.size || 'غير محدد'}) ×${item.quantity} - $${(item.price * item.quantity).toFixed(2)}</li>`; 
                     });
                 }
                 itemsHtml += `</ul>`;
+
+                let fileHtml = '';
+                if(order.hasFile && order.fileName) {
+                    fileHtml = `<p><strong>📎 المرفق:</strong> ${order.fileName}</p>`;
+                }
 
                 container.innerHTML += `
                     <div class="order-card">
@@ -813,7 +1160,8 @@
                         <p><strong>العنوان:</strong> ${order.address}</p>
                         <p><strong>اللوكيشن:</strong> ${order.location || 'لم يحدد'}</p>
                         <p><strong>طريقة الاستلام:</strong> ${order.method}</p>
-                        <p><strong>طريقة الدفع:</strong> ${order.payment || 'لم يحدد'}</p>
+                        <p><strong>طريقة الدفع:</strong> ${order.payment || 'غير محدد'}</p>
+                        ${fileHtml}
                         ${itemsHtml}
                         <div class="order-total">الإجمالي: $${order.total.toFixed(2)}</div>
                         
@@ -838,59 +1186,47 @@
                 orders[realIndex].tracking.status = newStatus;
                 orders[realIndex].tracking.lastUpdate = new Date().toLocaleString('ar-EG');
                 localStorage.setItem('utopia_orders', JSON.stringify(orders));
-                alert("✅ تم تحديث حالة الشحنة بنجاح!");
+                showNotification('✅ تم تحديث حالة الشحنة بنجاح!', 'success');
                 loadAdminOrders();
             }
         }
 
         // ================================================================
-        // 15. وظائف عامة (تم تحديث نظام اللغة ليصبح متكاملاً)
+        // 18. وظائف عامة
         // ================================================================
         function checkAdminAccess() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('admin') !== null) { document.getElementById('adminBtn').style.display = 'block'; }
         }
 
-        function toggleLang() { 
-            // تبديل اتجاه الصفحة
+        function toggleLang() {
             document.body.classList.toggle('dir-ltr');
-            
-            // حفظ اختيار اللغة في المتصفح عشان ما يضيعش عند التحديث
             const isEnglish = document.body.classList.contains('dir-ltr');
             localStorage.setItem('site_lang', isEnglish ? 'en' : 'ar');
-
-            // تحديث واجهة السلة
             updateCartUI();
-            
-            // تحديث نصوص القوائم المنسدلة في الفورم
             updateFormLanguage();
         }
 
-        // دالة لتحديث نصوص القوائم المنسدلة حسب اللغة
         function updateFormLanguage() {
             const isEnglish = document.body.classList.contains('dir-ltr');
             
-            const orderTypeSelect = document.getElementById('orderType');
-            orderTypeSelect.innerHTML = `
+            document.getElementById('orderType').innerHTML = `
                 <option value="طلب شراء">🛒 ${isEnglish ? 'Purchase Order' : 'طلب شراء'}</option>
                 <option value="عرض سعر">📄 ${isEnglish ? 'Price Quote' : 'عرض سعر'}</option>
             `;
 
-            const deliverySelect = document.getElementById('deliveryMethod');
-            deliverySelect.innerHTML = `
+            document.getElementById('deliveryMethod').innerHTML = `
                 <option value="توصيل للمشروع">🚚 ${isEnglish ? 'Delivery to Site' : 'توصيل للمشروع'}</option>
                 <option value="استلام من المخازن">🏢 ${isEnglish ? 'Pickup from Warehouse' : 'استلام من المخازن'}</option>
             `;
 
-            const paymentSelect = document.getElementById('paymentMethod');
-            paymentSelect.innerHTML = `
+            document.getElementById('paymentMethod').innerHTML = `
                 <option value="الدفع عند الاستلام">💰 ${isEnglish ? 'Cash on Delivery' : 'الدفع عند الاستلام'}</option>
                 <option value="50% مقدم و 50% عند الاستلام">💳 ${isEnglish ? '50% Deposit & 50% on Delivery' : '50% مقدم و 50% عند الاستلام'}</option>
                 <option value="شيك">📄 ${isEnglish ? 'Check' : 'شيك'}</option>
             `;
         }
 
-        // تهيئة اللغة عند فتح الصفحة
         function initLanguage() {
             const savedLang = localStorage.getItem('site_lang');
             if (savedLang === 'en') {
@@ -904,12 +1240,17 @@
         }
 
         // ================================================================
-        // 16. تهيئة المتجر
+        // 19. تهيئة المتجر
         // ================================================================
-        initLanguage(); // تشغيل اللغة أولاً
+        initLanguage();
         renderProducts();
         checkAdminAccess();
         updateCartUI();
+
+        console.log('🔥 مرحباً بك في متجر يوتوبيا للتجارة والتصدير!');
+        console.log('📧 الإيميل: ' + STORE_EMAIL);
+        console.log('💬 واتساب: +' + WHATSAPP_NUMBER);
+        console.log('✅ جميع الإضافات شغالة: المقاسات، التليفون، المرفقات، اللوكيشن');
     </script>
 </body>
 </html>
