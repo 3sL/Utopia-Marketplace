@@ -95,6 +95,7 @@
         .p-info .tag { background: #eef2f5; display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; color: #555; margin-bottom: 10px; align-self: center; }
         .p-info p { color: #777; font-size: 13px; margin-bottom: 12px; flex-grow: 1; }
 
+        /* ===== خيارات المقاسات ===== */
         .size-options {
             margin: 10px 0;
             padding: 10px;
@@ -1009,10 +1010,8 @@
                 productsList += `${i + 1}. ${item.nameAr} (المقاس: ${item.size}) ×${item.quantity} - $${(item.price * item.quantity).toFixed(2)}%0A`;
             });
 
-            // بناء رابط تحميل الملف (من localStorage)
             let fileHtml = "";
             if(selectedFile) {
-                // تخزين الملف في localStorage مؤقتاً
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const fileData = e.target.result;
@@ -1024,9 +1023,11 @@
 
             const subject = `${orderData.orderType} #${orderData.id} - ${STORE_NAME}`;
             const body = 
-                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A📍 ${STORE_NAME}%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                `📍 ${STORE_NAME}%0A` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
                 `📋 نوع الطلب : ${orderData.orderType}%0A` +
-                `📋 رقم الطلب : ${orderData.id}%0A🕐 التاريخ    : ${orderData.date}%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+                `📋 رقم الطلب : ${orderData.id}%0A🕐 التاريخ    : ${orderData.date}%0A` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
                 `👤 بيانات العميل:%0A▸ الاسم   : ${orderData.name}%0A▸ الهاتف  : ${orderData.phone}%0A▸ العنوان : ${orderData.address}%0A▸ اللوكيشن: ${orderData.location}%0A▸ طريقة الاستلام: ${orderData.method}%0A▸ طريقة الدفع: ${orderData.payment}%0A%0A` +
                 `🛒 تفاصيل المنتجات:%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
                 fileHtml;
@@ -1043,7 +1044,7 @@
         }
 
         // ================================================================
-        // 10. 💬 إرسال بالواتساب مع رابط تحميل الملف
+        // 10. 💬 إرسال بالواتساب (بدون أكواد طويلة)
         // ================================================================
         function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
@@ -1055,58 +1056,40 @@
                 productsList += `${i + 1}. ${item.nameAr} (المقاس: ${item.size}) ×${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`;
             });
 
+            // بناء الرسالة بدون أكواد base64 طويلة
             let fileInfo = "";
             if(selectedFile) {
-                // تحويل الملف إلى Data URL
+                // تخزين الملف في localStorage مع رقم الطلب
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const fileData = e.target.result;
-                    // تخزين الملف في localStorage
                     localStorage.setItem('temp_file_' + orderData.id, fileData);
-                    
-                    // بناء رابط التحميل (رابط مباشر)
-                    const downloadLink = fileData; // Data URL
-                    fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)\n🔗 رابط التحميل: ${downloadLink}\n\n`;
-                    
-                    // إعادة بناء الرسالة مع رابط التحميل
-                    const finalMessageWithLink = 
-                        `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📍 ${STORE_NAME}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-                        `📋 نوع الطلب : ${orderData.orderType}\n` +
-                        `📋 رقم الطلب : ${orderData.id}\n🕐 التاريخ    : ${orderData.date}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-                        `👤 بيانات العميل:\n▸ الاسم   : ${orderData.name}\n▸ الهاتف  : ${orderData.phone}\n▸ العنوان : ${orderData.address}\n▸ اللوكيشن: ${orderData.location}\n▸ طريقة الاستلام: ${orderData.method}\n▸ طريقة الدفع: ${orderData.payment}\n\n` +
-                        `🛒 تفاصيل المنتجات:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-                        fileInfo;
-
-                    let finalMessage = finalMessageWithLink;
-                    if(orderData.orderType === 'طلب شراء') {
-                        finalMessage += `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}\n\n`;
-                    }
-                    
-                    finalMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nشكراً لتسوقكم ${STORE_NAME} 🔥\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
-
-                    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(finalMessage)}`, '_blank');
-                    showSuccessWithTracking();
                 };
                 reader.readAsDataURL(selectedFile);
-            } else {
-                // لو مفيش ملف
-                const message = 
-                    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📍 ${STORE_NAME}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-                    `📋 نوع الطلب : ${orderData.orderType}\n` +
-                    `📋 رقم الطلب : ${orderData.id}\n🕐 التاريخ    : ${orderData.date}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-                    `👤 بيانات العميل:\n▸ الاسم   : ${orderData.name}\n▸ الهاتف  : ${orderData.phone}\n▸ العنوان : ${orderData.address}\n▸ اللوكيشن: ${orderData.location}\n▸ طريقة الاستلام: ${orderData.method}\n▸ طريقة الدفع: ${orderData.payment}\n\n` +
-                    `🛒 تفاصيل المنتجات:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-
-                let finalMessage = message;
-                if(orderData.orderType === 'طلب شراء') {
-                    finalMessage += `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}\n\n`;
-                }
                 
-                finalMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nشكراً لتسوقكم ${STORE_NAME} 🔥\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
-
-                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(finalMessage)}`, '_blank');
-                showSuccessWithTracking();
+                // إرسال اسم الملف فقط مع رابط مختصر (سيتم فتحه من لوحة التحكم)
+                fileInfo = `📎 المرفق: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)\n🔗 يمكنك تحميل الملف من خلال لوحة التحكم باستخدام رقم الطلب\n\n`;
             }
+
+            const message = 
+                `📍 ${STORE_NAME}\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                `📋 نوع الطلب : ${orderData.orderType}\n` +
+                `📋 رقم الطلب : ${orderData.id}\n🕐 التاريخ    : ${orderData.date}\n` +
+                `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                `👤 بيانات العميل:\n▸ الاسم   : ${orderData.name}\n▸ الهاتف  : ${orderData.phone}\n▸ العنوان : ${orderData.address}\n▸ اللوكيشن: ${orderData.location}\n▸ طريقة الاستلام: ${orderData.method}\n▸ طريقة الدفع: ${orderData.payment}\n\n` +
+                `🛒 تفاصيل المنتجات:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${productsList}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+                fileInfo;
+
+            let finalMessage = message;
+            if(orderData.orderType === 'طلب شراء') {
+                finalMessage += `💰 الإجمالي النهائي: $${orderData.total.toFixed(2)}\n\n`;
+            }
+            
+            finalMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nشكراً لتسوقكم ${STORE_NAME} 🔥\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(finalMessage)}`, '_blank');
+            showSuccessWithTracking();
         }
 
         // ================================================================
@@ -1139,7 +1122,6 @@
                 return;
             }
 
-            // التحقق من وجود ملف مرفق
             let fileHtml = '';
             if(order.hasFile && order.fileName) {
                 const fileData = localStorage.getItem('temp_file_' + order.id);
@@ -1235,7 +1217,6 @@
                 return;
             }
 
-            // التحقق من وجود ملف مرفق
             let fileHtml = '';
             if(order.hasFile && order.fileName) {
                 const fileData = localStorage.getItem('temp_file_' + order.id);
