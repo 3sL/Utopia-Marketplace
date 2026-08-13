@@ -6,6 +6,22 @@
     <title>يوتوبيا للتجارة والتصدير - لوازم الحريق والصناعة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* ===== منع تحديد النص ===== */
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* ===== السماح بالتحديد فقط في حقول الإدخال ===== */
+        input, textarea, select {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -31,7 +47,6 @@
 
         .controls { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
         
-        /* ===== رقم التليفون ===== */
         .phone-number {
             display: flex;
             align-items: center;
@@ -82,7 +97,6 @@
         .p-info .tag { background: #eef2f5; display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; color: #555; margin-bottom: 10px; align-self: center; }
         .p-info p { color: #777; font-size: 13px; margin-bottom: 12px; flex-grow: 1; }
 
-        /* ===== خيارات المقاسات ===== */
         .size-options {
             margin: 10px 0;
             padding: 10px;
@@ -141,7 +155,6 @@
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; }
         .form-group textarea { resize: vertical; min-height: 60px; }
 
-        /* ===== رفع الملفات ===== */
         .file-upload-group {
             border: 2px dashed #ddd;
             border-radius: 8px;
@@ -184,7 +197,6 @@
             font-weight: 600;
         }
 
-        /* ===== اللوكيشن ===== */
         .location-group {
             display: flex;
             gap: 10px;
@@ -380,7 +392,6 @@
             </div>
         </div>
         <div class="controls">
-            <!-- ===== رقم التليفون ===== -->
             <a href="tel:+201061007100" class="phone-number">
                 <i class="fas fa-phone-alt"></i>
                 <span>01061007100</span>
@@ -435,7 +446,6 @@
         <div class="products-grid" id="productsContainer"></div>
     </div>
 
-    <!-- ===== تتبع الشحنات ===== -->
     <div class="container">
         <div class="tracking-container">
             <h3>📦 <span class="lang-ar">تتبع شحنة موجودة</span><span class="lang-en">Track Your Order</span></h3>
@@ -513,7 +523,6 @@
                     <textarea id="custAddress" rows="3" placeholder="أدخل العنوان أو أي ملاحظات إضافية..."></textarea>
                 </div>
 
-                <!-- ===== اللوكيشن (تحديد تلقائي + كتابة يدوي) ===== -->
                 <div class="form-group">
                     <label><span class="lang-ar">📍 الموقع الجغرافي (اللوكيشن)</span><span class="lang-en">📍 Location</span></label>
                     <div class="location-group">
@@ -526,7 +535,6 @@
                     </span>
                 </div>
 
-                <!-- ===== رفع الملفات ===== -->
                 <div class="form-group">
                     <label><span class="lang-ar">📎 إرفاق ملف (PDF, Word, Excel)</span><span class="lang-en">📎 Attach File (PDF, Word, Excel)</span></label>
                     <div class="file-upload-group" onclick="document.getElementById('fileInput').click()">
@@ -593,12 +601,85 @@
 
     <footer>
         <p>
-            <span class="lang-ar">جميع الحقوق محفوظة - Utopia For Trading And Export &copy; 2026 | تصميم وتطوير: <a href="tel:+201222153415">Eng : Mahmoud Mohamed Marie</a> | <a href="tel:+201222153415">+201222153415</a></span>
-            <span class="lang-en">All Rights Reserved &copy; 2026 | Designed by: <a href="tel:+201222153415">Mahmoud Mohamed Marae</a> | <a href="tel:+201222153415">+201222153415</a></span>
+            <span class="lang-ar">جميع الحقوق محفوظة - Utopia For Trading And Export &copy; 2026 | <span style="color: #8bc34a;">UTOPIA</span></span>
+            <span class="lang-en">All Rights Reserved &copy; 2026 | <span style="color: #8bc34a;">UTOPIA</span></span>
         </p>
     </footer>
 
     <script>
+        // ================================================================
+        // 0. 🔒 نظام الحماية المتكامل
+        // ================================================================
+        
+        // ===== 1. منع النقر الأيمن =====
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // ===== 2. منع اختصارات لوحة المفاتيح =====
+        document.addEventListener('keydown', function(e) {
+            // منع Ctrl+U (عرض المصدر)
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+                return false;
+            }
+            // منع Ctrl+Shift+I (أدوات المطور)
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+                e.preventDefault();
+                return false;
+            }
+            // منع Ctrl+Shift+J (الكونسول)
+            if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+                e.preventDefault();
+                return false;
+            }
+            // منع Ctrl+S (حفظ الصفحة)
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                return false;
+            }
+            // منع Ctrl+P (طباعة)
+            if (e.ctrlKey && e.key === 'p') {
+                e.preventDefault();
+                return false;
+            }
+            // منع Ctrl+C (نسخ) - مع السماح في حقول الإدخال
+            if (e.ctrlKey && e.key === 'c') {
+                const tagName = document.activeElement.tagName.toLowerCase();
+                if (tagName !== 'input' && tagName !== 'textarea' && tagName !== 'select') {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+            // منع F12 (أدوات المطور)
+            if (e.key === 'F12') {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // ===== 3. منع السحب والإفلات (لحماية الصور) =====
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // ===== 4. منع النسخ من الصور =====
+        document.addEventListener('copy', function(e) {
+            const tagName = document.activeElement.tagName.toLowerCase();
+            if (tagName !== 'input' && tagName !== 'textarea' && tagName !== 'select') {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // ===== 5. منع فتح أدوات المطور عبر النقر المزدوج =====
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
         // ================================================================
         // 1. إعدادات التواصل
         // ================================================================
@@ -607,12 +688,7 @@
         const STORE_NAME = 'يوتوبيا للتجارة والتصدير';
 
         // ================================================================
-        // 2. منع النقر الأيمن
-        // ================================================================
-        document.addEventListener('contextmenu', e => e.preventDefault());
-
-        // ================================================================
-        // 3. بيانات المنتجات مع المقاسات
+        // 2. بيانات المنتجات مع المقاسات
         // ================================================================
         const productsData = [
             { id: 1, cat: 'paddle-flanges', nameAr: 'بادل فلانش استانلس ستيل', nameEn: 'Paddle Flange SS', price: 120.00, img: 'https://i.postimg.cc/wxFssk36/badl-flansh-astanls-styl.png', descAr: 'مقاومة عالية للتآكل.', descEn: 'High corrosion resistance.', sizes: ['1/2"', '3/4"', '1"', '1.5"', '2"', '3"', '4"'] },
@@ -630,7 +706,7 @@
         let lastOrderId = null;
 
         // ================================================================
-        // 4. عرض المنتجات مع المقاسات
+        // 3. عرض المنتجات مع المقاسات
         // ================================================================
         function renderProducts(category = 'all', searchQuery = '') {
             const container = document.getElementById('productsContainer');
@@ -686,7 +762,7 @@
         }
 
         // ================================================================
-        // 5. وظائف الفلتر والبحث
+        // 4. وظائف الفلتر والبحث
         // ================================================================
         function filterCategory(cat, event) {
             document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
@@ -696,7 +772,7 @@
         function handleSearch() { renderProducts('all', document.getElementById('searchInput').value); }
 
         // ================================================================
-        // 6. وظائف السلة مع المقاس
+        // 5. وظائف السلة مع المقاس
         // ================================================================
         function addToCart(id) {
             const product = productsData.find(p => p.id === id);
@@ -762,7 +838,7 @@
         function closeCart() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
 
         // ================================================================
-        // 7. فتح وإغلاق النماذج
+        // 6. فتح وإغلاق النماذج
         // ================================================================
         function openCheckoutModal() {
             if(cart.length === 0) return alert("السلة فارغة برجاء اختيار المنتجات أولاً");
@@ -776,7 +852,7 @@
         function closeCheckoutModal() { document.getElementById('checkoutModal').classList.remove('active'); }
 
         // ================================================================
-        // 8. الموقع الجغرافي (تحديد تلقائي + كتابة يدوي)
+        // 7. الموقع الجغرافي
         // ================================================================
         function getUserLocation() {
             const locationInput = document.getElementById('custLocation');
@@ -801,7 +877,7 @@
         }
 
         // ================================================================
-        // 9. الإشعارات
+        // 8. الإشعارات
         // ================================================================
         function showNotification(message, type = 'info') {
             const notif = document.createElement('div');
@@ -832,7 +908,7 @@
         }
 
         // ================================================================
-        // 10. رفع الملفات
+        // 9. رفع الملفات
         // ================================================================
         function handleFileSelect(event) {
             const file = event.target.files[0];
@@ -855,7 +931,7 @@
         }
 
         // ================================================================
-        // 11. حفظ الطلب في LocalStorage
+        // 10. حفظ الطلب في LocalStorage
         // ================================================================
         function saveOrderToLocalStorage(orderData) {
             let orders = JSON.parse(localStorage.getItem('utopia_orders') || '[]');
@@ -870,7 +946,7 @@
         }
 
         // ================================================================
-        // 12. بناء بيانات الطلب
+        // 11. بناء بيانات الطلب
         // ================================================================
         function buildOrderData() {
             const name = document.getElementById('custName').value.trim();
@@ -896,7 +972,7 @@
         }
 
         // ================================================================
-        // 13. 📧 إرسال بالإيميل
+        // 12. 📧 إرسال بالإيميل
         // ================================================================
         function submitOrderViaEmail() {
             const orderData = buildOrderData();
@@ -934,7 +1010,7 @@
         }
 
         // ================================================================
-        // 14. 💬 إرسال بالواتساب
+        // 13. 💬 إرسال بالواتساب
         // ================================================================
         function submitOrderViaWhatsApp() {
             const orderData = buildOrderData();
@@ -971,7 +1047,7 @@
         }
 
         // ================================================================
-        // 15. نظام التتبع
+        // 14. نظام التتبع
         // ================================================================
         function showSuccessWithTracking() {
             document.getElementById('formContainer').style.display = 'none';
@@ -1046,7 +1122,7 @@
         }
 
         // ================================================================
-        // 16. البحث عن شحنة (عام)
+        // 15. البحث عن شحنة (عام)
         // ================================================================
         function searchPublicTracking() {
             const input = document.getElementById('publicTrackingInput').value.trim();
@@ -1117,7 +1193,7 @@
         }
 
         // ================================================================
-        // 17. لوحة التحكم
+        // 16. لوحة التحكم
         // ================================================================
         function toggleAdmin() {
             const modal = document.getElementById('adminModal');
@@ -1192,7 +1268,7 @@
         }
 
         // ================================================================
-        // 18. وظائف عامة
+        // 17. وظائف عامة
         // ================================================================
         function checkAdminAccess() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1240,7 +1316,7 @@
         }
 
         // ================================================================
-        // 19. تهيئة المتجر
+        // 18. تهيئة المتجر
         // ================================================================
         initLanguage();
         renderProducts();
@@ -1250,7 +1326,7 @@
         console.log('🔥 مرحباً بك في متجر يوتوبيا للتجارة والتصدير!');
         console.log('📧 الإيميل: ' + STORE_EMAIL);
         console.log('💬 واتساب: +' + WHATSAPP_NUMBER);
-        console.log('✅ جميع الإضافات شغالة: المقاسات، التليفون، المرفقات، اللوكيشن');
+        console.log('🔒 الحماية مفعلة: منع النسخ، منع أدوات المطور، منع النقر الأيمن');
     </script>
 </body>
 </html>
